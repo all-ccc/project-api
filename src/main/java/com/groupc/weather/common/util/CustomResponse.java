@@ -2,7 +2,7 @@ package com.groupc.weather.common.util;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.groupc.weather.dto.ResponseDto;
+import com.groupc.weather.dto.response.ResponseDto;
 
 public class CustomResponse {
     public static ResponseEntity<ResponseDto> success(){

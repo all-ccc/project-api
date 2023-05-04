@@ -1,4 +1,4 @@
-package com.groupc.weather.dto;
+package com.groupc.weather.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
