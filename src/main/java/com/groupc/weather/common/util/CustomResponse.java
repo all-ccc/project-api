@@ -22,6 +22,20 @@ public class CustomResponse {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
+    public static ResponseEntity<ResponseDto> existUserEmail(){
+        ResponseDto errorBody = new ResponseDto("EU", "Existent User Email");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    }
+
+    public static ResponseEntity<ResponseDto> existUserNickname(){
+        ResponseDto errorBody = new ResponseDto("EN", "Existent User Nickname");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    }
+
+    public static ResponseEntity<ResponseDto> existUserPhoneNumber(){
+        ResponseDto errorBody = new ResponseDto("EP", "Existent User PhoneNumber");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    } 
     public static ResponseEntity<ResponseDto> notExistBoardNumber(){
         ResponseDto errorBody = new ResponseDto("NB", "Non-Existent Board Number");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
@@ -30,6 +44,12 @@ public class CustomResponse {
         ResponseDto errorBody = new ResponseDto("NU", "Non-Existent User Email");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
     }
+
+     public static ResponseEntity<ResponseDto> signInFailed(){
+        ResponseDto errorBody = new ResponseDto("SF", "Sign in Faild");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    }
+
 
     public static ResponseEntity<ResponseDto> noPermissions(){
         ResponseDto errorBody = new ResponseDto("NP", "No Permissons");
