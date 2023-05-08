@@ -30,3 +30,8 @@ public class UserEntity {
     private String profileImageUrl;
     
 }
+package com.groupc.weather.entity;
+
+public class UserEntity {
+    
+}
