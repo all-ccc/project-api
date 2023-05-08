@@ -23,25 +23,29 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity(name="QnaCommentUser")
 @Table(name="QnaCommentUser")
-public class QnaCommentUserEntity {
+public class QnaCommentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int qnaCommentNumber;
     private int userNumber;
-    
+    private int managerNumber;
     private int qnaBoardNumber;
-    private String qnaComment;
-    private String qnaCommentWriteDatetime;
+    private String content;
+    private String writeDatetime;
+    private String userProfileImageUrl;
+    private String managerProfileImageUrl;
+    private String userNickname;
+    private String managerNickname;
     
-    public QnaCommentUserEntity(PostQnaCommentRequestDto dto){
-        Date now = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        String commentWriteDatetime = simpleDateFormat.format(now);
+    // public QnaCommentEntity(PostQnaCommentRequestDto dto){
+    //     Date now = new Date();
+    //     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    //     String commentWriteDatetime = simpleDateFormat.format(now);
         
-        this.userNumber = dto.getQnaBoardNumber(); //수정하셈
-        this.qnaBoardNumber = dto.getQnaBoardNumber();
-        this.qnaComment = dto.getQnaCommnetContent();
-        this.qnaCommentWriteDatetime = commentWriteDatetime;
-    }
+    //     this.userNumber = dto.getQnaBoardNumber(); //수정하셈
+    //     this.qnaBoardNumber = dto.getQnaBoardNumber();
+    //     this.qnaComment = dto.getQnaCommnetContent();
+    //     this.qnaCommentWriteDatetime = commentWriteDatetime;
+    // }
 
 }
