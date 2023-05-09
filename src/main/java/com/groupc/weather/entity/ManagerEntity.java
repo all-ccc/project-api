@@ -20,7 +20,6 @@ import lombok.NoArgsConstructor;
 @Entity(name = "Manager")
 @Table(name = "Manager")
 public class ManagerEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int managerNumber;

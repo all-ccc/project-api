@@ -8,7 +8,7 @@ import com.groupc.weather.dto.response.ResponseDto;
 import com.groupc.weather.entity.CommentEntity;
 import com.groupc.weather.entity.HashListEntity;
 import com.groupc.weather.entity.ImageUrlEntity;
-import com.groupc.weather.entity.LikyEntity;
+import com.groupc.weather.entity.LikeyEntity;
 import com.groupc.weather.entity.PhotoBoardEntity;
 import com.groupc.weather.entity.UserEntity;
 
@@ -41,7 +41,7 @@ public class GetPhotoBoardResponseDto extends ResponseDto {
     // request 요청 하면 => dto => DB = > dto => response
     public GetPhotoBoardResponseDto(
             PhotoBoardEntity photoBoardEntity, UserEntity userEntity,
-            List<LikyEntity> likyEntities, List<CommentEntity> commentEntities, List<HashListEntity> hashListEntities,
+            List<LikeyEntity> likyEntities, List<CommentEntity> commentEntities, List<HashListEntity> hashListEntities,
             List<ImageUrlEntity> imageUrlEntities) {
         super("SU", "Success");
         this.boardNumber = photoBoardEntity.getBoardNumber();
@@ -102,16 +102,16 @@ class Liky {
     private int userNickname;
     private String userProfileImageUrl;
 
-    Liky(LikyEntity likyEntity) {
+    Liky(LikeyEntity likyEntity) {
         this.boardNumber = likyEntity.getBoardNumber();
         this.userNumber = likyEntity.getUserNumber();
         this.userNickname = likyEntity.getUserNickname();
         this.userProfileImageUrl = likyEntity.getUserProfileImageUrl();
     }
 
-    static List<Liky> createList(List<LikyEntity> likyEntities) {
+    static List<Liky> createList(List<LikeyEntity> likyEntities) {
         List<Liky> likyList = new ArrayList<>();
-        for (LikyEntity likyEntity : likyEntities) {
+        for (LikeyEntity likyEntity : likyEntities) {
             Liky liky = new Liky(likyEntity);
             likyList.add(liky);
 
