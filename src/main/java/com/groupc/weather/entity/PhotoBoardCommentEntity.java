@@ -13,22 +13,20 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "User")
-@Table(name = "User")
-public class UserEntity {
+@Entity(name = "PhotoBoardComment")
+@Table(name = "Photo_Board_Comment")
+public class PhotoBoardCommentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int commentNumber;
     private int userNumber;
-    private String name;
-    private String password;
-    private String nickname;
-    private String email;
-    private String phoneNumber;
-    private String birthday;
-    private String gender;
-    private String address;
-    private String profileImageUrl;
-    
-}
+    private int boardNumber;
+    private String content;
+    private String writeDatetime;
+    private String userNickname;
+    private String managerNickname;
+    private String userProfileImageUrl;
+    private String managerProfileImageUrl;
 
+}
