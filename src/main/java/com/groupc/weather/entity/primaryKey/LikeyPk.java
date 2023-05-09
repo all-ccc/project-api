@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 
-public class LikyPk implements Serializable {
+public class LikeyPk implements Serializable {
 
     @Column(name = "board_number")
     private int boardNumber;
