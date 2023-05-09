@@ -32,7 +32,7 @@ public class CommentEntity {
     private String userProfileImageUrl;
     private String managerProfileImageUrl;
 
-    public CommentEntity(PostCommentRequestDto dto) {
+    public commentEntity(PostCommentRequestDto dto) {
         Date now = new Date();
         SimpleDateFormat simpleDateFormat =
                 new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");

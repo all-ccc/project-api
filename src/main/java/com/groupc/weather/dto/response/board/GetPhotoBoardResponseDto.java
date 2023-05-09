@@ -14,7 +14,6 @@ import com.groupc.weather.entity.ImageUrlEntity;
 
 import com.groupc.weather.entity.BoardEntity;
 import com.groupc.weather.entity.LikeyEntity;
-import com.groupc.weather.entity.BoardEntity;
 import com.groupc.weather.entity.UserEntity;
 
 import lombok.AllArgsConstructor;
@@ -46,7 +45,7 @@ public class GetPhotoBoardResponseDto extends ResponseDto {
     // request 요청 하면 => dto => DB = > dto => response
     public GetPhotoBoardResponseDto(
             BoardEntity photoBoardEntity, UserEntity userEntity,
-            List<LikyEntity> likyEntities, List<CommentEntity> commentEntities, List<HashListEntity> hashListEntities,
+            List<LikeyEntity> likyEntities, List<CommentEntity> commentEntities, List<HashListEntity> hashListEntities,
             List<ImageUrlEntity> imageUrlEntities) {
         super("SU", "Success");
         this.boardNumber = photoBoardEntity.getBoardNumber();

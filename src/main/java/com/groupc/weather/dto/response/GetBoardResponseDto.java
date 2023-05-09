@@ -1,5 +1,6 @@
 package com.groupc.weather.dto.response;
 
+
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.entity.CommentEntity;
 
