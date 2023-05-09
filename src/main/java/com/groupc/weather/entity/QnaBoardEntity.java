@@ -13,17 +13,18 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name="Qna")
-@Table(name="Qna")
+@Entity(name = "QnaBoard")
+@Table(name = "Qna_Board")
 public class QnaBoardEntity {
+    
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private int boardNumber;
-    private int writerNumber;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int qnaBoardNumber;
     private String title;
     private String content;
-    private String boardImageUrl;
     private String writeDatetime;
-    private int viewCount;
-    
+    private int userNumber;
+    private String nickname;
+    private String profileImageUrl;
+    private String imageUrl;
 }

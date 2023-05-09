@@ -1,6 +1,5 @@
 package com.groupc.weather.entity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,19 +13,22 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name="User")
-@Table(name="User")
+@Entity(name = "User")
+@Table(name = "User")
 public class UserEntity {
+
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userNumber;
     private String name;
-    private String email;
     private String password;
     private String nickname;
+    private String email;
     private String phoneNumber;
-    private String address;
-    private String gender;
-    private String profileImageUrl;
     private String birthday;
+    private String gender;
+    private String address;
+    private String profileImageUrl;
+    
 }
+

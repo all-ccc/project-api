@@ -2,7 +2,8 @@ package com.groupc.weather.dto.response.board;
 
 import java.util.List;
 
-import com.groupc.weather.dto.ResponseDto;
+import com.groupc.weather.dto.response.ResponseDto;
+
 
 public class GetUserBoardLikeDto extends ResponseDto{
     private List<BoardSummary> boardList;

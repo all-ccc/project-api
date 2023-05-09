@@ -1,9 +1,5 @@
 package com.groupc.weather.entity;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 0dfb4c25f0b15f13590d9e4f30e52f92d10354f1
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,17 +13,21 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "Manager")
-@Table(name = "Manager")
-public class ManagerEntity {
+@Entity(name = "QnaBoardComment")
+@Table(name = "Qna_Board_Comment")
+public class QnaBoardCommentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int qnaCommentNumber;
+    private int qnaBoardNumber;
+    private int userNumber;
     private int managerNumber;
-    private String nickname;
-    private String password;
-    private String phoneNumber;
-    private String email;
-    private String profileImageUrl;
+    private String userProfileImageUrl;
+    private String managerProfileImageUrl;
+    private String userNickname;
+    private String managerNickname;
+    private String content;
+    private String writeDatetime;
 
 }
