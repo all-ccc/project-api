@@ -28,7 +28,7 @@ public class CommentEntity {
         SimpleDateFormat simpleDateFormat =
                 new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String writeDatetime = simpleDateFormat.format(now);
-
+        
         this.managerProfileUrl =userEntity.getManagerProfileUrl();
         this.managerNumber = userEntity.getManagerNumber(); //두개 물어보센
 
