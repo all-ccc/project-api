@@ -15,15 +15,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PostPhotoBoardRequestDto {
     @NotBlank
-    private int boardWriterNumber;
+    private int boardNumber;
     @NotBlank
-    private String boardTitle;
+    private String title;
     @NotBlank
-    private String boardContent;
+    private String content;
     @NotBlank
-    private String boardImageUrl;
+    private String imageUrl;
     @NotBlank
-    private List<ImageUrlList> boardImageUrlList;
+    private List<ImageUrlList> imageUrlList;
     private List<HashTag> hashtagList;
     @NotBlank
     private String weatherInfo;
@@ -40,7 +40,7 @@ class ImageUrlList {
     @NotBlank
     private int imageNumber;
     @NotBlank
-    private String imagUrl;
+    private String imageUrl;
     @NotBlank
     private int boardNumber;
 

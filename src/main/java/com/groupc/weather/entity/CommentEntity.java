@@ -18,13 +18,22 @@ public class CommentEntity {
     private int userNumber;
     private String commentContent;
     private String writeDatetime;
+    private String userNickname;
+    private String userImageProfileUrl;
+    private int managerNumber;
+    private String managerProfileUrl;
 
-    public CommentEntity(PostCommentRequestDto dto) {
+    public CommentEntity(PostCommentRequestDto dto , UserEntity userEntity) {
         Date now = new Date();
         SimpleDateFormat simpleDateFormat =
                 new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String writeDatetime = simpleDateFormat.format(now);
+        
+        this.managerProfileUrl =userEntity.getManagerProfileUrl();
+        this.managerNumber = userEntity.getManagerNumber(); //두개 물어보센
 
+        this.userImageProfileUrl =userEntity.getUserImageProfileUrl();
+        this.userNickname = userEntity.getUserNickname();
         this.boardNumber = dto.getBoardNumber();
         this.userNumber = dto.getUserNumber();
         this.commentContent = dto.getCommentContent();
