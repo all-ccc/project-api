@@ -18,6 +18,20 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+public class BoardEntity {
+private int boardNumber;
+private int usernumber;
+private String Title;
+private String Content;
+private String boardImageUrl;
+private String writeDatetime;
+private int temperature;
+private String weatherInfo;
+private int viewCount;
+
+
+
+ public BoardEntity(PostPhotoBoardRequestDto dto){
 @Entity(name = "PhotoBoard")
 @Table(name = "Photo_Board")
 public class PhotoBoardEntity {

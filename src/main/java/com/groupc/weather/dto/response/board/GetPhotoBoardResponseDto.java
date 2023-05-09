@@ -8,8 +8,13 @@ import com.groupc.weather.dto.response.ResponseDto;
 import com.groupc.weather.entity.CommentEntity;
 import com.groupc.weather.entity.HashListEntity;
 import com.groupc.weather.entity.ImageUrlEntity;
+<<<<<<< HEAD
+import com.groupc.weather.entity.LikyEntity;
+import com.groupc.weather.entity.BoardEntity;
+=======
 import com.groupc.weather.entity.LikeyEntity;
 import com.groupc.weather.entity.PhotoBoardEntity;
+>>>>>>> 2855a9d88318e22fe4dbd645f6b98b457864b5f9
 import com.groupc.weather.entity.UserEntity;
 
 import lombok.AllArgsConstructor;
@@ -40,8 +45,13 @@ public class GetPhotoBoardResponseDto extends ResponseDto {
 
     // request 요청 하면 => dto => DB = > dto => response
     public GetPhotoBoardResponseDto(
+<<<<<<< HEAD
+            BoardEntity photoBoardEntity, UserEntity userEntity,
+            List<LikyEntity> likyEntities, List<CommentEntity> commentEntities, List<HashListEntity> hashListEntities,
+=======
             PhotoBoardEntity photoBoardEntity, UserEntity userEntity,
             List<LikeyEntity> likyEntities, List<CommentEntity> commentEntities, List<HashListEntity> hashListEntities,
+>>>>>>> 2855a9d88318e22fe4dbd645f6b98b457864b5f9
             List<ImageUrlEntity> imageUrlEntities) {
         super("SU", "Success");
         this.boardNumber = photoBoardEntity.getBoardNumber();
@@ -97,9 +107,9 @@ class Comment {
 @NoArgsConstructor
 @AllArgsConstructor
 class Liky {
-    private String boardNumber;
-    private String userNumber;
-    private int userNickname;
+    private int boardNumber;
+    private int userNumber;
+    private String userNickname;
     private String userProfileImageUrl;
 
     Liky(LikeyEntity likyEntity) {
@@ -154,7 +164,7 @@ class HashTag {
     private String hashtagContent;
     private int boardNumber;
    
-    HashTag(PhotoBoardEntity boardentity, HashListEntity hashListEntity){
+    HashTag(BoardEntity boardentity, HashListEntity hashListEntity){
         this.hashtagContent = hashListEntity.getHashtagContent();
         this.hashtagNumber = hashListEntity.gethashtagNumber();
         this.boardNumber = boardentity.getBoardNumber();
