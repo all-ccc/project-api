@@ -23,6 +23,7 @@ public class UserEntity {
     private String name;
     private String password;
     private String nickname;
+    private String email;
     private String phoneNumber;
     private String birthday;
     private String gender;
@@ -30,8 +31,4 @@ public class UserEntity {
     private String profileImageUrl;
     
 }
-package com.groupc.weather.entity;
 
-public class UserEntity {
-    
-}

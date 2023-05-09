@@ -1,8 +1,9 @@
-package com.groupc.weather.dto.response;
+package com.groupc.weather.dto.response.qnaBoard;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.groupc.weather.dto.response.ResponseDto;
 import com.groupc.weather.entity.ManagerEntity;
 import com.groupc.weather.entity.QnaBoardCommentEntity;
 import com.groupc.weather.entity.QnaBoardEntity;
@@ -21,7 +22,7 @@ public class GetQnaBoardResponseDto extends ResponseDto {
     private int qnaBoardNumber;
     private String qnaBoardTitle;
     private String qnaBoardContent;
-    private List<ImageUrl> qnaBoardImageUrlList;
+    private String qnaBoardImageUrl;
     private String qnaBoardWriteDatetime;
     private String qnaBoardWriterNickname;
     private String qnaBoardWriterProfileImageUrl;
@@ -29,16 +30,15 @@ public class GetQnaBoardResponseDto extends ResponseDto {
 
     public GetQnaBoardResponseDto(
         QnaBoardEntity qnaBoardEntity, UserEntity userEntity,
-        ManagerEntity managerEntity, List<ImageUrlEntity> imageUrlEntities,
-        List<QnaBoardCommentEntity> qnaBoardCommentEntities
+        ManagerEntity managerEntity, List<QnaBoardCommentEntity> qnaBoardCommentEntities
     ) {
         super("SU", "Success");
 
         this.qnaBoardNumber = qnaBoardEntity.getQnaBoardNumber();
         this.qnaBoardTitle = qnaBoardEntity.getTitle();
         this.qnaBoardContent = qnaBoardEntity.getContent();
-        this.qnaBoardImageUrlList = qnaBoardEntity.get;
-        this.qnaBoardWriteDatetime = qnaBoardEntity.getDate();
+        this.qnaBoardImageUrl = qnaBoardEntity.getImageUrl();
+        this.qnaBoardWriteDatetime = qnaBoardEntity.getWriteDatetime();
         this.qnaBoardWriterNickname = userEntity.getNickname();
         this.qnaBoardWriterProfileImageUrl = userEntity.getProfileImageUrl();
         this.commentList = Comment.createList(qnaBoardCommentEntities);
@@ -58,8 +58,8 @@ class Comment {
     private String managerProfileImageUrl;
     private String userNickname;
     private String managerNickname;
-    private String commentContent;
-    private String date;
+    private String content;
+    private String writeDatetime;
 
     Comment(QnaBoardCommentEntity qnaBoardCommentEntity) {
         this.qnaCommentNumber = qnaBoardCommentEntity.getQnaCommentNumber();
@@ -70,8 +70,8 @@ class Comment {
         this.managerProfileImageUrl = qnaBoardCommentEntity.getManagerProfileImageUrl();
         this.userNickname = qnaBoardCommentEntity.getUserNickname();
         this.managerNickname = qnaBoardCommentEntity.getManagerNickname();
-        this.commentContent = qnaBoardCommentEntity.getCommentContent();
-        this.date = qnaBoardCommentEntity.getDate();
+        this.content = qnaBoardCommentEntity.getContent();
+        this.writeDatetime = qnaBoardCommentEntity.getWriteDatetime();
     }
 
     static List<Comment> createList(List<QnaBoardCommentEntity> qnaBoardCommentEntities) {
@@ -80,6 +80,6 @@ class Comment {
             Comment comment = new Comment(qnaBoardCommentEntity);
             commentList.add(comment);
         }
-        return commentList; // 이해 못 함... 걍 받아씀
+        return commentList; // 다시 보기
     }
 }

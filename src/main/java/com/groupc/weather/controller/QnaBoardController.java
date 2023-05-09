@@ -4,14 +4,15 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.groupc.weather.dto.request.PostQnaBoardRequestDto;
+import com.groupc.weather.dto.request.qnaBoard.PostQnaBoardRequestDto;
 import com.groupc.weather.dto.response.ResponseDto;
-import com.groupc.weather.service.PhotoBoardService;
+import com.groupc.weather.dto.response.qnaBoard.GetQnaBoardResponseDto;
 import com.groupc.weather.service.QnaBoardService;
 
 @RestController
@@ -35,6 +36,14 @@ public class QnaBoardController {
     }
     
     //* 2. 특정 게시물 조회 */
+    @GetMapping("/{qnaBoardNumber}")
+    public ResponseEntity<ResponseDto> getQnaBoard(
+        @Valid @RequestBody GetQnaBoardResponseDto requestBody
+    ) {
+        ResponseEntity<ResponseDto> response = qnaBoardService.getQnaBoard(requestBody);
+        return response;
+    }
+    }
 
     //* 3. 특정 게시물 수정(본인만) */
 

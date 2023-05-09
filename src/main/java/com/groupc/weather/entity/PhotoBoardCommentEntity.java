@@ -28,5 +28,5 @@ public class PhotoBoardCommentEntity {
     private String managerNickname;
     private String userProfileImageUrl;
     private String managerProfileImageUrl;
-    // imageUrl List 따로 뺴
+
 }
