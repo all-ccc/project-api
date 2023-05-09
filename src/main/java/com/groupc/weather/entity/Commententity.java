@@ -7,39 +7,35 @@ import lombok.NoArgsConstructor;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-
-import org.springframework.data.annotation.Id;
-
 import com.groupc.weather.dto.request.board.PostCommentRequestDto;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentEntity {
-    
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int commentNumber;
-    private int userNumber;
-    private int managerNumber;
     private int boardNumber;
-    private String userNickname;
-    private String managerNickname;
+    private int userNumber;
     private String commentContent;
     private String writeDatetime;
-    private String userProfileImageUrl;
-    private String managerProfileImageUrl;
+    private String userNickname;
+    private String userImageProfileUrl;
+    private int managerNumber;
+    private String managerProfileUrl;
 
-    public CommentEntity(PostCommentRequestDto dto) {
+    public CommentEntity(PostCommentRequestDto dto , UserEntity userEntity) {
         Date now = new Date();
         SimpleDateFormat simpleDateFormat =
                 new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String writeDatetime = simpleDateFormat.format(now);
+        
+        this.managerProfileUrl =userEntity.getManagerProfileUrl();
+        this.managerNumber = userEntity.getManagerNumber(); //두개 물어보센
 
+        this.userImageProfileUrl =userEntity.getUserImageProfileUrl();
+        this.userNickname = userEntity.getUserNickname();
         this.boardNumber = dto.getBoardNumber();
-        this.userNumber = 2;
+        this.userNumber = dto.getUserNumber();
         this.commentContent = dto.getCommentContent();
         this.writeDatetime = writeDatetime;
     }
