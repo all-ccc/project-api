@@ -10,7 +10,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 // 데이터베이스의 필드와 직접적인 연관 관계.
-// commit test
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
