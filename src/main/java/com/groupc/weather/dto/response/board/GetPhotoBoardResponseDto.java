@@ -3,8 +3,8 @@ package com.groupc.weather.dto.response.board;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.board.PostPhotoBoardRequestDto;
+import com.groupc.weather.dto.response.ResponseDto;
 import com.groupc.weather.entity.CommentEntity;
 import com.groupc.weather.entity.HashListEntity;
 import com.groupc.weather.entity.ImageUrlEntity;

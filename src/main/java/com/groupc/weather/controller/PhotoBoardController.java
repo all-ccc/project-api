@@ -7,13 +7,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.groupc.weather.service.PhotoBoardService;
 
 @RestController
-@RequestMapping("/api/v1/user")
-public class UserController {
+@RequestMapping("/api/v1/photoBoard")
+public class PhotoBoardController {
     
     private PhotoBoardService photoBoardService;
 
     @Autowired
-    public UserController(PhotoBoardService photoBoardService) {
+    public PhotoBoardController(PhotoBoardService photoBoardService) {
         this.photoBoardService = photoBoardService;
     }
+    
 }
