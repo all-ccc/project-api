@@ -8,7 +8,7 @@ public class WeatherApplication {
 
 	// 주석
 	// 주석 1
-	// 주석2 asdasd
+	// 주석2 asdasd2
 	// c
 	// fjasdhfkgit
 
