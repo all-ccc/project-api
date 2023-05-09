@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PostCommentRequestDto {
     
+    
     private int boardNumber;
     private int userNumber;
     private String commentContent;

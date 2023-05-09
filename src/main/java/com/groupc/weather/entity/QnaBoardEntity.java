@@ -1,10 +1,15 @@
 package com.groupc.weather.entity;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.groupc.weather.dto.request.qnaBoard.PostQnaBoardRequestDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,4 +32,15 @@ public class QnaBoardEntity {
     private String nickname;
     private String profileImageUrl;
     private String imageUrl;
+
+    public QnaBoardEntity(PostQnaBoardRequestDto dto) {
+        Date now = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String writeDatetime = simpleDateFormat.format(now);
+
+        this.userNumber = dto.getUserNumber();
+        this.title = dto.getTitle();
+        this.content = dto.getContent();
+        this.imageUrl = dto.getImageUrl();
+    }
 }
