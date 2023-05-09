@@ -11,4 +11,5 @@ public class PostCommentRequestDto {
     
     private int boardNumber;
     private String commentContent;
+    public int getU;
 }

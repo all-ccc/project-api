@@ -39,7 +39,7 @@ public class CommentEntity {
         String writeDatetime = simpleDateFormat.format(now);
 
         this.boardNumber = dto.getBoardNumber();
-        this.userNumber = dto.getU;
+        this.userNumber = 2;
         this.commentContent = dto.getCommentContent();
         this.writeDatetime = writeDatetime;
     }
