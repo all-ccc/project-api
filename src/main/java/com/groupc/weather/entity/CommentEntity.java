@@ -21,8 +21,7 @@ public class CommentEntity {
 
     public CommentEntity(PostCommentRequestDto dto) {
         Date now = new Date();
-        SimpleDateFormat simpleDateFormat =
-                new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String writeDatetime = simpleDateFormat.format(now);
 
         this.boardNumber = dto.getBoardNumber();
