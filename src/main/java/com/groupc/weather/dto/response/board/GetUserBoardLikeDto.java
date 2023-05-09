@@ -4,7 +4,10 @@ import java.util.List;
 
 import com.groupc.weather.dto.response.ResponseDto;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0dfb4c25f0b15f13590d9e4f30e52f92d10354f1
 
 public class GetUserBoardLikeDto extends ResponseDto{
     private List<BoardSummary> boardList;

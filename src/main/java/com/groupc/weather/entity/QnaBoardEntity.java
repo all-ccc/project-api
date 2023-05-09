@@ -13,22 +13,18 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "User")
-@Table(name = "User")
-public class UserEntity {
-
+@Entity(name = "QnaBoard")
+@Table(name = "Qna_Board")
+public class QnaBoardEntity {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int qnaBoardNumber;
+    private String title;
+    private String content;
+    private String writeDatetime;
     private int userNumber;
-    private String name;
-    private String password;
     private String nickname;
-    private String email;
-    private String phoneNumber;
-    private String birthday;
-    private String gender;
-    private String address;
     private String profileImageUrl;
-    
+    private String imageUrl;
 }
-

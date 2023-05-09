@@ -3,10 +3,15 @@ package com.groupc.weather.dto.response.board;
 import java.util.ArrayList;
 import java.util.List;
 
+<<<<<<< HEAD
 
 import com.groupc.weather.dto.request.board.PostPhotoBoardRequestDto;
 import com.groupc.weather.dto.response.ResponseDto;
 
+=======
+import com.groupc.weather.dto.request.board.PostPhotoBoardRequestDto;
+import com.groupc.weather.dto.response.ResponseDto;
+>>>>>>> 0dfb4c25f0b15f13590d9e4f30e52f92d10354f1
 import com.groupc.weather.entity.CommentEntity;
 import com.groupc.weather.entity.HashListEntity;
 import com.groupc.weather.entity.ImageUrlEntity;
