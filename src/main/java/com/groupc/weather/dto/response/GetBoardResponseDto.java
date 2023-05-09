@@ -43,8 +43,8 @@ class Comment {
          this.commentWriterManagerNickname = commentEntity.getManagerNickname();
          this.commentContent = commentEntity.getCommentContent();
          this.commentWriteDatetime = commentEntity.getWriteDatetime();
-         this.commentWriterUserProfileImageUrl = commentEntity.getUserProfileImageUrl();
-         this.commentWriterManagerProfileImageUrl = commentEntity.getManagerProfileImageUrl();
+         this.commentWriterUserProfileImageUrl = commentEntity.getUserImageProfileUrl();
+         this.commentWriterManagerProfileImageUrl = commentEntity.getManagerProfileUrl();
 
     }
 }
