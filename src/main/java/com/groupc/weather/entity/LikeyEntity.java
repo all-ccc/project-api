@@ -25,3 +25,4 @@ public class LikeyEntity {
     private String userNickname;
     private String userProfileImageUrl;
 }
+
