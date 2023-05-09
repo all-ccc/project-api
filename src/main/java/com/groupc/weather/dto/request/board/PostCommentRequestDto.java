@@ -10,5 +10,11 @@ import lombok.NoArgsConstructor;
 public class PostCommentRequestDto {
     
     private int boardNumber;
+    private int writerNumber;
     private String commentContent;
+
+    PostCommentRequestDto(UserEntity userEntity){
+        this.writerNumber = userEntity.getUserNumber(); 
+    }
 }
+

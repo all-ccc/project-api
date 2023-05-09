@@ -15,9 +15,11 @@ public class GetBoardListResponse {
 public class GetPostlist extends ResponseDto {
    
     //top5 사용!! 데이터 베이스 활용...
+    private List<BoardSummary> top5BoardList;
+}
 
 }
-}
+
 
 class BoardSummary{
     private int boardNumber;
