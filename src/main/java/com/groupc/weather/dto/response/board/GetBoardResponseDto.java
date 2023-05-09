@@ -27,7 +27,7 @@ import lombok.Setter;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetPhotoBoardResponseDto extends ResponseDto {
+public class GetBoardResponseDto extends ResponseDto {
     private int boardNumber;
     private String boardTitle;
     private String boardContent;
@@ -45,7 +45,7 @@ public class GetPhotoBoardResponseDto extends ResponseDto {
     private List<Liky> likeList;
 
     // request 요청 하면 => dto => DB = > dto => response
-    public GetPhotoBoardResponseDto(
+    public GetBoardResponseDto(
             BoardEntity photoBoardEntity, UserEntity userEntity,
             List<LikyEntity> likyEntities, List<CommentEntity> commentEntities, List<HashListEntity> hashListEntities,
             List<ImageUrlEntity> imageUrlEntities) {

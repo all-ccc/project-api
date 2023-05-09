@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PostCommentRequestDto {
     
-    @
+    
     private int boardNumber;
     private int writerNumber;
     private String commentContent;
