@@ -3,20 +3,18 @@ package com.groupc.weather.dto.response.board;
 import java.util.ArrayList;
 import java.util.List;
 
-<<<<<<< HEAD
-
+import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.board.PostPhotoBoardRequestDto;
-import com.groupc.weather.dto.response.ResponseDto;
 
-=======
-import com.groupc.weather.dto.request.board.PostPhotoBoardRequestDto;
-import com.groupc.weather.dto.response.ResponseDto;
->>>>>>> 0dfb4c25f0b15f13590d9e4f30e52f92d10354f1
+
+
 import com.groupc.weather.entity.CommentEntity;
 import com.groupc.weather.entity.HashListEntity;
 import com.groupc.weather.entity.ImageUrlEntity;
+
+import com.groupc.weather.entity.BoardEntity;
 import com.groupc.weather.entity.LikeyEntity;
-import com.groupc.weather.entity.PhotoBoardEntity;
+import com.groupc.weather.entity.BoardEntity;
 import com.groupc.weather.entity.UserEntity;
 
 import lombok.AllArgsConstructor;
@@ -47,8 +45,8 @@ public class GetPhotoBoardResponseDto extends ResponseDto {
 
     // request 요청 하면 => dto => DB = > dto => response
     public GetPhotoBoardResponseDto(
-            PhotoBoardEntity photoBoardEntity, UserEntity userEntity,
-            List<LikeyEntity> likyEntities, List<CommentEntity> commentEntities, List<HashListEntity> hashListEntities,
+            BoardEntity photoBoardEntity, UserEntity userEntity,
+            List<LikyEntity> likyEntities, List<CommentEntity> commentEntities, List<HashListEntity> hashListEntities,
             List<ImageUrlEntity> imageUrlEntities) {
         super("SU", "Success");
         this.boardNumber = photoBoardEntity.getBoardNumber();
