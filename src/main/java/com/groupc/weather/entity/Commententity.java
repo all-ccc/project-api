@@ -40,6 +40,6 @@ public class CommentEntity {
         this.boardNumber = dto.getBoardNumber();
         this.userNumber = dto.getUserNumber();
         this.commentContent = dto.getCommentContent();
-        this.writeDatetime = writeDatetime();
+        this.writeDatetime = writeDatetimes();
     }
 }
