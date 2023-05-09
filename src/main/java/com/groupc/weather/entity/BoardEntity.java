@@ -28,7 +28,7 @@ private String writeDatetime;
 private int temperature;
 private String weatherInfo;
 private int viewCount;
-}
+
 
 
  public BoardEntity(PostPhotoBoardRequestDto dto){
@@ -46,7 +46,7 @@ public class PhotoBoardEntity {
     private String weatherInfo;
     private int viewCount;
     private int userNumber;
-}
+ 
     public PhotoBoardEntity(PostPhotoBoardRequestDto dto){
         Date now = new Date();
         SimpleDateFormat simpleDateFormat = 
@@ -59,6 +59,6 @@ public class PhotoBoardEntity {
         this.writeDatetime = writeDatetime;
         this.viewCount = 0;
     
-    }
 }
 
+}

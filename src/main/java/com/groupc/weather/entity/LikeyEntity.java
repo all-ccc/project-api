@@ -19,3 +19,4 @@ public class LikeyEntity {
     @Id
     private int boardNumber;
 }
+
