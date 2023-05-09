@@ -9,6 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PostCommentRequestDto {
     private int boardNumber;
-    private int userNumber;
+    private int writerNumber;
     private String commentContent;
+
+    PostCommentRequestDto(UserEntity userEntity){
+        this.writerNumber = userEntity.getUserNumber(); 
+    }
 }
+

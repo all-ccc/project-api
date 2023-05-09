@@ -3,8 +3,10 @@ package com.groupc.weather.dto.response.board;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.groupc.weather.dto.ResponseDto;
+
 import com.groupc.weather.dto.request.board.PostPhotoBoardRequestDto;
+import com.groupc.weather.dto.response.ResponseDto;
+
 import com.groupc.weather.entity.CommentEntity;
 import com.groupc.weather.entity.HashListEntity;
 import com.groupc.weather.entity.ImageUrlEntity;
@@ -54,7 +56,7 @@ public class GetPhotoBoardResponseDto extends ResponseDto {
         this.boardWriterNickname = userEntity.getNickname();
         this.boardWriterProfileImageUrl = userEntity.getImage();
         this.commentCount = commentList.size();
-        this.likeCount = likyList.size();
+        this.likeCount = likyEntities.size();
 
     }
 
@@ -64,8 +66,8 @@ public class GetPhotoBoardResponseDto extends ResponseDto {
 @NoArgsConstructor
 @AllArgsConstructor
 class Comment {
-    private String commentNumber;
-    private String boardNumber;
+    private int commentNumber;
+    private int boardNumber;
     private int commentWriterNumber;
     private String commentContent;
     private String commentWriterNickname;
@@ -75,11 +77,11 @@ class Comment {
     Comment(CommentEntity commentEntity) {
         this.commentNumber = commentEntity.getCommentNumber();
         this.boardNumber = commentEntity.getBoardNumber();
-        this.commentWriterNumber = commentEntity.getCommentWriterNumber();
+        this.commentWriterNumber = commentEntity.getUserNumber(); // 조원이랑 같이 이야기 해보기 user사용 할 것인지
         this.commentContent = commentEntity.getCommentContent();
-        this.commentWriterNickname = commentEntity.getCommentWriterNickname();
-        this.commentWriterProfileImageUrl = commentEntity.getCommentWriterProfileImageUrl();
-        this.commentWriteDatetime = commentEntity.getCommentWriteDatetime();
+        this.commentWriterNickname = commentEntity.getUserNickname(); //조원이랑 같이 이야기
+        this.commentWriterProfileImageUrl = commentEntity.getUserImageProfileUrl();
+        this.commentWriteDatetime = commentEntity.getWriteDatetime();
     }
 
     static List<Comment> createList(List<CommentEntity> commentEntities) {
@@ -97,9 +99,9 @@ class Comment {
 @NoArgsConstructor
 @AllArgsConstructor
 class Liky {
-    private String boardNumber;
-    private String userNumber;
-    private int userNickname;
+    private int boardNumber;
+    private int userNumber;
+    private String userNickname;
     private String userProfileImageUrl;
 
     Liky(LikyEntity likyEntity) {
@@ -119,25 +121,25 @@ class Liky {
         return likyList;
 
     }
-
+}
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    class ImageUrl {
+    class ImageUrlList {
 
         private int imageNumber;
         private String imagUrl;
         private int boardNumber;
 
-        ImageUrl(ImageUrlEntity imageUrlEntity) {
+        ImageUrlList(ImageUrlEntity imageUrlEntity) {
             this.imageNumber = imageUrlEntity.getImageNumber();
             this.imagUrl = imageUrlEntity.getImageUrl();
-            this.boardNumber = imageUrlEntity.getBoardNumber();
+            this.boardNumber = imageUrlEntity.getBoradNumber();
         }
-        static List<ImageUrl> createList(List<ImageUrlEntity> imageUrlEntities) {
-            List<ImageUrl> imageUrlList = new ArrayList<>();
+        static List<ImageUrlList> createList(List<ImageUrlEntity> imageUrlEntities) {
+            List<ImageUrlList> imageUrlList = new ArrayList<>();
             for (ImageUrlEntity imageUrlEntity : imageUrlEntities) {
-                ImageUrl imageUrl = new ImageUrl(imageUrlEntity);
+                ImageUrlList imageUrl = new ImageUrlList(imageUrlEntity);
                 imageUrlList.add(imageUrl);
     
             }
@@ -154,10 +156,10 @@ class HashTag {
     private String hashtagContent;
     private int boardNumber;
    
-    HashTag(PhotoBoardEntity boardentity, HashListEntity hashListEntity){
+    HashTag( HashListEntity hashListEntity){
         this.hashtagContent = hashListEntity.getHashtagContent();
-        this.hashtagNumber = hashListEntity.gethashtagNumber();
-        this.boardNumber = boardentity.getBoardNumber();
+        this.hashtagNumber = hashListEntity.getHashtagNumber(); // 어떻게 사용할지 모르겠음...
+        this.boardNumber = hashListEntity.getBoardNumber();
     }
     static List<HashTag> createList(List<HashListEntity> hashTagEntities) {
         List<HashTag> hashList = new ArrayList<>();
@@ -171,4 +173,3 @@ class HashTag {
     }
 }
 
-}

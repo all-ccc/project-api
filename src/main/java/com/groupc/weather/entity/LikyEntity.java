@@ -5,6 +5,8 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
 
+import com.groupc.weather.dto.request.board.LikeRequestDto;
+import com.groupc.weather.dto.request.board.PostPhotoBoardRequestDto;
 import com.groupc.weather.entity.primaryKey.LikyPk;
 
 import lombok.AllArgsConstructor;
@@ -21,8 +23,11 @@ public class LikyEntity {
     @Id
     private int boardNumber;     
     @Id
-    private String userEmail;
-    private String userNickname;
-    private String userProfileImageUrl;
+    private int userNumber;
   
-}
+
+    LikyEntity(PostPhotoBoardRequestDto dto ){
+        this.boardNumber = dto // 게시물번호
+        this.userNumber = dto.getBoardNumber(); //작성자번호 인데 왜 boardNumber임... 
+       }
+    }

@@ -2,7 +2,7 @@ package com.groupc.weather.dto.response.board;
 
 import java.util.List;
 
-import com.groupc.weather.dto.ResponseDto;
+import com.groupc.weather.dto.response.ResponseDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,9 +15,11 @@ public class GetBoardListResponse {
 public class GetPostlist extends ResponseDto {
    
     //top5 사용!! 데이터 베이스 활용...
+    private List<BoardSummary> top5BoardList;
+}
 
 }
-}
+
 
 class BoardSummary{
     private int boardNumber;
