@@ -11,12 +11,6 @@ import com.groupc.weather.dto.request.board.PostPhotoBoardRequestDto;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-import com.groupc.weather.dto.request.board.PostPhotoBoardRequestDto;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

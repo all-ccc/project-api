@@ -23,5 +23,5 @@ class BoardSummary{
 }
 
 class BoardImageUrlList{
-    //이미지 첨부
+    //이미지 첨부하기 
 }
