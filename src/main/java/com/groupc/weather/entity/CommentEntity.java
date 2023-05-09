@@ -7,30 +7,17 @@ import lombok.NoArgsConstructor;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-
-import org.springframework.data.annotation.Id;
-
 import com.groupc.weather.dto.request.board.PostCommentRequestDto;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentEntity {
-    
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int commentNumber;
-    private int userNumber;
-    private int managerNumber;
     private int boardNumber;
-    private String userNickname;
-    private String managerNickname;
+    private int userNumber;
     private String commentContent;
     private String writeDatetime;
-    private String userProfileImageUrl;
-    private String managerProfileImageUrl;
 
     public CommentEntity(PostCommentRequestDto dto) {
         Date now = new Date();
@@ -40,7 +27,7 @@ public class CommentEntity {
 
         this.boardNumber = dto.getBoardNumber();
         this.userNumber = dto.getUserNumber();
-        this.content = dto.getCommentContent();
+        this.commentContent = dto.getCommentContent();
         this.writeDatetime = writeDatetime;
     }
 }
