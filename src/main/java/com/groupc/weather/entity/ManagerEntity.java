@@ -1,5 +1,9 @@
 package com.groupc.weather.entity;
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> 0dfb4c25f0b15f13590d9e4f30e52f92d10354f1
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
