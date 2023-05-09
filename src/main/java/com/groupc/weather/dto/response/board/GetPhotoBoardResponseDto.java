@@ -57,7 +57,7 @@ public class GetPhotoBoardResponseDto extends ResponseDto {
         this.temperature = photoBoardEntity.getTemperature();
         this.viewCount = photoBoardEntity.getViewCount();
         this.boardWriterNickname = userEntity.getNickname();
-        this.boardWriterProfileImageUrl = userEntity.getImage();
+        this.boardWriterProfileImageUrl = userEntity.getProfileImageUrl();
         this.commentCount = commentList.size();
         this.likeCount = likyEntities.size();
 
