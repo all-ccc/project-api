@@ -1,9 +1,14 @@
 package com.groupc.weather.dto.response.board;
 
-import org.hibernate.mapping.List;
+import java.util.List;
 
-public class GetNewList {
-    
+import com.groupc.weather.dto.response.ResponseDto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -33,4 +38,4 @@ class HashList{
     private String hashTagContent;
 
 }
-}
+
