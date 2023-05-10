@@ -11,7 +11,6 @@ import com.groupc.weather.dto.request.board.PostPhotoBoardRequestDto;
 import com.groupc.weather.entity.CommentEntity;
 import com.groupc.weather.entity.HashListEntity;
 import com.groupc.weather.entity.ImageUrlEntity;
-import com.groupc.weather.entity.LikyEntity;
 import com.groupc.weather.entity.BoardEntity;
 import com.groupc.weather.entity.LikeyEntity;
 import com.groupc.weather.entity.PhotoBoardEntity;
@@ -47,7 +46,7 @@ public class GetBoardResponseDto extends ResponseDto {
     // request 요청 하면 => dto => DB = > dto => response
     public GetBoardResponseDto(
             BoardEntity photoBoardEntity, UserEntity userEntity,
-            List<LikyEntity> likyEntities, List<CommentEntity> commentEntities, List<HashListEntity> hashListEntities,
+            List<LikeyEntity> likyEntities, List<CommentEntity> commentEntities, List<HashListEntity> hashListEntities,
             List<ImageUrlEntity> imageUrlEntities) {
         super("SU", "Success");
         this.boardNumber = photoBoardEntity.getBoardNumber();
@@ -58,7 +57,7 @@ public class GetBoardResponseDto extends ResponseDto {
         this.temperature = photoBoardEntity.getTemperature();
         this.viewCount = photoBoardEntity.getViewCount();
         this.boardWriterNickname = userEntity.getNickname();
-        this.boardWriterProfileImageUrl = userEntity.getImage();
+        this.boardWriterProfileImageUrl = userEntity.getProfileImageUrl();
         this.commentCount = commentList.size();
         this.likeCount = likyEntities.size();
 
