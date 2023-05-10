@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetNewList extends ResponseDto{
+public class GetNewListDto extends ResponseDto{
 
     List<BoardSummary> boardList;
 

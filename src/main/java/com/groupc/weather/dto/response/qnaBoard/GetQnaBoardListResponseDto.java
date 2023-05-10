@@ -3,7 +3,7 @@ package com.groupc.weather.dto.response.qnaBoard;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.groupc.weather.dto.response.ResponseDto;
+import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.entity.resultSet.QnaBoardListResultSet;
 
 import lombok.AllArgsConstructor;

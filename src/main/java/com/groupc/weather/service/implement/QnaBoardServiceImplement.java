@@ -4,8 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.qnaBoard.PostQnaBoardRequestDto;
-import com.groupc.weather.dto.response.ResponseDto;
+
 import com.groupc.weather.repository.ManagerRepository;
 import com.groupc.weather.repository.QnaBoardCommentRepository;
 import com.groupc.weather.repository.QnaBoardRepository;

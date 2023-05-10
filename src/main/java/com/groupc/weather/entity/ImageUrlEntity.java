@@ -17,6 +17,7 @@ public class ImageUrlEntity {
     
     @Id
     private int imageNumber;
+    
     private String imageUrl;
     private int boradNumber;
 }
