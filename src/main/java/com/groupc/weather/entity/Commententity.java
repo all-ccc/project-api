@@ -5,11 +5,11 @@ import com.groupc.weather.dto.request.board.PostCommentRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-public class CommentEntity {
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+public class CommentEntity {
+
     private int commentNumber;
     private int boardNumber;
     private int userNumber;

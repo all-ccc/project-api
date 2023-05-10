@@ -6,4 +6,7 @@ import com.groupc.weather.entity.QnaBoardEntity;
 
 public interface QnaBoardRepository extends JpaRepository<QnaBoardEntity, Integer> {
     
+
+    public boolean existsByQnaBoardNumber(int QnaboardNumber);
+    public QnaBoardEntity findByQnaBoardNumber(int qnaBoardNumber);
 }

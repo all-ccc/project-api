@@ -1,7 +1,7 @@
-package com.groupc.weather.dto.request;
+package com.groupc.weather.dto.request.qnaBoard;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,12 +9,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class PostQnaCommentRequestDto {
-    @NotBlank
-    @Email
-    private String writerEmail;
+    @NotNull
+    private int writerNumber;
     @NotBlank
     private int qnaBoardNumber;
     @NotBlank
-    private String qnaCommnetContent;
+    private String qnaCommentContent;
     
 }
