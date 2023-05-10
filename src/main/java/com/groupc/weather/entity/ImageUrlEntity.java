@@ -20,8 +20,4 @@ public class ImageUrlEntity {
     
     private String imageUrl;
     private int boradNumber;
-<<<<<<< HEAD
-=======
-
->>>>>>> 502e05775237dedaee46b5ddccd244f378a3d6b8
 }

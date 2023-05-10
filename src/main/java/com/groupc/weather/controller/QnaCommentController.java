@@ -9,21 +9,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.groupc.weather.dto.request.PostQnaCommentRequestDto;
-import com.groupc.weather.dto.response.ResponseDto;
+import com.groupc.weather.dto.ResponseDto;
+import com.groupc.weather.dto.request.qnaBoard.PostQnaCommentRequestDto;
 import com.groupc.weather.service.QnaCommentService;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/qnaComment")
 public class QnaCommentController {
-    private QnaCommentService qnaCommentService;
+    private final QnaCommentService qnaCommentService;
     
-    @Autowired
-    public QnaCommentController(QnaCommentService qnaCommentService){
-        this.qnaCommentService = qnaCommentService;
-    }
 
-    @PostMapping("write")
+
+    @PostMapping("post")
     public ResponseEntity<ResponseDto> postQnaComment(
         @Valid @RequestBody PostQnaCommentRequestDto requestBody
 
