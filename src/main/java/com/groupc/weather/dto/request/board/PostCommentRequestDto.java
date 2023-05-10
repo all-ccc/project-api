@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class PostCommentRequestDto { 
     
     @NotBlank
-    private int commentContent; // 댓글 내용이 빈값으로 작성될수 없음
+    private int commentContent;
 
 }
 
