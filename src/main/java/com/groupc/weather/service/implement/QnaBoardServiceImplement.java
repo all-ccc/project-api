@@ -18,6 +18,7 @@ import com.groupc.weather.entity.QnaBoardEntity;
 import com.groupc.weather.entity.resultSet.QnaBoardListResultSet;
 import com.groupc.weather.repository.ManagerRepository;
 import com.groupc.weather.repository.QnaBoardRepository;
+import com.groupc.weather.repository.QnaCommentRepository;
 import com.groupc.weather.repository.UserRepository;
 import com.groupc.weather.service.QnaBoardService;
 
@@ -48,7 +49,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
 
         try {
             //* 존재하지 않는 유저 번호 반환 
-            boolean existedUserNumber = userRepository.existsByUserNumber(userNumber);
+            boolean existedUserNumber = userRepository.existsbyUserNumber(userNumber);
             if (!existedUserNumber) {
                 ResponseDto errorBody = new ResponseDto("NU", "Non-Existent User Number");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
@@ -138,7 +139,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
             if (qnaBoardEntity == null) return CustomResponse.notExistBoardNumber();
 
             //* 존재하지 않는 유저 번호 반환 
-            boolean existedUserNumber = userRepository.existsByUserNumber(userNumber);
+            boolean existedUserNumber = userRepository.existsbyUserNumber(userNumber);
             if (!existedUserNumber) return CustomResponse.notExistUserNumber();
             
             // TODO : 인증 실패 -> 이건 나중에..

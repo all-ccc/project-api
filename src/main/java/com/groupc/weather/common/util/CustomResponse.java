@@ -4,6 +4,8 @@ import org.springframework.http.ResponseEntity;
 
 import com.groupc.weather.dto.ResponseDto;
 
+
+
 public class CustomResponse {
 
     public static ResponseEntity<ResponseDto> success() {
@@ -26,19 +28,19 @@ public class CustomResponse {
 
     public static ResponseEntity<ResponseDto> existUserEmail() {
         
-        ResponseDto errorBody = new ResponseDto("EU","Not-Existent User Email");
+        ResponseDto errorBody = new ResponseDto("EU","Existent User Email");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
     public static ResponseEntity<ResponseDto> existUserNickname() {
         
-        ResponseDto errorBody = new ResponseDto("EM","Not-Existent User Nickname");
+        ResponseDto errorBody = new ResponseDto("EM","Existent User Nickname");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
     public static ResponseEntity<ResponseDto> existUserPhoneNumber() {
         
-        ResponseDto errorBody = new ResponseDto("EP","Not-Existent User PhoneNumber");
+        ResponseDto errorBody = new ResponseDto("EP","Existent User PhoneNumber");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 

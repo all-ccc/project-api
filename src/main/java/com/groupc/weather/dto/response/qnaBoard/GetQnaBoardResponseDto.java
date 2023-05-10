@@ -7,6 +7,7 @@ import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.entity.ManagerEntity;
 import com.groupc.weather.entity.QnaBoardCommentEntity;
 import com.groupc.weather.entity.QnaBoardEntity;
+import com.groupc.weather.entity.QnaCommentEntity;
 import com.groupc.weather.entity.UserEntity;
 
 import lombok.AllArgsConstructor;
@@ -61,22 +62,22 @@ class Comment {
     private String content;
     private String writeDatetime;
 
-    Comment(QnaBoardCommentEntity qnaBoardCommentEntity) {
-        this.qnaCommentNumber = qnaBoardCommentEntity.getQnaCommentNumber();
-        this.qnaBoardNumber = qnaBoardCommentEntity.getQnaBoardNumber();
-        this.userNumber = qnaBoardCommentEntity.getUserNumber();
-        this.managerNumber = qnaBoardCommentEntity.getManagerNumber();
-        this.userProfileImageUrl = qnaBoardCommentEntity.getUserProfileImageUrl();
-        this.managerProfileImageUrl = qnaBoardCommentEntity.getManagerProfileImageUrl();
-        this.userNickname = qnaBoardCommentEntity.getUserNickname();
-        this.managerNickname = qnaBoardCommentEntity.getManagerNickname();
-        this.content = qnaBoardCommentEntity.getContent();
-        this.writeDatetime = qnaBoardCommentEntity.getWriteDatetime();
+    Comment(QnaCommentEntity qnaCommentEntity) {
+        this.qnaCommentNumber = qnaCommentEntity.getQnaCommentNumber();
+        this.qnaBoardNumber = qnaCommentEntity.getQnaBoardNumber();
+        this.userNumber = qnaCommentEntity.getUserNumber();
+        this.managerNumber = qnaCommentEntity.getManagerNumber();
+        this.userProfileImageUrl = qnaCommentEntity.getUserProfileImageUrl();
+        this.managerProfileImageUrl = qnaCommentEntity.getManagerProfileImageUrl();
+        this.userNickname = qnaCommentEntity.getUserNickname();
+        this.managerNickname = qnaCommentEntity.getManagerNickname();
+        this.content = qnaCommentEntity.getContent();
+        this.writeDatetime = qnaCommentEntity.getWriteDatetime();
     }
 
-    static List<Comment> createList(List<QnaBoardCommentEntity> qnaBoardCommentEntities) {
+    static List<Comment> createList(List<QnaCommentEntity> qnaCommentEntities) {
         List<Comment> commentList = new ArrayList<>();
-        for (QnaBoardCommentEntity qnaBoardCommentEntity: qnaBoardCommentEntities) {
+        for (QnaCommentEntity qnaBoardCommentEntity: qnaCommentEntities) {
             Comment comment = new Comment(qnaBoardCommentEntity);
             commentList.add(comment);
         }
