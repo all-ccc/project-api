@@ -2,6 +2,7 @@ package com.groupc.weather.dto.response;
 
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.entity.CommentEntity;
+import com.groupc.weather.entity.ManagerEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,7 +19,8 @@ public class GetBoardResponseDto extends ResponseDto{
 
     }
 
-@Setter
+
+    @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,18 +36,18 @@ class Comment {
     private String commentWriterUserProfileImageUrl;
     private String commentWriterManagerProfileImageUrl;
 
-    public Comment(CommentEntity commentEntity) {
+    public Comment(CommentEntity commentEntity, ManagerEntity managerEntity) {
          this.commentNumber = commentEntity.getCommentNumber();
          this.userNumber = commentEntity.getUserNumber();
          this.managerNumber = commentEntity.getManagerNumber();
          this.boardNumber = commentEntity.getBoardNumber();
          this.commentWriterUserNickname = commentEntity.getUserNickname();
-         this.commentWriterManagerNickname = commentEntity.getManagerNickname();
+         this.commentWriterManagerNickname =managerEntity.getManagerNickname();
          this.commentContent = commentEntity.getCommentContent();
          this.commentWriteDatetime = commentEntity.getWriteDatetime();
          this.commentWriterUserProfileImageUrl = commentEntity.getUserImageProfileUrl();
          this.commentWriterManagerProfileImageUrl = commentEntity.getManagerProfileUrl();
 
+        }
     }
-}
 }

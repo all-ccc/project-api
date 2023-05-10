@@ -1,38 +1,35 @@
 package com.groupc.weather.entity;
 
-import com.groupc.weather.dto.request.board.PostCommentRequestDto;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-public class CommentEntity {
+
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity(name="Comment")
+@Table(name="Comment")
+public class CommentEntity {
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int commentNumber;
+    
     private int boardNumber;
     private int userNumber;
+    private Integer managerNumber;
     private String commentContent;
     private String writeDatetime;
     private String userNickname;
     private String userImageProfileUrl;
-    private Integer managerNumber;
     private String managerProfileUrl;
-
-    public CommentEntity(PostCommentRequestDto dto, UserEntity userEntity, ManagerEntity managerEntity) {
-        Date now = new Date();
-        SimpleDateFormat simpleDateFormat =
-                new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        String writeDatetime = simpleDateFormat.format(now);
-        
-        this.managerProfileUrl = null;
-        this.managerNumber = null;
-
-        this.userImageProfileUrl =dto.getUserImageProfileUrl();
-        this.userNickname = dto.();
-        this.boardNumber = dto.getBoardNumber();
-        this.userNumber = dto.getWriterNumber();
-        this.commentContent = dto.getCommentContent();
-        this.writeDatetime = writeDatetime;
 }
+

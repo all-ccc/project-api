@@ -19,8 +19,8 @@ import lombok.NoArgsConstructor;
 public class UserEntity {
     @Id
     private Integer userNumber;
-    private String name;
-    private String nickname;
+    private String userName; // name을 userName으로 바꿈
+    private String userNickname; // nickname을 userNickname으로 바꿈
     private String password;
     private String email;
     private String profileImageUrl;
@@ -31,8 +31,8 @@ public class UserEntity {
 
     public UserEntity(PostUserRequestDto dto) {
         this.userNumber = dto.getUserNumber();
-        this.name = dto.getUserName();
-        this.nickname = dto.getUserNickname();
+        this.userName = dto.getUserName();
+        this.userNickname = dto.getUserNickname();
         this.password = dto.getUserPassword();
         this.email = dto.getUserEmail();
         this.profileImageUrl = dto.getUserProfileImageUrl();

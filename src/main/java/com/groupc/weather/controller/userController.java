@@ -8,7 +8,7 @@ import com.groupc.weather.service.PhotoBoardService;
 
 @RestController
 @RequestMapping("/api/v1/user")
-public class UserController {
+public class UserController{
     
     private PhotoBoardService photoBoardService;
 
