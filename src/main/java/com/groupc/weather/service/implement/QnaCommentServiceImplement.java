@@ -27,8 +27,10 @@ public class QnaCommentServiceImplement implements QnaCommentService {
     private ManagerRepository managerRepository;
 
     @Autowired
-    public QnaCommentServiceImplement(QnaBoardRepository qnaBoardRepsitory, UserRepository userRepositry, ManagerRepository managerRepository,
-            QnaCommentUserRepository qnaCommentUserRepository, QnaCommentManagerRepository qnaCommentManagerRepository) {
+    public QnaCommentServiceImplement(QnaBoardRepository qnaBoardRepsitory, UserRepository userRepositry,
+            ManagerRepository managerRepository,
+            QnaCommentUserRepository qnaCommentUserRepository,
+            QnaCommentManagerRepository qnaCommentManagerRepository) {
         this.qnaBoardRepsitory = qnaBoardRepsitory;
         this.userRepositry = userRepositry;
         this.managerRepository = managerRepository;
@@ -43,40 +45,39 @@ public class QnaCommentServiceImplement implements QnaCommentService {
         String qnaCommentWriterEmail = dto.getWriterEmail();
         int qnaBoardNumber = dto.getQnaBoardNumber();
         int qnaBoardWriterNumber = qnaBoardRepsitory.findByBoardNumber(qnaBoardNumber).getWriterNumber();
-    
+
         try {
             boolean existedWriterManagerEmail = managerRepository.existsByEmail(qnaCommentWriterEmail);
             boolean existedWriterUserEmail = userRepositry.existsByEmail(qnaCommentWriterEmail);
             boolean existedQnaBoardNumber = qnaBoardRepsitory.existsByBoardNumber(qnaBoardNumber);
-            
-            
-            // TODO: Qna 존재 유무  
-            if(!existedQnaBoardNumber){
+
+            // TODO: Qna 존재 유무
+            if (!existedQnaBoardNumber) {
                 return CustomResponse.notExistBoardNumber();
             }
 
             // TODO: 사용자 존재 유무 및 사용자 판단.
-            if(!(existedWriterManagerEmail&&existedWriterUserEmail)){
-                    return CustomResponse.notExistUserEmail();
+            if (!(existedWriterManagerEmail && existedWriterUserEmail)) {
+                return CustomResponse.notExistUserEmail();
             }
             // TODO: 관리자가 아닌데 작성자도 아닐 경우
-            if(existedWriterUserEmail){
+            if (existedWriterUserEmail) {
                 int qnaCommentWriterNumber = userRepositry.findByEmail(qnaCommentWriterEmail).getUserNumber();
-                if(!(qnaBoardWriterNumber == qnaCommentWriterNumber)){
+                if (!(qnaBoardWriterNumber == qnaCommentWriterNumber)) {
                     return CustomResponse.noPermissions();
                 }
-                //todo: 작성자가 맞을 경우
+                // todo: 작성자가 맞을 경우
                 QnaCommentUserEntity qnaCommentUserEntity = new QnaCommentUserEntity(dto);
                 qnaCommentUserRepository.save(qnaCommentUserEntity);
 
                 return CustomResponse.success();
             }
 
-                //TODO: 관리자일 경우
-            
+            // TODO: 관리자일 경우
+
             QnaCommentManagerEntity qnaCommentManagerEntity = new QnaCommentManagerEntity(dto);
             qnaCommentManagerRepository.save(qnaCommentManagerEntity);
-          
+
             // TODO:
 
         } catch (Exception exception) {

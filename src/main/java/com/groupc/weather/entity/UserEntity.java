@@ -2,6 +2,8 @@ package com.groupc.weather.entity;
 
 import java.util.Date;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import com.groupc.weather.dto.request.user.PostUserRequestDto;
@@ -17,6 +19,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "User")
 public class UserEntity {
     @Id
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userNumber;
     private String name;
     private String nickname;
