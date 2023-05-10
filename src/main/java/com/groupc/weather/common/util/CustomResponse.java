@@ -4,11 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.groupc.weather.dto.ResponseDto;
-<<<<<<< HEAD
-=======
 
 
->>>>>>> d3a2ffce6525bc2345521792edfb88ca62816e07
 
 public class CustomResponse {
 
@@ -29,29 +26,15 @@ public class CustomResponse {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
-    public static ResponseEntity<ResponseDto> existUserEmail() {
+   
 
-<<<<<<< HEAD
-        ResponseDto errorBody = new ResponseDto("EU", "Not-Existent User Email");
-=======
     public static ResponseEntity<ResponseDto> existUserEmail() {
         
         ResponseDto errorBody = new ResponseDto("EU","Existent User Email");
->>>>>>> b2aeaba96d1a466424130579f7d9e082a3de01eb
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
     public static ResponseEntity<ResponseDto> existUserNickname() {
-<<<<<<< HEAD
-
-        ResponseDto errorBody = new ResponseDto("EM", "Not-Existent User Nickname");
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
-    }
-
-    public static ResponseEntity<ResponseDto> existUserPhoneNumber() {
-
-        ResponseDto errorBody = new ResponseDto("EP", "Not-Existent User PhoneNumber");
-=======
         
         ResponseDto errorBody = new ResponseDto("EM","Existent User Nickname");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
@@ -60,7 +43,6 @@ public class CustomResponse {
     public static ResponseEntity<ResponseDto> existUserPhoneNumber() {
         
         ResponseDto errorBody = new ResponseDto("EP","Existent User PhoneNumber");
->>>>>>> b2aeaba96d1a466424130579f7d9e082a3de01eb
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
@@ -76,17 +58,10 @@ public class CustomResponse {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
-<<<<<<< HEAD
-    public static ResponseEntity<ResponseDto> notExistUserEmail() {
-
-        ResponseDto errorBody = new ResponseDto("NU", "Not-Existent User Email");
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody); // 너가 누구인지 모른다
-=======
     public static ResponseEntity<ResponseDto> notExistUserNumber() {
         
         ResponseDto errorBody = new ResponseDto("NU", "Not-Existent User Number");        
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody); //너가 누구인지 모른다
->>>>>>> b2aeaba96d1a466424130579f7d9e082a3de01eb
     }
 
     public static ResponseEntity<ResponseDto> signUpFailed() {
