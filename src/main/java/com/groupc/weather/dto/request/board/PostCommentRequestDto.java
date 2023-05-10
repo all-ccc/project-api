@@ -13,11 +13,11 @@ public class PostCommentRequestDto {
     
     
     private int boardNumber;
-    private int writerNumber;
+    private int userNumber;
     private String commentContent;
 
     PostCommentRequestDto(UserEntity userEntity){
-        this.writerNumber = userEntity.getUserNumber(); 
+        this.userNumber = userEntity.getUserNumber(); 
     }
 }
 

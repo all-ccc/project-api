@@ -49,7 +49,7 @@ public class QnaCommentServiceImplement implements QnaCommentService {
             }
             // TODO: 사용자 존재 유무 및 사용자 판단.
             if(!(existedWriterManagerNumber||existedWriterUserNumber)){
-                    return CustomResponse.notExistUserEmail();
+                    return CustomResponse.notExistUserNumber();
             }
             // TODO: 관리자가 아닌데 작성자도 아닐 경우
             if(!existedWriterManagerNumber){
