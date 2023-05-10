@@ -43,7 +43,7 @@ public class QnaBoardController {
         ResponseEntity<ResponseDto> response = qnaBoardService.getQnaBoard(requestBody);
         return response;
     }
-    }
+
 
     //* 3. 특정 게시물 수정(본인만) */
 
@@ -51,5 +51,5 @@ public class QnaBoardController {
 
     //* 5. 게시물 목록 조회 */
 
-    
-}
+} 
+

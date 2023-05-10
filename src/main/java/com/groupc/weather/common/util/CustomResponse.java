@@ -26,23 +26,23 @@ public class CustomResponse {
 }
 
 
-public static ResponseEntity<ResponseDto> existUserEmail() {
-       
-    ResponseDto errorBody = new ResponseDto("EU","Not-Existent User Email");
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
-}
+    public static ResponseEntity<ResponseDto> existUserEmail() {
+        
+        ResponseDto errorBody = new ResponseDto("EU","Existent User Email");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    }
 
-public static ResponseEntity<ResponseDto> existUserNickname() {
-       
-    ResponseDto errorBody = new ResponseDto("EM","Not-Existent User Nickname");
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
-}
+    public static ResponseEntity<ResponseDto> existUserNickname() {
+        
+        ResponseDto errorBody = new ResponseDto("EM","Existent User Nickname");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    }
 
-public static ResponseEntity<ResponseDto> existUserPhoneNumber() {
-       
-    ResponseDto errorBody = new ResponseDto("EP","Not-Existent User PhoneNumber");
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
-}
+    public static ResponseEntity<ResponseDto> existUserPhoneNumber() {
+        
+        ResponseDto errorBody = new ResponseDto("EP","Existent User PhoneNumber");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    }
 
     public static ResponseEntity<ResponseDto> notExistBoardNumber() {
         
@@ -56,9 +56,9 @@ public static ResponseEntity<ResponseDto> existUserPhoneNumber() {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
-    public static ResponseEntity<ResponseDto> notExistUserEmail() {
+    public static ResponseEntity<ResponseDto> notExistUserNumber() {
         
-        ResponseDto errorBody = new ResponseDto("NU", "Not-Existent User Email");        
+        ResponseDto errorBody = new ResponseDto("NU", "Not-Existent User Number");        
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody); //너가 누구인지 모른다
     }
 
@@ -73,4 +73,5 @@ public static ResponseEntity<ResponseDto> existUserPhoneNumber() {
         ResponseDto errorBody = new ResponseDto("NT", "No Permissions");        
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorBody); //너가 누구인지는 알지만 권한이없음
     }
+
 }
