@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.groupc.weather.dto.request.qnaBoard.PostQnaBoardRequestDto;
-import com.groupc.weather.dto.response.ResponseDto;
+import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.response.qnaBoard.GetQnaBoardResponseDto;
 import com.groupc.weather.service.QnaBoardService;
 
@@ -43,7 +43,7 @@ public class QnaBoardController {
         ResponseEntity<ResponseDto> response = qnaBoardService.getQnaBoard(requestBody);
         return response;
     }
-    }
+
 
     //* 3. 특정 게시물 수정(본인만) */
 
@@ -51,5 +51,5 @@ public class QnaBoardController {
 
     //* 5. 게시물 목록 조회 */
 
-    
-}
+} 
+
