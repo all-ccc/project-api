@@ -31,7 +31,7 @@ public class PostUserRequestDto {
     @NotBlank
     private String userGender;
     @NotBlank
-    private String userAdress;
+    private String userAddress;
     @NotBlank
     @Pattern(regexp = "^\\d{3}-\\d{3,4}-\\d{4}$")
     private String userPhoneNumber;

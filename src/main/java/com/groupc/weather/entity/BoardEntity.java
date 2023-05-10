@@ -31,7 +31,27 @@ private int viewCount;
 
 
 
+<<<<<<< HEAD
         public BoardEntity(PostPhotoBoardRequestDto dto) {
+=======
+ public BoardEntity(PostPhotoBoardRequestDto dto){
+@Entity(name = "PhotoBoard")
+@Table(name = "Photo_Board")
+public class BoardEntity {
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private int boardNumber;
+        private int userNumber;
+        private String title;
+        private String content;
+        private String imageUrl;
+        private String writeDatetime;
+        private int temperature;
+        private String weatherInfo;
+        private int viewCount;
+
+        public PhotoBoardEntity(PostPhotoBoardRequestDto dto) {
+>>>>>>> d3a2ffce6525bc2345521792edfb88ca62816e07
                 Date now = new Date();
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 String writeDatetime = simpleDateFormat.format(now);

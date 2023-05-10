@@ -9,7 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class GetPostListDto extends ResponseDto {
     private List<BoardSummary> boardList;
@@ -17,7 +16,6 @@ public class GetPostListDto extends ResponseDto {
 }
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 class BoardSummary {
     private int boardNumber;
