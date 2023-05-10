@@ -38,3 +38,5 @@ class HashList {
     private int hashTagNumber;
     private String hashTagContent;
 }
+
+
