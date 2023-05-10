@@ -2,7 +2,7 @@ package com.groupc.weather.dto.response.board;
 
 import java.util.List;
 
-import com.groupc.weather.dto.response.ResponseDto;
+import com.groupc.weather.dto.ResponseDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

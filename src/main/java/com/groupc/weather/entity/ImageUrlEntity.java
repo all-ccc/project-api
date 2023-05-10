@@ -20,5 +20,4 @@ public class ImageUrlEntity {
 
     private String imageUrl;
     private int boradNumber;
-
 }

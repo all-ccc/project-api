@@ -4,6 +4,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.groupc.weather.dto.ResponseDto;
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> d3a2ffce6525bc2345521792edfb88ca62816e07
 
 public class CustomResponse {
 

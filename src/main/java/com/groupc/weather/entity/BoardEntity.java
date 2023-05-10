@@ -40,7 +40,7 @@ private int viewCount;
  public BoardEntity(PostPhotoBoardRequestDto dto){
 @Entity(name = "PhotoBoard")
 @Table(name = "Photo_Board")
-public class PhotoBoardEntity {
+public class BoardEntity {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private int boardNumber;
