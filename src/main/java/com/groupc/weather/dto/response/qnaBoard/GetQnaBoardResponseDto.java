@@ -3,7 +3,7 @@ package com.groupc.weather.dto.response.qnaBoard;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.groupc.weather.dto.response.ResponseDto;
+import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.entity.ManagerEntity;
 import com.groupc.weather.entity.QnaBoardCommentEntity;
 import com.groupc.weather.entity.QnaBoardEntity;
@@ -34,7 +34,7 @@ public class GetQnaBoardResponseDto extends ResponseDto {
     ) {
         super("SU", "Success");
 
-        this.qnaBoardNumber = qnaBoardEntity.getQnaBoardNumber();
+        this.qnaBoardNumber = qnaBoardEntity.getBoardNumber();
         this.qnaBoardTitle = qnaBoardEntity.getTitle();
         this.qnaBoardContent = qnaBoardEntity.getContent();
         this.qnaBoardImageUrl = qnaBoardEntity.getImageUrl();

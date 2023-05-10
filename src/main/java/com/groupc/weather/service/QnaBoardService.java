@@ -11,12 +11,12 @@ import com.groupc.weather.dto.response.qnaBoard.GetQnaBoardResponseDto;
 public interface QnaBoardService {
     public ResponseEntity<ResponseDto> postQnaBoard(PostQnaBoardRequestDto dto);
 
-    public ResponseEntity<ResponseDto> getQnaBoard(GetQnaBoardResponseDto dto);
-    public ResponseEntity<ResponseDto> getQnaBoardListResponseDto(GetQnaBoardListResponseDto dto);
+    public ResponseEntity<? super GetQnaBoardResponseDto> getQnaBoard(Integer boardNumber);
+    public ResponseEntity<? super GetQnaBoardListResponseDto> getQnaBoardListResponseDto();
 
     public ResponseEntity<ResponseDto> patchQnaBoard(PatchQnaBoardRequestDto dto);
     
-    public ResponseEntity<ResponseDto> deleteQnaBoard(Integer writerNumber, Integer qnaBoardNumber);
+    public ResponseEntity<ResponseDto> deleteQnaBoard(Integer userNumber, Integer boardNumber);
 
 
     

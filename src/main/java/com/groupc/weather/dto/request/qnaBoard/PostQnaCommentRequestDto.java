@@ -1,4 +1,4 @@
-package com.groupc.weather.dto.request;
+package com.groupc.weather.dto.request.qnaBoard;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

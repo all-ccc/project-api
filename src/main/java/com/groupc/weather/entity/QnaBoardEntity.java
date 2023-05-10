@@ -24,7 +24,7 @@ public class QnaBoardEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int qnaBoardNumber;
+    private int boardNumber;
     private String title;
     private String content;
     private String writeDatetime;
@@ -41,6 +41,7 @@ public class QnaBoardEntity {
         this.userNumber = dto.getUserNumber();
         this.title = dto.getTitle();
         this.content = dto.getContent();
+        this.writeDatetime = writeDatetime;
         this.imageUrl = dto.getImageUrl();
     }
 }

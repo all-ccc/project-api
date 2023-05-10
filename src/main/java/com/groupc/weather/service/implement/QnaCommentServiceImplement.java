@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.groupc.weather.common.util.CustomResponse;
-import com.groupc.weather.dto.request.PostQnaCommentRequestDto;
+import com.groupc.weather.dto.request.qnaBoard.PostQnaCommentRequestDto;
 import com.groupc.weather.dto.response.ResponseDto;
 import com.groupc.weather.entity.QnaCommentManagerEntity;
 import com.groupc.weather.entity.QnaCommentUserEntity;
