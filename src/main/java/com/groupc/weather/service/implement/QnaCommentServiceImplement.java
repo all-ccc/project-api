@@ -61,7 +61,7 @@ public class QnaCommentServiceImplement implements QnaCommentService {
                 UserDto userDto = new UserDto();
                 userDto.setUserNickname(userEntity.getNickname());
                 userDto.setUserProfileImageUrl(userEntity.getProfileImageUrl());
-                 
+                
                 QnaCommentEntity qnaCommentEntity = new QnaCommentEntity(dto,userDto);
                 qnaCommentRepository.save(qnaCommentEntity);
 
