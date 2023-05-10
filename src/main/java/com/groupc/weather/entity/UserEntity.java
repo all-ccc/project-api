@@ -26,7 +26,7 @@ public class UserEntity {
     private String profileImageUrl;
     private Date birthday;
     private String gender;
-    private String adress;
+    private String address;
     private String phoneNumber;
 
     public UserEntity(PostUserRequestDto dto) {
@@ -38,7 +38,7 @@ public class UserEntity {
         this.profileImageUrl = dto.getUserProfileImageUrl();
         this.birthday = dto.getUserBirthday(); // 등록시 생일은 직접 입력(선택)하는것이기 때문에 SimpleDateFormat 필요 없을듯?
         this.gender = dto.getUserGender();
-        this.adress = dto.getUserAdress();
+        this.address = dto.getUserAddress();
         this.phoneNumber = dto.getUserPhoneNumber();
     }
 }

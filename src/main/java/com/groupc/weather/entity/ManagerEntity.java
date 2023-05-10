@@ -23,7 +23,7 @@ public class ManagerEntity {
     private String email;
     private String password;
     private String phoneNumber;
-    private String profileImage;
+    private String profileImageUrl;
 
     public ManagerEntity(PostManagerRequestDto dto) {
         this.managerNumber = dto.getManagerNumber();
@@ -31,6 +31,6 @@ public class ManagerEntity {
         this.email = dto.getManagerEmail();
         this.password = dto.getManagerPassword();
         this.phoneNumber = dto.getManagerPhoneNumber();
-        this.profileImage = dto.getManagerProfileImage();
+        this.profileImageUrl = dto.getManagerProfileImage();
     }
 }

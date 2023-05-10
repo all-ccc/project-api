@@ -1,78 +1,80 @@
 package com.groupc.weather.service.implement;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.groupc.weather.common.util.CustomResponse;
-import com.groupc.weather.dto.request.PostQnaCommentRequestDto;
-
+import com.groupc.weather.dto.ResponseDto;
+import com.groupc.weather.dto.request.common.ManagerDto;
+import com.groupc.weather.dto.request.common.UserDto;
+import com.groupc.weather.dto.request.qnaBoard.PostQnaCommentRequestDto;
+import com.groupc.weather.entity.ManagerEntity;
+import com.groupc.weather.entity.QnaCommentEntity;
+import com.groupc.weather.entity.UserEntity;
 import com.groupc.weather.repository.ManagerRepository;
 import com.groupc.weather.repository.QnaBoardRepository;
-import com.groupc.weather.repository.QnaCommentUserRepository;
+import com.groupc.weather.repository.QnaCommentRepository;
 import com.groupc.weather.repository.UserRepository;
 import com.groupc.weather.service.QnaCommentService;
-import com.mysql.cj.protocol.x.Ok;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class QnaCommentServiceImplement implements QnaCommentService {
-    private QnaBoardRepository qnaBoardRepsitory;
-    private UserRepository userRepositry;
-    private QnaCommentUserRepository qnaCommentUserRepository;
-    private QnaCommentManagerRepository qnaCommentManagerRepository;
-    private ManagerRepository managerRepository;
-
-    @Autowired
-    public QnaCommentServiceImplement(QnaBoardRepository qnaBoardRepsitory, UserRepository userRepositry, ManagerRepository managerRepository,
-            QnaCommentUserRepository qnaCommentUserRepository, QnaCommentManagerRepository qnaCommentManagerRepository) {
-        this.qnaBoardRepsitory = qnaBoardRepsitory;
-        this.userRepositry = userRepositry;
-        this.managerRepository = managerRepository;
-        this.qnaCommentUserRepository = qnaCommentUserRepository;
-        this.qnaCommentManagerRepository = qnaCommentManagerRepository;
-
-    }
-
+    private final QnaBoardRepository qnaBoardRepsitory;
+    private final UserRepository userRepositry;
+    private final QnaCommentRepository qnaCommentRepository;
+    private final ManagerRepository managerRepository;
+    
     @Override
     public ResponseEntity<ResponseDto> postQnaComment(PostQnaCommentRequestDto dto) {
         ResponseDto body = null;
-        String qnaCommentWriterEmail = dto.getWriterEmail();
+        // qna 댓글 작성자하고 싶은 사람 특정
+        int qnaCommentWriterNumber = dto.getWriterNumber();
+        // qna 보드 특정
         int qnaBoardNumber = dto.getQnaBoardNumber();
-        int qnaBoardWriterNumber = qnaBoardRepsitory.findByBoardNumber(qnaBoardNumber).getWriterNumber();
-    
+        // qna 글 작성자 특정
+        int qnaBoardWriterNumber = qnaBoardRepsitory.findByQnaBoardNumber(dto.getQnaBoardNumber()).getUserNumber();
+        
         try {
-            boolean existedWriterManagerEmail = managerRepository.existsByEmail(qnaCommentWriterEmail);
-            boolean existedWriterUserEmail = userRepositry.existsByEmail(qnaCommentWriterEmail);
-            boolean existedQnaBoardNumber = qnaBoardRepsitory.existsByBoardNumber(qnaBoardNumber);
+            boolean existedWriterManagerNumber= managerRepository.existsbyManagerNumber(qnaBoardWriterNumber);
+            boolean existedWriterUserNumber = userRepositry.existsbyUserNumber(qnaBoardWriterNumber);
+            boolean existedQnaBoardNumber = qnaBoardRepsitory.existsByQnaBoardNumber(qnaBoardNumber);
             
             
             // TODO: Qna 존재 유무  
             if(!existedQnaBoardNumber){
                 return CustomResponse.notExistBoardNumber();
             }
-
             // TODO: 사용자 존재 유무 및 사용자 판단.
-            if(!(existedWriterManagerEmail&&existedWriterUserEmail)){
+            if(!(existedWriterManagerNumber||existedWriterUserNumber)){
                     return CustomResponse.notExistUserEmail();
             }
             // TODO: 관리자가 아닌데 작성자도 아닐 경우
-            if(existedWriterUserEmail){
-                int qnaCommentWriterNumber = userRepositry.findByEmail(qnaCommentWriterEmail).getUserNumber();
+            if(!existedWriterManagerNumber){
                 if(!(qnaBoardWriterNumber == qnaCommentWriterNumber)){
                     return CustomResponse.noPermissions();
                 }
                 //todo: 작성자가 맞을 경우
-                QnaCommentUserEntity qnaCommentUserEntity = new QnaCommentUserEntity(dto);
-                qnaCommentUserRepository.save(qnaCommentUserEntity);
+                UserEntity userEntity = userRepositry.findByUserNumber(dto.getWriterNumber());
+                UserDto userDto = new UserDto();
+                userDto.setUserNickname(userEntity.getUserNickname());
+                userDto.setUserProfileImageUrl(userEntity.getProfileImageUrl());
+                 
+                QnaCommentEntity qnaCommentEntity = new QnaCommentEntity(dto,userDto);
+                qnaCommentRepository.save(qnaCommentEntity);
 
                 return CustomResponse.success();
             }
 
                 //TODO: 관리자일 경우
-            
-            QnaCommentManagerEntity qnaCommentManagerEntity = new QnaCommentManagerEntity(dto);
-            qnaCommentManagerRepository.save(qnaCommentManagerEntity);
+            ManagerEntity managerEntity = managerRepository.findByManagerNumber(dto.getWriterNumber());
+            ManagerDto managerDto = new ManagerDto();
+            managerDto.setManagerNickname(managerEntity.getManagerNickname());
+            managerDto.setManagerProfileImageUrl(managerEntity.getProfileImageUrl());
+            QnaCommentEntity qnaCommentEntity = new QnaCommentEntity(dto,managerDto);
+            qnaCommentRepository.save(qnaCommentEntity);
           
             // TODO:
 
