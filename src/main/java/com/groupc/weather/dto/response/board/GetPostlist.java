@@ -2,7 +2,7 @@ package com.groupc.weather.dto.response.board;
 
 import java.util.List;
 
-import com.groupc.weather.dto.response.ResponseDto;
+import com.groupc.weather.dto.ResponseDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetPostlist extends ResponseDto{
+public class GetPostList extends ResponseDto {
     private List<BoardSummary> boardList;
 
 }
@@ -19,7 +19,7 @@ public class GetPostlist extends ResponseDto{
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-class BoardSummary{
+class BoardSummary {
     private int boardNumber;
     private String boardTitle;
     private String boardContetn;
@@ -35,7 +35,7 @@ class BoardSummary{
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-class HashList{
+class HashList {
     private int boardNumber;
     private int hashTagNumber;
     private String hashTagContent;

@@ -1,18 +1,15 @@
 package com.groupc.weather.entity;
 
+import com.groupc.weather.dto.request.board.PostCommentRequestDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import com.groupc.weather.dto.request.board.PostCommentRequestDto;
-
+public class CommentEntity {
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CommentEntity {
     private int commentNumber;
     private int boardNumber;
     private int userNumber;
@@ -20,23 +17,22 @@ public class CommentEntity {
     private String writeDatetime;
     private String userNickname;
     private String userImageProfileUrl;
-    private int managerNumber;
+    private Integer managerNumber;
     private String managerProfileUrl;
 
-    public CommentEntity(PostCommentRequestDto dto , UserEntity userEntity) {
+    public CommentEntity(PostCommentRequestDto dto, UserEntity userEntity, ManagerEntity managerEntity) {
         Date now = new Date();
         SimpleDateFormat simpleDateFormat =
                 new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String writeDatetime = simpleDateFormat.format(now);
         
-        this.managerProfileUrl =userEntity.getManagerProfileUrl();
-        this.managerNumber = userEntity.getManagerNumber(); //두개 물어보센
+        this.managerProfileUrl = null;
+        this.managerNumber = null;
 
-        this.userImageProfileUrl =userEntity.getUserImageProfileUrl();
-        this.userNickname = userEntity.getUserNickname();
+        this.userImageProfileUrl =dto.getUserImageProfileUrl();
+        this.userNickname = dto.();
         this.boardNumber = dto.getBoardNumber();
-        this.userNumber = dto.getUserNumber();
+        this.userNumber = dto.getWriterNumber();
         this.commentContent = dto.getCommentContent();
         this.writeDatetime = writeDatetime;
-    }
 }
