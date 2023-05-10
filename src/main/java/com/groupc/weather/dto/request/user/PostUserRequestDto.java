@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-// Pull Test
 public class PostUserRequestDto {
     @NotNull
     private Integer userNumber;

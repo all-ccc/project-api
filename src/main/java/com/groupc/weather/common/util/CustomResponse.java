@@ -1,4 +1,5 @@
 package com.groupc.weather.common.util;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -12,19 +13,18 @@ public class CustomResponse {
         ResponseDto body = new ResponseDto("SU", "SUCCESS");
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
-    
+
     public static ResponseEntity<ResponseDto> databaseError() {
 
-       ResponseDto errorBody = new ResponseDto("DE", "Database Error");    
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody); 
-    } 
+        ResponseDto errorBody = new ResponseDto("DE", "Database Error");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
+    }
 
     public static ResponseEntity<ResponseDto> validationError() {
-       
-        ResponseDto errorBody = new ResponseDto("VF","Request Parameter Validation Failed");
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
-}
 
+        ResponseDto errorBody = new ResponseDto("VF", "Request Parameter Validation Failed");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    }
 
     public static ResponseEntity<ResponseDto> existUserEmail() {
         
@@ -45,14 +45,14 @@ public class CustomResponse {
     }
 
     public static ResponseEntity<ResponseDto> notExistBoardNumber() {
-        
-        ResponseDto errorBody = new ResponseDto("NB", "Not-Existent Board Number");        
+
+        ResponseDto errorBody = new ResponseDto("NB", "Not-Existent Board Number");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
     public static ResponseEntity<ResponseDto> signInFailed() {
-        
-        ResponseDto errorBody = new ResponseDto("SF", "Sign In Failed");        
+
+        ResponseDto errorBody = new ResponseDto("SF", "Sign In Failed");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
@@ -63,15 +63,14 @@ public class CustomResponse {
     }
 
     public static ResponseEntity<ResponseDto> signUpFailed() {
-        
-        ResponseDto errorBody = new ResponseDto("SF", "Sign In Failed");        
+
+        ResponseDto errorBody = new ResponseDto("SF", "Sign In Failed");
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorBody);
     }
-    
-    public static ResponseEntity<ResponseDto> noPermissions() {
-        
-        ResponseDto errorBody = new ResponseDto("NT", "No Permissions");        
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorBody); //너가 누구인지는 알지만 권한이없음
-    }
 
-}
+    public static ResponseEntity<ResponseDto> noPermissions() {
+
+        ResponseDto errorBody = new ResponseDto("NT", "No Permissions");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorBody); // 너가 누구인지는 알지만 권한이없음
+        }
+    }

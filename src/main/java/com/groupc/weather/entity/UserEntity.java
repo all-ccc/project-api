@@ -2,6 +2,8 @@ package com.groupc.weather.entity;
 
 import java.util.Date;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import com.groupc.weather.dto.request.user.PostUserRequestDto;
@@ -10,7 +12,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 // 데이터베이스의 필드와 직접적인 연관 관계.
-// commit test
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,6 +19,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "User")
 public class UserEntity {
     @Id
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userNumber;
     private String userName; // name을 userName으로 바꿈
     private String userNickname; // nickname을 userNickname으로 바꿈
