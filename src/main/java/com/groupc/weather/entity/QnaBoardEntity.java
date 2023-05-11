@@ -29,8 +29,6 @@ public class QnaBoardEntity {
     private String content;
     private String writeDatetime;
     private int userNumber;
-    private String nickname;
-    private String profileImageUrl;
     private String imageUrl;
 
     public QnaBoardEntity(PostQnaBoardRequestDto dto) {

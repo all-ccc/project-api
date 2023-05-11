@@ -3,6 +3,7 @@ package com.groupc.weather.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import com.groupc.weather.entity.QnaBoardEntity;
 import com.groupc.weather.entity.resultSet.QnaBoardListResultSet;
@@ -11,4 +12,7 @@ public interface QnaBoardRepository extends JpaRepository<QnaBoardEntity, Intege
     public List<QnaBoardListResultSet> getQnaBoardList();
     public boolean existsByQnaBoardNumber(int QnaboardNumber);
     public QnaBoardEntity findByQnaBoardNumber(int qnaBoardNumber);
+
+    @Query() //! 써라
+    public List<QnaBoardListResultSet> getBoardList();
 }

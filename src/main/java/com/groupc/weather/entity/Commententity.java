@@ -1,5 +1,8 @@
 package com.groupc.weather.entity;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import com.groupc.weather.dto.request.board.PostCommentRequestDto;
 
 import lombok.AllArgsConstructor;
