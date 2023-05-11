@@ -36,3 +36,4 @@ public class CommentEntity {
         this.commentContent = dto.getCommentContent();
         this.writeDatetime = writeDatetime;
 }
+}

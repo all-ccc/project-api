@@ -7,6 +7,7 @@ import com.groupc.weather.common.util.CustomResponse;
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.common.ManagerDto;
 import com.groupc.weather.dto.request.common.UserDto;
+import com.groupc.weather.dto.request.qnaBoard.PatchQnaCommentRequestDto;
 import com.groupc.weather.dto.request.qnaBoard.PostQnaCommentRequestDto;
 import com.groupc.weather.entity.ManagerEntity;
 import com.groupc.weather.entity.QnaCommentEntity;
@@ -27,6 +28,9 @@ public class QnaCommentServiceImplement implements QnaCommentService {
     private final QnaCommentRepository qnaCommentRepository;
     private final ManagerRepository managerRepository;
 
+
+
+    //qna 게시물 댓글 생성
     @Override
     public ResponseEntity<ResponseDto> postQnaComment(PostQnaCommentRequestDto dto) {
         ResponseDto body = null;
@@ -85,4 +89,111 @@ public class QnaCommentServiceImplement implements QnaCommentService {
         return CustomResponse.success();
     }
 
+
+    //qna 게시물 댓글 수정
+    @Override
+    public ResponseEntity<ResponseDto> patchQnaComment(PatchQnaCommentRequestDto dto) {
+        ResponseDto body = null;
+        // qna 댓글 수정하고 싶은 사람 특정
+        int qnaCommentPatcherNumber = dto.getWriterNumber();
+        // qna 댓글 중 수정하고자 하는 댓글 특정
+        int qnaCommentNumber = dto.getQnaCommentNumber();
+        // qna 댓글 작성자 특정
+        int qnaCommentWriterNumber = qnaCommentRepository.findByQnaCommentNumber(dto.getQnaCommentNumber()).getUserNumber();
+        // qna 댓글 보드 특정
+        int qnaBoardNumber = dto.getQnaBoardNumber();
+
+
+    
+        // 유저일때랑 관리자일때랑 나눠서 진행
+        
+        try {            
+            QnaCommentEntity qnaCommentEntity = qnaCommentRepository.findByQnaCommentNumber(dto.getQnaCommentNumber());
+            boolean existedQnaBoardNumber = qnaBoardRepsitory.existsByQnaBoardNumber(qnaBoardNumber);
+            boolean existedQnaCommentNumber = qnaCommentRepository.existsByQnaCommentNumber(qnaCommentNumber);
+            boolean existedPatcherManagerNumber = managerRepository.existsbyManagerNumber(qnaCommentPatcherNumber);
+            boolean existedPatcherUserNumber = userRepositry.existsbyUserNumber(qnaCommentPatcherNumber);
+            //TODO : 유저 존재 유무 확인 + 관리자인지 유저인지 확인한후
+            if (!(existedPatcherManagerNumber || existedPatcherUserNumber)) {
+                return CustomResponse.notExistUserNumber();
+            }
+
+            //TODO : 존재 하지 않는 게시물
+            if (!existedQnaBoardNumber) {
+                return CustomResponse.notExistBoardNumber();
+            }
+            //TODO : 존재 하지 않는 댓글
+            if (!existedQnaCommentNumber){
+                return CustomResponse.notExistQnaCommentNumber();
+            }
+
+            //TODO : 댓글 작성자와 수정자가 같을때
+
+            if(!(qnaCommentPatcherNumber == qnaCommentWriterNumber)){
+                    return CustomResponse.noPermissions();
+                
+            qnaCommentEntity.setContent(dto.getQnaCommentContent());
+            qnaCommentRepository.save(qnaCommentEntity);
+                
+            }        
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError()
+        }
+
+
+    }
+
+
+
+
+    @Override
+    public ResponseEntity<ResponseDto> getQnaComment(Integer qnaBoardNumber) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getQnaComment'");
+    }
+
+    // 댓글 삭제
+    @Override
+    public ResponseEntity<ResponseDto> deleteQnaComment(Integer userNumber, Integer qnaCommentNumber) {
+        try {
+            QnaCommentEntity qnaCommentEntity = qnaCommentRepository.findByQnaCommentNumber(qnaCommentNumber);
+            //TODO : 존재하는 코멘트 넘버인지
+            if (qnaCommentNumber == null) {
+                return CustomResponse.notExistQnaCommentNumber();
+
+            }
+            
+            //TODO : 존재하는 유저인지 확인
+            boolean existedDeleterUserNumber = userRepositry.existsbyUserNumber(userNumber);
+            //TODO : 유저 존재 유무 확인 + 관리자인지 유저인지 확인한후
+            if (!(existedDeleterUserNumber)) {
+                return CustomResponse.notExistUserNumber();
+            }
+            //TODO : 삭제 권한이 있는지.
+            //유저일 경우
+            if(userNumber>=11){
+            boolean equalQnaCommentWriter = qnaCommentEntity.getUserNumber().equals(userNumber);
+                if (!equalQnaCommentWriter) {
+                    return CustomResponse.noPermissions();
+                }
+                qnaCommentRepository.deleteByCommentNumber(qnaCommentNumber);
+                return CustomResponse.success();
+            }
+            //관리자일 경우
+            qnaCommentRepository.deleteByCommentNumber(qnaCommentNumber);
+        
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+
+        }
+        return CustomResponse.success();
+    }
+
+
+
+
+
+    
 }

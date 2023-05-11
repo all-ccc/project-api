@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import com.groupc.weather.dto.request.board.PostCommentRequestDto;
 import com.groupc.weather.dto.request.common.ManagerDto;
 import com.groupc.weather.dto.request.common.UserDto;
+import com.groupc.weather.dto.request.qnaBoard.PatchQnaBoardRequestDto;
+import com.groupc.weather.dto.request.qnaBoard.PatchQnaCommentRequestDto;
 import com.groupc.weather.dto.request.qnaBoard.PostQnaCommentRequestDto;
 
 import lombok.AllArgsConstructor;
@@ -25,15 +27,15 @@ public class QnaCommentEntity {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private int qnaCommentNumber;
-        private int qnaboardNumber;
+        private int qnaBoardNumber;
         private String content;
         private String writeDatetime;
         private Integer userNumber;
         private Integer managerNumber;
         private String userNickname;
         private String managerNickname;
-        private String userImageProfileUrl;
-        private String managerProfileUrl;
+        private String userProfileImageUrl;
+        private String managerProfileImageUrl;
 
 
         public QnaCommentEntity(PostQnaCommentRequestDto dto,UserDto userDto){
@@ -41,15 +43,15 @@ public class QnaCommentEntity {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");//시간 데이터 타입 형태 설정
         String writeDatetime = simpleDateFormat.format(now);//형태안에 데이터타입 변수 넣음
 
-        this.qnaboardNumber=dto.getQnaBoardNumber();
+        this.qnaBoardNumber=dto.getQnaBoardNumber();
         this.content=dto.getQnaCommentContent();
         this.writeDatetime=writeDatetime;
         this.userNumber=dto.getWriterNumber();
         this.managerNumber=null;
         this.userNickname=userDto.getUserNickname();
         this.managerNickname=null;
-        this.userImageProfileUrl=userDto.getUserProfileImageUrl();
-        this.managerProfileUrl=null;
+        this.userProfileImageUrl=userDto.getUserProfileImageUrl();
+        this.managerProfileImageUrl=null;
         }
 
         public QnaCommentEntity(PostQnaCommentRequestDto dto,ManagerDto managerDto){
@@ -57,15 +59,16 @@ public class QnaCommentEntity {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");//시간 데이터 타입 형태 설정
                 String writeDatetime = simpleDateFormat.format(now);//형태안에 데이터타입 변수 넣음
         
-                this.qnaboardNumber=dto.getQnaBoardNumber();
+                this.qnaBoardNumber=dto.getQnaBoardNumber();
                 this.content=dto.getQnaCommentContent();
                 this.writeDatetime=writeDatetime;
                 this.userNumber=null;
                 this.managerNumber=dto.getWriterNumber();
                 this.userNickname=null;
                 this.managerNickname=managerDto.getManagerNickname();
-                this.userImageProfileUrl=null;
-                this.managerProfileUrl=managerDto.getManagerProfileImageUrl();
+                this.userProfileImageUrl=null;
+                this.managerProfileImageUrl=managerDto.getManagerProfileImageUrl();
                 }
-        
+
+     
 }
