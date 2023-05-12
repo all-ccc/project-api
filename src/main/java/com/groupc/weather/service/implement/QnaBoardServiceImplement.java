@@ -136,7 +136,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
                 userRepository.existsbyUserNumber(userNumber);
             if (!existedUserNumber) return CustomResponse.notExistUserNumber();
             
-            // TODO: 인증 실패 -> 권한 없음이랑 뭐가 다름
+            // TODO: 인증 실패 -> 권한 없음이랑 뭐가 다름 
             
             // 권한 없음
             boolean equalWriter = qnaBoardEntity.getUserNumber() == userNumber;
