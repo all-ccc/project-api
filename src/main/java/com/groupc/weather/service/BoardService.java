@@ -20,4 +20,3 @@ public interface BoardService {
     
     public ResponseEntity<ResponseDto> deleteBoard(String userNumber, Integer boardNumber);
 }
-

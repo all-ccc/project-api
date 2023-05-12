@@ -47,8 +47,11 @@ public class BoardController {
 
 
     // 3. 게시물 목록 조회(본인 작성)
-    @GetMapping()
-    
+    @GetMapping("/{userNumber}")
+    public ResponseEntity<? super GetBoardResponsDto> getBoard(){
+        ResponseEntity<? super GetBoardResponsDto> response = boardService.getgetBoard();
+        return response;
+    }
 
 
     // 4. TOP5 게시물 목록 조회

@@ -1,6 +1,5 @@
 package com.groupc.weather.service.implement;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +14,7 @@ public class BoardServiceImplement implements BoardService {
     private UserRepository userRepository;
     private BoardRepository boardRepository;
     private CommentRepository commentRepository;
-    private LikyRepository likyRepository;
+    private LikeyRepository likyRepository;
 
     @Autowired
     public BoardServiceImplement(
