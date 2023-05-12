@@ -20,8 +20,6 @@ import lombok.RequiredArgsConstructor;
 public class QnaCommentController {
     private final QnaCommentService qnaCommentService;
     
-
-
     @PostMapping("post")
     public ResponseEntity<ResponseDto> postQnaComment(
         @Valid @RequestBody PostQnaCommentRequestDto requestBody

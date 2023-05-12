@@ -21,8 +21,8 @@ public class UserEntity {
     @Id
     // @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userNumber;
-    private String userName; // name을 userName으로 바꿈
-    private String userNickname; // nickname을 userNickname으로 바꿈
+    private String userName;
+    private String userNickname;
     private String password;
     private String email;
     private String profileImageUrl;
