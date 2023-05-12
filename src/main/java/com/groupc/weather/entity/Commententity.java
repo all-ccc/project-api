@@ -1,38 +1,52 @@
 package com.groupc.weather.entity;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 import com.groupc.weather.dto.request.board.PostCommentRequestDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentEntity {
 
-    private int commentNumber;
-    private int boardNumber;
-    private int userNumber;
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Integer commentNumber;
+    private Integer userNumber;
+    private Integer managerNumber;
+    private Integer boardNumber;
+    private String userNickname;
+    private String managerNickname;
     private String commentContent;
     private String writeDatetime;
-    private String userNickname;
-    private String userImageProfileUrl;
-    private Integer managerNumber;
-    private String managerProfileUrl;
+    private String userProfileImageUrl;
+    private String managerProfileImageUrl;
+    private int commentCount;
 
-    public CommentEntity(PostCommentRequestDto dto, UserEntity userEntity, ManagerEntity managerEntity) {
-        Date now = new Date();
-        SimpleDateFormat simpleDateFormat =
-                new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        String writeDatetime = simpleDateFormat.format(now);
+    public CommentEntity(PostCommentRequestDto dto) {
         
-        this.managerProfileUrl = null;
-        this.managerNumber = null;
+        Date now = new Date();
+        SimpleDateFormat simpleDateFormat = 
+            new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String writeDatetime = simpleDateFormat.format(now);
 
-        this.userImageProfileUrl =dto.getUserImageProfileUrl();
-        this.userNickname = dto.();
+        this.commentNumber = dto.getCommentNumber();
+        this.userNumber = dto.getCommentWriterNumber();
+        this.managerNumber = dto.getManagerNumber();
         this.boardNumber = dto.getBoardNumber();
-        this.userNumber = dto.getWriterNumber();
         this.commentContent = dto.getCommentContent();
         this.writeDatetime = writeDatetime;
+        this.commentCount = 0;
+
+    }
 }
+`
