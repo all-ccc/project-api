@@ -14,10 +14,10 @@ import lombok.NoArgsConstructor;
 @Entity(name = "Image_Url")
 @Table(name = "Image_Url")
 public class ImageUrlEntity {
-
+    
     @Id
     private int imageNumber;
-
+    
     private String imageUrl;
     private int boradNumber;
 }

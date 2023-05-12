@@ -59,7 +59,7 @@ public class QnaCommentServiceImplement implements QnaCommentService {
                 // todo: 작성자가 맞을 경우
                 UserEntity userEntity = userRepositry.findByUserNumber(dto.getWriterNumber());
                 UserDto userDto = new UserDto();
-                userDto.setUserNickname(userEntity.getNickname());
+                userDto.setUserNickname(userEntity.getUserNickname());
                 userDto.setUserProfileImageUrl(userEntity.getProfileImageUrl());
 
                 QnaCommentEntity qnaCommentEntity = new QnaCommentEntity(dto, userDto);
@@ -71,7 +71,7 @@ public class QnaCommentServiceImplement implements QnaCommentService {
             // TODO: 관리자일 경우
             ManagerEntity managerEntity = managerRepository.findByManagerNumber(dto.getWriterNumber());
             ManagerDto managerDto = new ManagerDto();
-            managerDto.setManagerNickname(managerEntity.getNickname());
+            managerDto.setManagerNickname(managerEntity.getManagerNickname());
             managerDto.setManagerProfileImageUrl(managerEntity.getProfileImageUrl());
             QnaCommentEntity qnaCommentEntity = new QnaCommentEntity(dto, managerDto);
             qnaCommentRepository.save(qnaCommentEntity);
