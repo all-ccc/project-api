@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.groupc.weather.dto.ResponseDto;
-import com.groupc.weather.entity.resultSet.BoardListResultSet;
+import com.groupc.weather.entity.resultSet.BoardCommentLikeyCountResultSet;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,22 +17,20 @@ import lombok.Setter;
 @NoArgsConstructor
 public class GetBoardListResponseDto extends ResponseDto{
     //top5 사용!! 데이터 베이스 활용...
-    private List<BoardSummary> boardList;  //?  //?그냥 boardList???
+    private List<BoardSummary> boardList;  //?top5List?  //?그냥 boardList???
 
-    public GetBoardListResponseDto(List<BoardListResultSet>resultSet){
+    public GetBoardListResponseDto(List<BoardCommentLikeyCountResultSet>resultSet){
         super("SU","Success");
 
         List<BoardSummary> boardList = new ArrayList<>();
 
-        for(BoardListResultSet result : resultSet){
+        for(BoardCommentLikeyCountResultSet result : resultSet){
             BoardSummary boardSummary = new BoardSummary(result);
             boardList.add(boardSummary);
         }
         this.boardList = boardList;
     }
    
-
-
 }
 
 @Getter
@@ -45,7 +43,7 @@ class BoardSummary{
     private String boardfisrtImageUrl;
 
 
-    public BoardSummary(BoardListResultSet resultSet){
+    public BoardSummary(BoardCommentLikeyCountResultSet resultSet){
         this.boardNumber = resultSet.getBoardNumber();
         this.boardTitle = resultSet.getBoardTitle();
         this.boardfisrtImageUrl = resultSet.getBoardfisrtImageUrl();

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.user.PostUserRequestDto;
-import com.groupc.weather.service.PhotoBoardService;
 import com.groupc.weather.service.UserService;
 
 @RestController
