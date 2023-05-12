@@ -24,6 +24,7 @@ public class GetQnaBoardListResponseDto extends ResponseDto {
 
         for (QnaBoardListResultSet result: resultSet) {
             QnaBoardSummary qnaBoardSummary = new QnaBoardSummary(result);
+
             qnaBoardList.add(qnaBoardSummary);
         }
 
@@ -41,7 +42,7 @@ class QnaBoardSummary {
     public String qnaBoardWriteDatetime;
     public String qnaBoardWriterNickname;
     public String qnaBoardWriterProfileImageUrl;
-    public boolean commentComplete;
+    public boolean replyComplete;
 
     public QnaBoardSummary(QnaBoardListResultSet resultSet) {
         this.qnaBoardNumber = resultSet.getQnaBoardNumber();
@@ -49,7 +50,7 @@ class QnaBoardSummary {
         this.qnaBoardWriteDatetime = resultSet.getQnaBoardWriteDatetime();
         this.qnaBoardWriterNickname = resultSet.getQnaBoardWriterNickname();
         this.qnaBoardWriterProfileImageUrl = resultSet.getQnaBoardWriterProfileImageUrl();
-        this.commentComplete = resultSet.getCommentComplete();
+        this.replyComplete = resultSet.getReplyComplete();
     }
 }
 

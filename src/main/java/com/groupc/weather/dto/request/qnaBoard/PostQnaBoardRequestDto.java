@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PostQnaBoardRequestDto {
     @NotBlank
-    private Integer userNumber;
+    private int userNumber;
     @NotBlank
     private String title;
     @NotBlank
