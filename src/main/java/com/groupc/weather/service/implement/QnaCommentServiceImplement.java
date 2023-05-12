@@ -10,6 +10,7 @@ import com.groupc.weather.dto.request.common.UserDto;
 import com.groupc.weather.dto.request.qnaBoard.PostQnaCommentRequestDto;
 import com.groupc.weather.entity.ManagerEntity;
 import com.groupc.weather.entity.QnaCommentEntity;
+
 import com.groupc.weather.entity.UserEntity;
 import com.groupc.weather.repository.ManagerRepository;
 import com.groupc.weather.repository.QnaBoardRepository;

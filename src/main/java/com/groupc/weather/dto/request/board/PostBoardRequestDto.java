@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostPhotoBoardRequestDto {
+public class PostBoardRequestDto {
     @NotBlank
     private int boardNumber;
     @NotBlank

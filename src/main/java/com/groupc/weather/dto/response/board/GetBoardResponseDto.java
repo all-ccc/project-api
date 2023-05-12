@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.groupc.weather.dto.ResponseDto;
-import com.groupc.weather.dto.request.board.PostPhotoBoardRequestDto;
 
 
 
@@ -13,15 +12,12 @@ import com.groupc.weather.entity.HashListEntity;
 import com.groupc.weather.entity.ImageUrlEntity;
 import com.groupc.weather.entity.BoardEntity;
 import com.groupc.weather.entity.LikeyEntity;
-import com.groupc.weather.entity.PhotoBoardEntity;
-
 import com.groupc.weather.entity.UserEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
 
 @Data
 @AllArgsConstructor
