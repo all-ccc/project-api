@@ -55,9 +55,5 @@ public class QnaBoardController {
 
     //* 5. 게시물 목록 조회 */
 
-<<<<<<< HEAD
-    
-=======
 } 
->>>>>>> b2aeaba96d1a466424130579f7d9e082a3de01eb
 

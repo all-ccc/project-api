@@ -10,12 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.groupc.weather.dto.ResponseDto;
-<<<<<<< HEAD
-import com.groupc.weather.dto.request.PostQnaCommentRequestDto;
-
-=======
 import com.groupc.weather.dto.request.qnaBoard.PostQnaCommentRequestDto;
->>>>>>> d3a2ffce6525bc2345521792edfb88ca62816e07
 import com.groupc.weather.service.QnaCommentService;
 
 import lombok.RequiredArgsConstructor;
