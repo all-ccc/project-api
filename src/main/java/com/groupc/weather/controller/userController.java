@@ -30,20 +30,26 @@ public class UserController {
     @PostMapping("sign-up")
     public ResponseEntity<ResponseDto> postUser(
             @Valid @RequestBody PostUserRequestDto requestBody) {
-        ResponseEntity<ResponseDto> reposne = userService.postUser(requestBody);
-        return reposne;
+        ResponseEntity<ResponseDto> resposne = userService.postUser(requestBody);
+        return resposne;
     }
 
     // 유저 로그인
     @PostMapping("sign-in")
     public ResponseEntity<? super LoginUserResponseDto> LoginUser(
             @Valid @RequestBody LoginUserRequestDto requestBody) {
-        ResponseEntity<? super LoginUserResponseDto> reponse = userService.LoginUser(requestBody);
-        return reponse;
+        ResponseEntity<? super LoginUserResponseDto> response = userService.LoginUser(requestBody);
+        return response;
     }
 
     // 유저 이메일 찾기
-
+    @PostMapping("find-email")
+    public ResponseEntity<FindEmailResponseDto> Findemail(
+        @Valid @RequestBody FindEmailResponseDto requestBody
+    ) {
+        ResponseEntity<ResponseDto> response = userService.Findemail(requestBody);
+        return response;
+    }
     // 유저 비밀번호 찾기
     // 유저 정보 수정
     // 유저 정보 삭제
