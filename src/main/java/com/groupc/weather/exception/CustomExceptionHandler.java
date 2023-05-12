@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.groupc.weather.dto.ResponseDto;
 
+
+
 public class CustomExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ResponseDto> handlerHttpMessageNotrReadableException(HttpMessageNotReadableException exception){

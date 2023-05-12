@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.entity.ManagerEntity;
-import com.groupc.weather.entity.QnaBoardCommentEntity;
+
 import com.groupc.weather.entity.QnaBoardEntity;
 import com.groupc.weather.entity.QnaCommentEntity;
 import com.groupc.weather.entity.UserEntity;
@@ -31,7 +31,7 @@ public class GetQnaBoardResponseDto extends ResponseDto {
 
     public GetQnaBoardResponseDto(
         QnaBoardEntity qnaBoardEntity, UserEntity userEntity,
-        ManagerEntity managerEntity, List<QnaBoardCommentEntity> qnaBoardCommentEntities
+        ManagerEntity managerEntity, List<qnaBoardCommentEntity> qnaBoardCommentEntities
     ) {
         super("SU", "Success");
 
@@ -84,3 +84,4 @@ class Comment {
         return commentList; // 다시 보기
     }
 }
+`
