@@ -7,6 +7,6 @@ public interface QnaBoardListResultSet {
     public int getQnaBoardWriterNumber();
     public String getQnaBoardWriterNickname();
     public String getQnaBoardWriterProfileImageUrl();
-    public boolean getCommentComplete();
+    public boolean getReplyComplete();
 }
 
