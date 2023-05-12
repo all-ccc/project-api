@@ -3,9 +3,11 @@ package com.groupc.weather.entity;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import com.groupc.weather.dto.request.board.PostCommentRequestDto;
 
@@ -16,6 +18,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name="Comment")
+@Entity(name="Comment")
 public class CommentEntity {
 
     @Id

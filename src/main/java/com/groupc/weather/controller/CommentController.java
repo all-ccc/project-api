@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.board.PostCommentRequestDto;
-import com.groupc.weather.entity.BoardEntity;
 import com.groupc.weather.repository.ManagerRepository;
 import com.groupc.weather.service.CommentService;
 
