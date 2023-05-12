@@ -47,6 +47,7 @@ public class BoardController {
 
 
     // 3. 게시물 목록 조회(본인 작성)
+    @GetMapping()
     
 
 
