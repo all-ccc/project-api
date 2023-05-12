@@ -15,7 +15,7 @@ public interface CommentRepository extends JpaRepository<CommentEntity, Integer>
     List<CommentEntity> findByBoardNumber(Integer boardNumber);
 
     //게시물에 대한 댓글 삭제
-    List<CommentEntity> deleteByBoardNumber(Integer commnetNumber);
+    List<CommentEntity> deleteByBoardNumber(Integer commentNumber);
 
     
 }

@@ -31,7 +31,7 @@ public class GetQnaBoardResponseDto extends ResponseDto {
 
     public GetQnaBoardResponseDto(
         QnaBoardEntity qnaBoardEntity, UserEntity userEntity,
-        ManagerEntity managerEntity, List<qnaBoardCommentEntity> qnaBoardCommentEntities
+        ManagerEntity managerEntity, List<QnaBoardCommentEntity> qnaBoardCommentEntities
     ) {
         super("SU", "Success");
 
@@ -84,4 +84,3 @@ class Comment {
         return commentList; // 다시 보기
     }
 }
-`
