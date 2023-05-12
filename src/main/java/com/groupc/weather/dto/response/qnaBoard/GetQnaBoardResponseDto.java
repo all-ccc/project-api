@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.groupc.weather.dto.ResponseDto;
-import com.groupc.weather.entity.ManagerEntity;
 
 import com.groupc.weather.entity.QnaBoardEntity;
 import com.groupc.weather.entity.QnaCommentEntity;
-import com.groupc.weather.entity.QnaBoardEntity;
 import com.groupc.weather.entity.UserEntity;
 
 import lombok.AllArgsConstructor;
