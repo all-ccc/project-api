@@ -4,8 +4,6 @@ import java.util.List;
 
 import com.groupc.weather.dto.ResponseDto;
 
-
-
 public class GetUserBoardLikeDto extends ResponseDto{
     private List<BoardSummary> boardList;
 }
@@ -25,5 +23,5 @@ class BoardSummary{
 }
 
 class BoardImageUrlList{
-    //이미지 첨부
+    //이미지 첨부하기 
 }

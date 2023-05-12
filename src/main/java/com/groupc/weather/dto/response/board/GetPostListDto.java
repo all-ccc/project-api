@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class GetPostList extends ResponseDto {
+public class GetPostListDto extends ResponseDto {
     private List<BoardSummary> boardList;
 
 }
@@ -38,3 +38,5 @@ class HashList {
     private int hashTagNumber;
     private String hashTagContent;
 }
+
+

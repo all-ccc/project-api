@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.groupc.weather.dto.ResponseDto;
+import com.groupc.weather.entity.ManagerEntity;
+
+import com.groupc.weather.entity.QnaBoardEntity;
 import com.groupc.weather.entity.QnaCommentEntity;
 import com.groupc.weather.entity.QnaBoardEntity;
 import com.groupc.weather.entity.UserEntity;
@@ -38,7 +41,7 @@ public class GetQnaBoardResponseDto extends ResponseDto {
         this.content = qnaBoardEntity.getContent();
         this.imageUrl = qnaBoardEntity.getImageUrl();
         this.writeDatetime = qnaBoardEntity.getWriteDatetime();
-        this.userNickname = userEntity.getNickname();
+        this.userNickname = userEntity.getUserNickname();
         this.userProfileImageUrl = userEntity.getProfileImageUrl();
         this.commentList = Comment.createList(qnaCommentEntities);
     }
