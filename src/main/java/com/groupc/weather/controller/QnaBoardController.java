@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.groupc.weather.dto.request.qnaBoard.PostQnaBoardRequestDto;
 import com.groupc.weather.dto.ResponseDto;
+import com.groupc.weather.dto.request.qnaBoard.PostQnaBoardRequestDto;
 import com.groupc.weather.dto.response.qnaBoard.GetQnaBoardResponseDto;
 import com.groupc.weather.service.QnaBoardService;
 

@@ -23,8 +23,8 @@ public class UserEntity {
     @Id
     // @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userNumber;
-    private String name;
-    private String nickname;
+    private String userName;
+    private String userNickname;
     private String password;
     private String email;
     private String profileImageUrl;
@@ -35,8 +35,8 @@ public class UserEntity {
 
     public UserEntity(PostUserRequestDto dto) {
         this.userNumber = dto.getUserNumber();
-        this.name = dto.getUserName();
-        this.nickname = dto.getUserNickname();
+        this.userName = dto.getUserName();
+        this.userNickname = dto.getUserNickname();
         this.password = dto.getUserPassword();
         this.email = dto.getUserEmail();
         this.profileImageUrl = dto.getUserProfileImageUrl();

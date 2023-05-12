@@ -8,7 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.groupc.weather.dto.request.board.PostPhotoBoardRequestDto;
+import com.groupc.weather.dto.request.board.PostBoardRequestDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,7 +30,7 @@ public class HashListEntity {
     private List<HashListEntity> hashList;
   
 
-    HashListEntity(PostPhotoBoardRequestDto dto){
+    HashListEntity(PostBoardRequestDto dto){
         this.boardNumber = dto.getBoardNumber();
     }
     // List<HashListEntity> HashListEntitiy(PostPhotoBoardRequestDto dto){}   연구해봅시다...

@@ -7,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import com.groupc.weather.dto.request.board.PostCommentRequestDto;
 import com.groupc.weather.dto.request.common.ManagerDto;
 import com.groupc.weather.dto.request.common.UserDto;
 import com.groupc.weather.dto.request.qnaBoard.PostQnaCommentRequestDto;

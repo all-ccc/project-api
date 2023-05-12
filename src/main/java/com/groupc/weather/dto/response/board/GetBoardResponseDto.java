@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.groupc.weather.dto.ResponseDto;
-import com.groupc.weather.dto.request.board.PostPhotoBoardRequestDto;
 
 
 
@@ -13,15 +12,12 @@ import com.groupc.weather.entity.HashListEntity;
 import com.groupc.weather.entity.ImageUrlEntity;
 import com.groupc.weather.entity.BoardEntity;
 import com.groupc.weather.entity.LikeyEntity;
-import com.groupc.weather.entity.PhotoBoardEntity;
-
 import com.groupc.weather.entity.UserEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
 
 @Data
 @AllArgsConstructor
@@ -68,7 +64,7 @@ public class GetBoardResponseDto extends ResponseDto {
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-class Comment {
+class CommentResponseDto {
     private int commentNumber;
     private int boardNumber;
     private int commentWriterNumber;
@@ -77,7 +73,7 @@ class Comment {
     private String commentWriterProfileImageUrl;
     private String commentWriteDatetime;
 
-    Comment(CommentEntity commentEntity) {
+    CommentResponseDto(CommentEntity commentEntity) {
         this.commentNumber = commentEntity.getCommentNumber();
         this.boardNumber = commentEntity.getBoardNumber();
         this.commentWriterNumber = commentEntity.getUserNumber(); // 조원이랑 같이 이야기 해보기 user사용 할 것인지
@@ -87,10 +83,10 @@ class Comment {
         this.commentWriteDatetime = commentEntity.getWriteDatetime();
     }
 
-    static List<Comment> createList(List<CommentEntity> commentEntities) {
-        List<Comment> commentList = new ArrayList<>();
+    static List<CommentResponseDto> createList(List<CommentEntity> commentEntities) {
+        List<CommentResponseDto> commentList = new ArrayList<>();
         for (CommentEntity commentEntity : commentEntities) {
-            Comment comment = new Comment(commentEntity);
+            CommentResponseDto comment = new CommentResponseDto(commentEntity);
             commentList.add(comment);
 
         }
