@@ -6,11 +6,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentEntity {
-
     private int commentNumber;
     private int boardNumber;
     private int userNumber;
@@ -23,7 +24,7 @@ public class CommentEntity {
 
     public CommentEntity(PostCommentRequestDto dto, UserEntity userEntity, ManagerEntity managerEntity) {
         Date now = new Date();
-        SimpleDateFormat simpleDateFormat =
+        simpleDateFormat simpleDateFormat =
                 new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String writeDatetime = simpleDateFormat.format(now);
         
@@ -31,12 +32,10 @@ public class CommentEntity {
         this.managerNumber = null;
 
         this.userImageProfileUrl =dto.getUserImageProfileUrl();
-        this.userNickname = dto.();
+        this.userNickname = dto.getuserNickname();
         this.boardNumber = dto.getBoardNumber();
         this.userNumber = dto.getWriterNumber();
         this.commentContent = dto.getCommentContent();
         this.writeDatetime = writeDatetime;
-
-
-}
+        } 
 }
