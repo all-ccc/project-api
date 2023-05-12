@@ -44,9 +44,8 @@ public class UserController {
 
     // 유저 이메일 찾기
     @PostMapping("find-email")
-    public ResponseEntity<FindEmailResponseDto> Findemail(
-        @Valid @RequestBody FindEmailResponseDto requestBody
-    ) {
+    public ResponseEntity<FindByEmailResponseDto> Findemai
+            @Valid @RequestBody FindByEmailResponseDto requestBo) {
         ResponseEntity<ResponseDto> response = userService.Findemail(requestBody);
         return response;
     }
