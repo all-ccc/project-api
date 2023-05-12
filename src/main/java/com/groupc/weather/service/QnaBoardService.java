@@ -12,7 +12,7 @@ public interface QnaBoardService {
     public ResponseEntity<ResponseDto> postQnaBoard(PostQnaBoardRequestDto dto);
 
     public ResponseEntity<? super GetQnaBoardResponseDto> getQnaBoard(Integer boardNumber);
-    public ResponseEntity<? super GetQnaBoardListResponseDto> getQnaBoardListResponseDto();
+    public ResponseEntity<? super GetQnaBoardListResponseDto> getQnaBoardList();
 
     public ResponseEntity<ResponseDto> patchQnaBoard(PatchQnaBoardRequestDto dto);
     

@@ -29,9 +29,8 @@ public class QnaBoardEntity {
     private String content;
     private String writeDatetime;
     private int userNumber;
-    private String nickname;
-    private String profileImageUrl;
     private String imageUrl;
+    private boolean replyComplete;
 
     public QnaBoardEntity(PostQnaBoardRequestDto dto) {
         Date now = new Date();
