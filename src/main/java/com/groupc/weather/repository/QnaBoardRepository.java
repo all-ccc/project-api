@@ -12,7 +12,7 @@ public interface QnaBoardRepository extends JpaRepository<QnaBoardEntity, Intege
     public boolean existsByQnaBoardNumber(int QnaboardNumber);
     public QnaBoardEntity findByQnaBoardNumber(int qnaBoardNumber);
 
-    @Query( // 일단 씀
+    @Query(
         value = 
         "SELECT " + 
         "Q.board_number AS boardNumber," +

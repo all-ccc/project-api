@@ -5,8 +5,6 @@ import java.util.List;
 
 import com.groupc.weather.dto.ResponseDto;
 
-
-
 import com.groupc.weather.entity.CommentEntity;
 import com.groupc.weather.entity.HashListEntity;
 import com.groupc.weather.entity.ImageUrlEntity;
@@ -17,7 +15,6 @@ import com.groupc.weather.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 
 @Data
 @AllArgsConstructor
@@ -52,7 +49,7 @@ public class GetBoardResponseDto extends ResponseDto {
         this.weatherInfo = photoBoardEntity.getWeatherInfo();
         this.temperature = photoBoardEntity.getTemperature();
         this.viewCount = photoBoardEntity.getViewCount();
-        this.boardWriterNickname = userEntity.getNickname();
+        this.boardWriterNickname = userEntity.getUserNickname();
         this.boardWriterProfileImageUrl = userEntity.getProfileImageUrl();
         this.commentCount = commentList.size();
         this.likeCount = likyEntities.size();
@@ -79,7 +76,7 @@ class CommentResponseDto {
         this.commentWriterNumber = commentEntity.getUserNumber(); // 조원이랑 같이 이야기 해보기 user사용 할 것인지
         this.commentContent = commentEntity.getCommentContent();
         this.commentWriterNickname = commentEntity.getUserNickname(); //조원이랑 같이 이야기
-        this.commentWriterProfileImageUrl = commentEntity.getUserImageProfileUrl();
+        this.commentWriterProfileImageUrl = commentEntity.getUserProfileImageUrl();
         this.commentWriteDatetime = commentEntity.getWriteDatetime();
     }
 
@@ -91,6 +88,35 @@ class CommentResponseDto {
 
         }
         return commentList;
+    }
+}
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+class Comment {
+    private int commentNumber;
+    private int boardNumber;
+    private int commentWriterNumber;
+    private int managerNumber;
+    private String commentContent;
+    private String commentWriterNickname;
+    private String managerNickname;
+    private String commentWriterProfileImageUrl;
+    private String managerProfileImageUrl;
+    private String commentWriteDatetime;
+
+    Comment(CommentEntity commentEntity) {
+        this.commentNumber = commentEntity.getCommentNumber();
+        this.boardNumber = commentEntity.getBoardNumber();
+        this.commentWriterNumber = commentEntity.getUserNumber();
+        this.managerNumber = commentEntity.getManagerNumber();
+        this.commentContent = commentEntity.getCommentContent();
+        this.commentWriterNickname = commentEntity.getUserNickname();
+        this.managerNickname = commentEntity.getManagerNickname();
+        this.commentWriterProfileImageUrl = commentEntity.getUserProfileImageUrl();
+        this.managerProfileImageUrl = commentEntity.getManagerProfileImageUrl();
+        this.commentWriteDatetime = commentEntity.getWriteDatetime();
     }
 }
 
@@ -121,31 +147,31 @@ class Liky {
 
     }
 }
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    class ImageUrlList {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+class ImageUrlList {
 
-        private int imageNumber;
-        private String imagUrl;
-        private int boardNumber;
+    private int imageNumber;
+    private String imagUrl;
+    private int boardNumber;
 
-        ImageUrlList(ImageUrlEntity imageUrlEntity) {
-            this.imageNumber = imageUrlEntity.getImageNumber();
-            this.imagUrl = imageUrlEntity.getImageUrl();
-            this.boardNumber = imageUrlEntity.getBoradNumber();
-        }
-        static List<ImageUrlList> createList(List<ImageUrlEntity> imageUrlEntities) {
-            List<ImageUrlList> imageUrlList = new ArrayList<>();
-            for (ImageUrlEntity imageUrlEntity : imageUrlEntities) {
-                ImageUrlList imageUrl = new ImageUrlList(imageUrlEntity);
-                imageUrlList.add(imageUrl);
-    
-            }
-            return imageUrlList;
-    
-        }
+    ImageUrlList(ImageUrlEntity imageUrlEntity) {
+        this.imageNumber = imageUrlEntity.getImageNumber();
+        this.imagUrl = imageUrlEntity.getImageUrl();
+        this.boardNumber = imageUrlEntity.getBoradNumber();
     }
+    static List<ImageUrlList> createList(List<ImageUrlEntity> imageUrlEntities) {
+        List<ImageUrlList> imageUrlList = new ArrayList<>();
+        for (ImageUrlEntity imageUrlEntity : imageUrlEntities) {
+            ImageUrlList imageUrl = new ImageUrlList(imageUrlEntity);
+            imageUrlList.add(imageUrl);
+
+        }
+        return imageUrlList;
+
+    }
+}
 
 @Data
 @NoArgsConstructor

@@ -80,5 +80,14 @@ public class QnaBoardController {
         return response;
     }
 
+    //* 6. 특정 게시물 검색 */
+    @PostMapping("{searchWord}")
+    pulbic ResponseEntity<ResponseDto> searchQnaBoard(
+        @PathVariable("searchWord") String searchWord
+    ) {
+        ResponseEntity<ResponseDto> response =
+            qnaBoardService.searchQnaBoard(searchWord);
+    }
+
 } 
 

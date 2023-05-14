@@ -13,7 +13,6 @@ public interface BoardService {
 
     public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber);
     public ResponseEntity<? super GetBoardListResponseDto> getBoardList();
-    public ResponseEntity<? super GetBoardListResponseDto> getBoardTop5();
     
     public ResponseEntity<ResponseDto> patchBoard(PatchBoardRequestDto dto);
     public ResponseEntity<ResponseDto> patchBoard(String userEmail, PatchBoardRequestDto2 dto);
