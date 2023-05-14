@@ -28,7 +28,6 @@ public class HashListEntity {
     private String hashtagContent;
     private List<HashListEntity> hashList;
   
-
     HashListEntity(PostBoardRequestDto dto){
         this.boardNumber = dto.getBoardNumber();
     }

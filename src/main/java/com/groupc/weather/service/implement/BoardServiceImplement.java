@@ -213,7 +213,7 @@ public class BoardServiceImplement implements BoardService {
         return CustomResponse.success();
     }
 
-    //첫화면 게시물 8개 보기 
+    //첫화면 게시물 8개 보기
     @Override
     public ResponseEntity<? super GetBoardFirstViewDto> getBoardFirstView() {
         GetBoardListResponseDto body = null;
