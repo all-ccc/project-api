@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BoardEntity {
-private int boardNumber;
-private int userNumber;
+private Integer boardNumber;
+private Integer userNumber;
 private String title;
 private String content;
 private String boardImageUrl;
@@ -23,19 +23,17 @@ private int temperature;
 private String weatherInfo;
 private int viewCount;
 
-
         public BoardEntity(PostBoardRequestDto dto) {
                 Date now = new Date();
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 String writeDatetime = simpleDateFormat.format(now);
 
-                this.boardNumber = dto.getBoardNumber();
+                this.boardNumber = dto.getUserNumber();
                 this.title = dto.getTitle();
                 this.content = dto.getContent();
                 this.boardImageUrl = dto.getImageUrl();
                 this.weatherInfo = writeDatetime;
                 this.viewCount = 0;
-                
         }
 
 }

@@ -51,7 +51,6 @@ public class CommentEntity {
         this.commentContent = dto.getCommentContent();
         this.writeDatetime = writeDatetime;
         this.commentCount = 0;
-
     }
 }
 

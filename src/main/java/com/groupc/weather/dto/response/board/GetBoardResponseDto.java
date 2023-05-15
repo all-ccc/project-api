@@ -5,8 +5,6 @@ import java.util.List;
 
 import com.groupc.weather.dto.ResponseDto;
 
-
-
 import com.groupc.weather.entity.CommentEntity;
 import com.groupc.weather.entity.HashListEntity;
 import com.groupc.weather.entity.ImageUrlEntity;
@@ -17,7 +15,6 @@ import com.groupc.weather.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 
 @Data
 @AllArgsConstructor
@@ -52,7 +49,7 @@ public class GetBoardResponseDto extends ResponseDto {
         this.weatherInfo = photoBoardEntity.getWeatherInfo();
         this.temperature = photoBoardEntity.getTemperature();
         this.viewCount = photoBoardEntity.getViewCount();
-        this.boardWriterNickname = userEntity.getNickname();
+        this.boardWriterNickname = userEntity.getUserNickname();
         this.boardWriterProfileImageUrl = userEntity.getProfileImageUrl();
         this.commentCount = commentList.size();
         this.likeCount = likyEntities.size();
@@ -64,7 +61,7 @@ public class GetBoardResponseDto extends ResponseDto {
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-class CommentResponseDto {
+class Comment{
     private int commentNumber;
     private int boardNumber;
     private int commentWriterNumber;
@@ -73,22 +70,21 @@ class CommentResponseDto {
     private String commentWriterProfileImageUrl;
     private String commentWriteDatetime;
 
-    CommentResponseDto(CommentEntity commentEntity) {
+    Comment(CommentEntity commentEntity) {
         this.commentNumber = commentEntity.getCommentNumber();
         this.boardNumber = commentEntity.getBoardNumber();
         this.commentWriterNumber = commentEntity.getUserNumber(); // 조원이랑 같이 이야기 해보기 user사용 할 것인지
         this.commentContent = commentEntity.getCommentContent();
         this.commentWriterNickname = commentEntity.getUserNickname(); //조원이랑 같이 이야기
-        this.commentWriterProfileImageUrl = commentEntity.getUserImageProfileUrl();
+        this.commentWriterProfileImageUrl = commentEntity.getUserProfileImageUrl();
         this.commentWriteDatetime = commentEntity.getWriteDatetime();
     }
 
-    static List<CommentResponseDto> createList(List<CommentEntity> commentEntities) {
-        List<CommentResponseDto> commentList = new ArrayList<>();
+    static List<Comment> createList(List<CommentEntity> commentEntities) {
+        List<Comment> commentList = new ArrayList<>();
         for (CommentEntity commentEntity : commentEntities) {
-            CommentResponseDto comment = new CommentResponseDto(commentEntity);
+            Comment comment = new Comment(commentEntity);
             commentList.add(comment);
-
         }
         return commentList;
     }
