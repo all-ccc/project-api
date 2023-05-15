@@ -1,3 +1,4 @@
+
 package com.groupc.weather.controller;
 
 import javax.validation.Valid;
@@ -6,16 +7,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.groupc.weather.dto.ResponseDto;
-import com.groupc.weather.dto.request.user.FindByEmailResponseDto;
+import com.groupc.weather.dto.request.user.FindByEmailRequestDto;
+import com.groupc.weather.dto.request.user.FindByPasswordRequestDto;
 import com.groupc.weather.dto.request.user.LoginUserRequestDto;
+import com.groupc.weather.dto.request.user.PatchUserRequestDto;
+import com.groupc.weather.dto.request.user.PatchUserRequestDto2;
 import com.groupc.weather.dto.request.user.PostUserRequestDto;
-import com.groupc.weather.dto.response.LoginUserResponseDto;
+import com.groupc.weather.dto.response.user.FindByEmailResponseDto;
+import com.groupc.weather.dto.response.user.FindByPasswordResponseDto;
+import com.groupc.weather.dto.response.user.LoginUserResponseDto;
 import com.groupc.weather.service.UserService;
 
 @RestController
@@ -47,21 +54,37 @@ public class UserController {
 
     // 유저 이메일 찾기
     @PostMapping("find-email")
-    public ResponseEntity<FindByEmailResponseDto> Findemai(
-        @Valid @RequestBody FindByEmailResponseDto requestBody) {
-        ResponseEntity<ResponseDto> response = userService.Findemail(requestBody);
+    public ResponseEntity<? super FindByEmailResponseDto> FindByemail(
+            @Valid @RequestBody FindByEmailRequestDto requestBody) {
+        ResponseEntity<? super FindByEmailResponseDto> response = userService.FindByEmail(requestBody);
         return response;
     }
+
     // 유저 비밀번호 찾기
+    @PostMapping("find-password")
+    public ResponseEntity<? super FindByPasswordResponseDto> FindByPassword(
+            @Valid @RequestBody FindByPasswordRequestDto requestBody) {
+        ResponseEntity<? super FindByPasswordResponseDto> response = userService.FindByPassword(requestBody);
+        return response;
+    }
+
     // 유저 정보 수정
+    @PatchMapping("")
+    public ResponseEntity<ResponseDto> patchUser(
+            @AuthenticationPrincipal String userEmail,
+            @Valid @RequestBody PatchUserRequestDto2 requestBody) {
+        ResponseEntity<ResponseDto> response = userService.patchUser(userEmail, requestBody);
+        return response;
+    }
+
+    // 유저 정보 삭제
+    // 근재형이 하는중.
+}
+
     // 유저 정보 삭제
     @DeleteMapping("")
     public ResponseEntity<ResponseDto> deleteByUser(
-        @Valid @RequestBody @AuthenticationPrincipal Integer userNumber, PostUserRequestDto dto)
-        {
-            ResponseEntity<ResponseDto> response = userService.deleteUser(dto);
-            return response;
-
+            @Valid @RequestBody @AuthenticationPrincipal Integer userNumber, PostUserRequestDto dto) {
+        ResponseEntity<ResponseDto> response = userService.deleteUser(dto);
+        return response;
     }
-
-}
