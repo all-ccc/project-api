@@ -70,7 +70,6 @@ public class BoardController {
     public ResponseEntity<? super GetBoardFirstViewDto> getBoardFirstView(){
         ResponseEntity<? super GetBoardFirstViewDto> response = boardService.getBoardList();
         return response;
-
     }
 
     // 7. 특정 게시물 수정
@@ -88,8 +87,8 @@ public class BoardController {
             @PathVariable("boardNumber") Integer boardNumber
             ){ResponseEntity<ResponseDto> response = boardService.deleteBoard(userNumber, boardNumber);
         return response;
-        }
-
+    }
+   
 
     // 9. 특정 게시물 좋아요 등록
 

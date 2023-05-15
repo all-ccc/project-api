@@ -7,6 +7,7 @@ import com.groupc.weather.dto.response.board.GetBoardFirstViewDto;
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.board.PatchBoardRequestDto;
 import com.groupc.weather.dto.request.board.PostBoardRequestDto;
+
 public interface BoardService {
     
     public ResponseEntity<ResponseDto> postBoard(PostBoardRequestDto dto);
