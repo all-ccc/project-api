@@ -79,7 +79,7 @@ public class UserController {
 
     // 유저 정보 삭제
     // 근재형이 하는중.
-}
+
 
     // 유저 정보 삭제
     @DeleteMapping("")
@@ -88,3 +88,4 @@ public class UserController {
         ResponseEntity<ResponseDto> response = userService.deleteUser(dto);
         return response;
     }
+}
