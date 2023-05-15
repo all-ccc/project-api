@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.groupc.weather.dto.request.user.FindByEmailRequestDto;
 import com.groupc.weather.dto.request.user.LoginUserRequestDto;
 import com.groupc.weather.dto.request.user.PostUserRequestDto;
 import lombok.AllArgsConstructor;
@@ -50,5 +51,10 @@ public class UserEntity {
     public UserEntity(LoginUserRequestDto dto) {
         this.password = dto.getUserPassword();
         this.email = dto.getUserEmail();
+    }
+
+    public UserEntity(FindByEmailRequestDto dto) {
+        this.userName = dto.getUserName();
+        this.phoneNumber = dto.getUserPhoneNumber();
     }
 }

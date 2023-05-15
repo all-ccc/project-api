@@ -1,4 +1,4 @@
-package com.groupc.weather.dto.response;
+package com.groupc.weather.dto.response.user;
 
 import com.groupc.weather.dto.ResponseDto;
 
