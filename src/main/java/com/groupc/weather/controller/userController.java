@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.groupc.weather.dto.ResponseDto;
+import com.groupc.weather.dto.request.user.FindByEmailResponseDto;
 import com.groupc.weather.dto.request.user.LoginUserRequestDto;
 import com.groupc.weather.dto.request.user.PostUserRequestDto;
 import com.groupc.weather.dto.response.LoginUserResponseDto;
@@ -44,8 +45,8 @@ public class UserController {
 
     // 유저 이메일 찾기
     @PostMapping("find-email")
-    public ResponseEntity<FindByEmailResponseDto> Findemai
-            @Valid @RequestBody FindByEmailResponseDto requestBo) {
+    public ResponseEntity<FindByEmailResponseDto> Findemail(
+            @Valid @RequestBody FindByEmailResponseDto requestBody) {
         ResponseEntity<ResponseDto> response = userService.Findemail(requestBody);
         return response;
     }

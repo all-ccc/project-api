@@ -61,7 +61,7 @@ public class GetBoardResponseDto extends ResponseDto {
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-class CommentResponseDto {
+class Comment{
     private int commentNumber;
     private int boardNumber;
     private int commentWriterNumber;
@@ -70,7 +70,7 @@ class CommentResponseDto {
     private String commentWriterProfileImageUrl;
     private String commentWriteDatetime;
 
-    CommentResponseDto(CommentEntity commentEntity) {
+    Comment(CommentEntity commentEntity) {
         this.commentNumber = commentEntity.getCommentNumber();
         this.boardNumber = commentEntity.getBoardNumber();
         this.commentWriterNumber = commentEntity.getUserNumber(); // 조원이랑 같이 이야기 해보기 user사용 할 것인지
@@ -80,43 +80,13 @@ class CommentResponseDto {
         this.commentWriteDatetime = commentEntity.getWriteDatetime();
     }
 
-    static List<CommentResponseDto> createList(List<CommentEntity> commentEntities) {
-        List<CommentResponseDto> commentList = new ArrayList<>();
+    static List<Comment> createList(List<CommentEntity> commentEntities) {
+        List<Comment> commentList = new ArrayList<>();
         for (CommentEntity commentEntity : commentEntities) {
-            CommentResponseDto comment = new CommentResponseDto(commentEntity);
+            Comment comment = new Comment(commentEntity);
             commentList.add(comment);
-
         }
         return commentList;
-    }
-}
-
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-class Comment {
-    private int commentNumber;
-    private int boardNumber;
-    private int commentWriterNumber;
-    private int managerNumber;
-    private String commentContent;
-    private String commentWriterNickname;
-    private String managerNickname;
-    private String commentWriterProfileImageUrl;
-    private String managerProfileImageUrl;
-    private String commentWriteDatetime;
-
-    Comment(CommentEntity commentEntity) {
-        this.commentNumber = commentEntity.getCommentNumber();
-        this.boardNumber = commentEntity.getBoardNumber();
-        this.commentWriterNumber = commentEntity.getUserNumber();
-        this.managerNumber = commentEntity.getManagerNumber();
-        this.commentContent = commentEntity.getCommentContent();
-        this.commentWriterNickname = commentEntity.getUserNickname();
-        this.managerNickname = commentEntity.getManagerNickname();
-        this.commentWriterProfileImageUrl = commentEntity.getUserProfileImageUrl();
-        this.managerProfileImageUrl = commentEntity.getManagerProfileImageUrl();
-        this.commentWriteDatetime = commentEntity.getWriteDatetime();
     }
 }
 

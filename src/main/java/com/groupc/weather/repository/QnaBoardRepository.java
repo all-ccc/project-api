@@ -31,4 +31,7 @@ public interface QnaBoardRepository extends JpaRepository<QnaBoardEntity, Intege
         nativeQuery = true
     )
     public List<QnaBoardListResultSet> getQnaBoardList();
+
+    // 쿼리 작성해야 함
+    public List<QnaBoardListResultSet> getQnaBoardSearchList(String searchWord);
 }

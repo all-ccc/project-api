@@ -12,21 +12,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import com.groupc.weather.dto.response.board.GetBoardListResponseDto;
+import com.groupc.weather.dto.response.board.GetBoardResponseDto;
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.board.PatchBoardRequestDto;
 import com.groupc.weather.dto.request.board.PostBoardRequestDto;
 import com.groupc.weather.service.BoardService;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequestMapping("/api/v1/photoBoard")
+@RequiredArgsConstructor
 public class BoardController {
-    private BoardService boardService;
-
-    @Autowired
-    public BoardController(BoardService boardService) {
-        this.boardService = boardService;
-    }
+    private final BoardService boardService;
     
     // 1. 게시물 작성
     @PostMapping("")
@@ -36,7 +35,6 @@ public class BoardController {
         return response;
     }
 
-
     // 2. 특정게시물 조회
     @GetMapping("/{boardNumber}")
     public ResponseEntity<? super GetBoardResponseDto> getBoard(
@@ -45,10 +43,13 @@ public class BoardController {
         return response;
     }
 
-
     // 3. 게시물 목록 조회(본인 작성)
-    
-
+    @GetMapping("/{userNumber}")
+    public ResponseEntity<? super GetBoardListResponseDto> getBoardMyList(
+        @PathVariable("userNumber") Integer userNumber){
+        ResponseEntity<? super GetBoardListResponseDto> response = boardService.getBoardMyList(userNumber);
+        return response;
+    }
 
     // 4. TOP5 게시물 목록 조회
     @GetMapping("/top5")
@@ -57,43 +58,54 @@ public class BoardController {
         return response;
     }
 
-
     // 5. 일반게시물 목록 조회(최신순)
-
-
-
+    @GetMapping("/list")
+    public ResponseEntity<? super GetBoardListResponseDto> getBoard(){
+        ResponseEntity<? super GetBoardListResponseDto> response = boardService.getBoardList();
+        return response;
+    }
 
     // 6. 첫화면 일반 게시물 목록
+    @GetMapping("/firstImage")
+    public ResponseEntity<? super GetBoardFirstViewDto> getBoardFirstView(){
+        ResponseEntity<? super GetBoardFirstViewDto> response = boardService.getBoardList();
+        return response;
 
-
-
+    }
 
     // 7. 특정 게시물 수정
     @PatchMapping("")
     public ResponseEntity<ResponseDto> patchBoard(
-            @Valid @RequestBody PatchBoardRequestDto requsetBody){
-        ResponseEntity<ResponseDto> response = boardService.patchBoard(requsetBody);
+            @Valid @RequestBody Integer userNumber, PatchBoardRequestDto dto){
+        ResponseEntity<ResponseDto> response = boardService.patchBoard(userNumber, dto);
         return response;
     }
-
 
     // 8 . 특정 게시물 삭제
     @DeleteMapping("/{userNumber}/{boardNumber}")
     public ResponseEntity<ResponseDto> deleteBoard(
             @PathVariable("userNumber") Integer userNumber,
-            @PathVariable("boardNumber") Integer boardNumber){
-        ResponseEntity<ResponseDto> response = boardService.deleteBoard(userNumber, boardNumber);
+            @PathVariable("boardNumber") Integer boardNumber
+            ){ResponseEntity<ResponseDto> response = boardService.deleteBoard(userNumber, boardNumber);
         return response;
         }
 
 
     // 9. 특정 게시물 좋아요 등록
 
+
+
     // 10. 특정 게시물 좋아요 해제
+
+
 
     // 11. 특정 유저 좋아요 게시물 조회
 
+
+
     // 12. 특정 게시물 검색
+
+    
 
     // 13. 특정 게시물 검색(해쉬태그)
 

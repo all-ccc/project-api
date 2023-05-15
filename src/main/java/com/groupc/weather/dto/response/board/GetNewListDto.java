@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,7 +16,6 @@ public class GetNewListDto extends ResponseDto{
     List<BoardSummary> boardList;
 
 }
-
 
 class BoardSummary{
     private int boardNumber;
