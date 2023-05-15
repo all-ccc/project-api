@@ -9,7 +9,7 @@ import com.groupc.weather.common.util.CustomResponse;
 import com.groupc.weather.dto.request.PostQnaCommentRequestDto;
 import com.groupc.weather.dto.response.ResponseDto;
 import com.groupc.weather.entity.QnaCommentManagerEntity;
-import com.groupc.weather.entity.QnaCommentUserEntity;
+import com.groupc.weather.entity.QnaCommentEntity;
 import com.groupc.weather.repository.ManagerRepository;
 import com.groupc.weather.repository.QnaBoardRepository;
 import com.groupc.weather.repository.QnaCommentManagerRepository;
@@ -66,7 +66,7 @@ public class QnaCommentServiceImplement implements QnaCommentService {
                     return CustomResponse.noPermissions();
                 }
                 //todo: 작성자가 맞을 경우
-                QnaCommentUserEntity qnaCommentUserEntity = new QnaCommentUserEntity(dto);
+                QnaCommentEntity qnaCommentUserEntity = new QnaCommentEntity(dto);
                 qnaCommentUserRepository.save(qnaCommentUserEntity);
 
                 return CustomResponse.success();
