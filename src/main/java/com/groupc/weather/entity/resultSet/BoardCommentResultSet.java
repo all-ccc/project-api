@@ -7,5 +7,5 @@ public interface BoardCommentResultSet {
     public String getCommentContent();
     public String getCommentWriterNickname();
     public String getCommentWriterProfileImageUrl();
-    public String getCommnetWriteDatetime();
+    public String getCommentWriteDatetime();
 }

@@ -14,11 +14,11 @@ import lombok.Setter;
 
 @Data
 @NoArgsConstructor
-public class GetQnaBoardListResponseDto extends ResponseDto {
-    
+public class GetQnaBoardSearchListResponseDto extends ResponseDto {
+
     private List<QnaBoardSummary> qnaBoardList;
 
-    public GetQnaBoardListResponseDto(List<QnaBoardListResultSet> resultSet) {
+    public GetQnaBoardSearchListResponseDto(List<QnaBoardListResultSet> resultSet) {
         super("SU", "Success");
 
         List<QnaBoardSummary> qnaBoardList = new ArrayList<>();
@@ -54,4 +54,3 @@ class QnaBoardSummary {
         this.replyComplete = resultSet.getReplyComplete();
     }
 }
-
