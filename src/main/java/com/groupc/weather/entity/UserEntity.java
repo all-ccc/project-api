@@ -33,6 +33,7 @@ public class UserEntity {
     private String address;
     private String phoneNumber;
 
+
     public UserEntity(PostUserRequestDto dto) {
         this.userNumber = dto.getUserNumber();
         this.userName = dto.getUserName();
