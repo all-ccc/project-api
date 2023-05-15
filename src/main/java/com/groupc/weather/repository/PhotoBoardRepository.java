@@ -6,4 +6,6 @@ import com.groupc.weather.entity.BoardEntity;
 
 public interface PhotoBoardRepository extends JpaRepository<BoardEntity, Integer> {
     
+
+
 }
