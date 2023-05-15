@@ -1,5 +1,5 @@
 package com.groupc.weather.repository;
 
-public class LikyRepository {
+public class LikeyRepository {
     
 }
