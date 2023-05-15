@@ -11,4 +11,6 @@ public interface UserService {
     public ResponseEntity<ResponseDto> postUser(PostUserRequestDto dto);
 
     public ResponseEntity<? super LoginUserResponseDto> LoginUser(LoginUserRequestDto dto);
+
+    public ResponseEntity<ResponseDto> deleteUser(PostUserRequestDto dto);
 }
