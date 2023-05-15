@@ -203,4 +203,34 @@ public class UserServiceImplement implements UserService {
 
     // 특정 유저 조회
 
+    // 유저 정보 삭제
+    @Override
+    public ResponseEntity<ResponseDto> deleteUser(PostUserRequestDto dto) {
+
+        String userEmail = dto.getUserEmail();
+        String userPassword = dto.getUserPassword();
+
+        try {
+
+            // 존재하는 이메일인지
+            boolean existsUserEmail = userRepository.existsByEmail(userEmail);
+
+            // 저 이메일이랑 맞는 비밀번호인지 어떻게 알수있는가??
+            // 밑에 있는 로직은 유저레포지토리에 있는 존재하는 수많은 패스워드중 하나 일텐데 어떻게 이메일에 쓸때
+            // 쓰는 비밀번호랑 같은지 알 수 있는가??? 이것도 mysql쿼리문으로 해야 하는가???
+            boolean existsUserPassword = userRepository.existsByPassword(userPassword);
+
+            if (!existsUserEmail)
+                return CustomResponse.signInFailed();
+            if (!existsUserPassword)
+                return CustomResponse.signInFailed();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return CustomResponse.success();
+    }
+
 }

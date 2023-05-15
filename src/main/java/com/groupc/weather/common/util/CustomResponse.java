@@ -99,7 +99,7 @@ public class CustomResponse {
 
     public static ResponseEntity<ResponseDto> signUpFailed() {
 
-        ResponseDto errorBody = new ResponseDto("SF", "Sign In Failed");
+        ResponseDto errorBody = new ResponseDto("SF", "Sign Up Failed");
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorBody);
     }
 

@@ -36,6 +36,7 @@ public class CommentEntity {
     private String managerProfileImageUrl;
     private int commentCount;
 
+    //가지고 있는 코멘트의 정보
     public CommentEntity(PostCommentRequestDto dto) {
         
         Date now = new Date();

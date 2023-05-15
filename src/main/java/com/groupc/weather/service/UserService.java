@@ -24,4 +24,6 @@ public interface UserService {
     public ResponseEntity<? super FindByPasswordResponseDto> FindByPassword(FindByPasswordRequestDto dto);
 
     public ResponseEntity<ResponseDto> patchUser(PatchUserRequestDto dto);
+
+    public ResponseEntity<ResponseDto> deleteUser(PostUserRequestDto dto);
 }
