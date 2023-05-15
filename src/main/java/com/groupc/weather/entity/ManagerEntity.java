@@ -19,18 +19,18 @@ import lombok.NoArgsConstructor;
 public class ManagerEntity {
     @Id
     private Integer managerNumber;
-    private String nickname;
+    private String managerNickname;
     private String email;
     private String password;
     private String phoneNumber;
-    private String profileImage;
+    private String profileImageUrl;
 
     public ManagerEntity(PostManagerRequestDto dto) {
         this.managerNumber = dto.getManagerNumber();
-        this.nickname = dto.getManagerNickname();
+        this.managerNickname = dto.getManagerNickname();
         this.email = dto.getManagerEmail();
         this.password = dto.getManagerPassword();
         this.phoneNumber = dto.getManagerPhoneNumber();
-        this.profileImage = dto.getManagerProfileImage();
+        this.profileImageUrl = dto.getManagerProfileImage();
     }
 }

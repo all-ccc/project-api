@@ -9,15 +9,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class GetPostList extends ResponseDto {
+public class GetPostListDto extends ResponseDto {
     private List<BoardSummary> boardList;
 
 }
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 class BoardSummary {
     private int boardNumber;
@@ -40,3 +38,5 @@ class HashList {
     private int hashTagNumber;
     private String hashTagContent;
 }
+
+

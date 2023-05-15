@@ -8,7 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.groupc.weather.dto.request.board.PostPhotoBoardRequestDto;
+import com.groupc.weather.dto.request.board.PostBoardRequestDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,7 +21,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "Hashtag_Has_Board")
 public class HashListEntity {
  
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int hashtagNumber;
@@ -29,8 +28,7 @@ public class HashListEntity {
     private String hashtagContent;
     private List<HashListEntity> hashList;
   
-
-    HashListEntity(PostPhotoBoardRequestDto dto){
+    HashListEntity(PostBoardRequestDto dto){
         this.boardNumber = dto.getBoardNumber();
     }
     // List<HashListEntity> HashListEntitiy(PostPhotoBoardRequestDto dto){}   연구해봅시다...

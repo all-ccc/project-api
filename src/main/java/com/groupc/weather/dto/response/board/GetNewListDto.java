@@ -2,22 +2,20 @@ package com.groupc.weather.dto.response.board;
 
 import java.util.List;
 
-import com.groupc.weather.dto.response.ResponseDto;
+import com.groupc.weather.dto.ResponseDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetNewList extends ResponseDto{
+public class GetNewListDto extends ResponseDto{
 
     List<BoardSummary> boardList;
 
 }
-
 
 class BoardSummary{
     private int boardNumber;

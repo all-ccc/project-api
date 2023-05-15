@@ -3,10 +3,10 @@ package com.groupc.weather.dto.response.qnaBoard;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.groupc.weather.dto.response.ResponseDto;
-import com.groupc.weather.entity.ManagerEntity;
-import com.groupc.weather.entity.QnaBoardCommentEntity;
+import com.groupc.weather.dto.ResponseDto;
+
 import com.groupc.weather.entity.QnaBoardEntity;
+import com.groupc.weather.entity.QnaCommentEntity;
 import com.groupc.weather.entity.UserEntity;
 
 import lombok.AllArgsConstructor;
@@ -20,28 +20,28 @@ import lombok.Setter;
 @AllArgsConstructor
 public class GetQnaBoardResponseDto extends ResponseDto {
     private int qnaBoardNumber;
-    private String qnaBoardTitle;
-    private String qnaBoardContent;
-    private String qnaBoardImageUrl;
-    private String qnaBoardWriteDatetime;
-    private String qnaBoardWriterNickname;
-    private String qnaBoardWriterProfileImageUrl;
+    private String title;
+    private String content;
+    private String imageUrl;
+    private String writeDatetime;
+    private String userNickname;
+    private String userProfileImageUrl;
     private List<Comment> commentList;
 
     public GetQnaBoardResponseDto(
         QnaBoardEntity qnaBoardEntity, UserEntity userEntity,
-        ManagerEntity managerEntity, List<QnaBoardCommentEntity> qnaBoardCommentEntities
+        List<QnaCommentEntity> qnaCommentEntities
     ) {
         super("SU", "Success");
 
-        this.qnaBoardNumber = qnaBoardEntity.getQnaBoardNumber();
-        this.qnaBoardTitle = qnaBoardEntity.getTitle();
-        this.qnaBoardContent = qnaBoardEntity.getContent();
-        this.qnaBoardImageUrl = qnaBoardEntity.getImageUrl();
-        this.qnaBoardWriteDatetime = qnaBoardEntity.getWriteDatetime();
-        this.qnaBoardWriterNickname = userEntity.getNickname();
-        this.qnaBoardWriterProfileImageUrl = userEntity.getProfileImageUrl();
-        this.commentList = Comment.createList(qnaBoardCommentEntities);
+        this.qnaBoardNumber = qnaBoardEntity.getBoardNumber();
+        this.title = qnaBoardEntity.getTitle();
+        this.content = qnaBoardEntity.getContent();
+        this.imageUrl = qnaBoardEntity.getImageUrl();
+        this.writeDatetime = qnaBoardEntity.getWriteDatetime();
+        this.userNickname = userEntity.getUserNickname();
+        this.userProfileImageUrl = userEntity.getProfileImageUrl();
+        this.commentList = Comment.createList(qnaCommentEntities);
     }
 }
 
@@ -61,25 +61,25 @@ class Comment {
     private String content;
     private String writeDatetime;
 
-    Comment(QnaBoardCommentEntity qnaBoardCommentEntity) {
-        this.qnaCommentNumber = qnaBoardCommentEntity.getQnaCommentNumber();
-        this.qnaBoardNumber = qnaBoardCommentEntity.getQnaBoardNumber();
-        this.userNumber = qnaBoardCommentEntity.getUserNumber();
-        this.managerNumber = qnaBoardCommentEntity.getManagerNumber();
-        this.userProfileImageUrl = qnaBoardCommentEntity.getUserProfileImageUrl();
-        this.managerProfileImageUrl = qnaBoardCommentEntity.getManagerProfileImageUrl();
-        this.userNickname = qnaBoardCommentEntity.getUserNickname();
-        this.managerNickname = qnaBoardCommentEntity.getManagerNickname();
-        this.content = qnaBoardCommentEntity.getContent();
-        this.writeDatetime = qnaBoardCommentEntity.getWriteDatetime();
+    Comment(QnaCommentEntity qnaCommentEntity) {
+        this.qnaCommentNumber = qnaCommentEntity.getQnaCommentNumber();
+        this.qnaBoardNumber = qnaCommentEntity.getQnaboardNumber();
+        this.userNumber = qnaCommentEntity.getUserNumber();
+        this.managerNumber = qnaCommentEntity.getManagerNumber();
+        this.userProfileImageUrl = qnaCommentEntity.getUserImageProfileUrl();
+        this.managerProfileImageUrl = qnaCommentEntity.getManagerProfileUrl();
+        this.userNickname = qnaCommentEntity.getUserNickname();
+        this.managerNickname = qnaCommentEntity.getManagerNickname();
+        this.content = qnaCommentEntity.getContent();
+        this.writeDatetime = qnaCommentEntity.getWriteDatetime();
     }
 
-    static List<Comment> createList(List<QnaBoardCommentEntity> qnaBoardCommentEntities) {
+    static List<Comment> createList(List<QnaCommentEntity> qnaCommentEntities) {
         List<Comment> commentList = new ArrayList<>();
-        for (QnaBoardCommentEntity qnaBoardCommentEntity: qnaBoardCommentEntities) {
+        for (QnaCommentEntity qnaBoardCommentEntity: qnaCommentEntities) {
             Comment comment = new Comment(qnaBoardCommentEntity);
             commentList.add(comment);
         }
-        return commentList; // 다시 보기
+        return commentList;
     }
 }

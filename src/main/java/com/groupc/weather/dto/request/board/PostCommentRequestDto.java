@@ -1,21 +1,24 @@
 package com.groupc.weather.dto.request.board;
 
-import lombok.AllArgsConstructor;
+import javax.validation.constraints.NotBlank;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-public class PostCommentRequestDto {
+public class PostCommentRequestDto { 
     
-    
-    private int boardNumber;
-    private int writerNumber;
+    @NotBlank
+    private int commentNumber;
+    @NotBlank
+    private Integer commentWriterNumber;
+    @NotBlank
+    private Integer managerNumber;
+    @NotBlank
+    private Integer boardNumber;
+    @NotBlank
     private String commentContent;
-
-    PostCommentRequestDto(UserEntity userEntity){
-        this.writerNumber = userEntity.getUserNumber(); 
-    }
+    
 }
 

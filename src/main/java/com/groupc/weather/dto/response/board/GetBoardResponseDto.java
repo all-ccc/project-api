@@ -4,25 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.groupc.weather.dto.ResponseDto;
-import com.groupc.weather.dto.request.board.PostPhotoBoardRequestDto;
-
-
 
 import com.groupc.weather.entity.CommentEntity;
 import com.groupc.weather.entity.HashListEntity;
 import com.groupc.weather.entity.ImageUrlEntity;
-import com.groupc.weather.entity.LikyEntity;
 import com.groupc.weather.entity.BoardEntity;
 import com.groupc.weather.entity.LikeyEntity;
-import com.groupc.weather.entity.PhotoBoardEntity;
-
 import com.groupc.weather.entity.UserEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Data
 @AllArgsConstructor
@@ -47,7 +39,7 @@ public class GetBoardResponseDto extends ResponseDto {
     // request 요청 하면 => dto => DB = > dto => response
     public GetBoardResponseDto(
             BoardEntity photoBoardEntity, UserEntity userEntity,
-            List<LikyEntity> likyEntities, List<CommentEntity> commentEntities, List<HashListEntity> hashListEntities,
+            List<LikeyEntity> likyEntities, List<CommentEntity> commentEntities, List<HashListEntity> hashListEntities,
             List<ImageUrlEntity> imageUrlEntities) {
         super("SU", "Success");
         this.boardNumber = photoBoardEntity.getBoardNumber();
@@ -57,8 +49,8 @@ public class GetBoardResponseDto extends ResponseDto {
         this.weatherInfo = photoBoardEntity.getWeatherInfo();
         this.temperature = photoBoardEntity.getTemperature();
         this.viewCount = photoBoardEntity.getViewCount();
-        this.boardWriterNickname = userEntity.getNickname();
-        this.boardWriterProfileImageUrl = userEntity.getImage();
+        this.boardWriterNickname = userEntity.getUserNickname();
+        this.boardWriterProfileImageUrl = userEntity.getProfileImageUrl();
         this.commentCount = commentList.size();
         this.likeCount = likyEntities.size();
 
@@ -69,7 +61,7 @@ public class GetBoardResponseDto extends ResponseDto {
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-class Comment {
+class Comment{
     private int commentNumber;
     private int boardNumber;
     private int commentWriterNumber;
@@ -84,7 +76,7 @@ class Comment {
         this.commentWriterNumber = commentEntity.getUserNumber(); // 조원이랑 같이 이야기 해보기 user사용 할 것인지
         this.commentContent = commentEntity.getCommentContent();
         this.commentWriterNickname = commentEntity.getUserNickname(); //조원이랑 같이 이야기
-        this.commentWriterProfileImageUrl = commentEntity.getUserImageProfileUrl();
+        this.commentWriterProfileImageUrl = commentEntity.getUserProfileImageUrl();
         this.commentWriteDatetime = commentEntity.getWriteDatetime();
     }
 
@@ -93,7 +85,6 @@ class Comment {
         for (CommentEntity commentEntity : commentEntities) {
             Comment comment = new Comment(commentEntity);
             commentList.add(comment);
-
         }
         return commentList;
     }

@@ -13,9 +13,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostPhotoBoardRequestDto {
+public class PostBoardRequestDto {
     @NotBlank
-    private int boardNumber;
+    private int userNumber;
     @NotBlank
     private String title;
     @NotBlank
@@ -35,7 +35,6 @@ public class PostPhotoBoardRequestDto {
 @NoArgsConstructor
 @AllArgsConstructor
 class ImageUrlList {
-
     @Id
     @NotBlank
     private int imageNumber;
@@ -43,8 +42,8 @@ class ImageUrlList {
     private String imageUrl;
     @NotBlank
     private int boardNumber;
-
 }
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
