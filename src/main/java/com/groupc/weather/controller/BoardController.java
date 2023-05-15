@@ -94,7 +94,6 @@ public class BoardController {
     // 9. 특정 게시물 좋아요 등록
 
 
-
     // 10. 특정 게시물 좋아요 해제
 
 
