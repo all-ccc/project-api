@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.groupc.weather.dto.request.user.LoginUserRequestDto;
 import com.groupc.weather.dto.request.user.PostUserRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -43,5 +45,10 @@ public class UserEntity {
         this.gender = dto.getUserGender();
         this.address = dto.getUserAddress();
         this.phoneNumber = dto.getUserPhoneNumber();
+    }
+
+    public UserEntity(LoginUserRequestDto dto) {
+        this.password = dto.getUserPassword();
+        this.email = dto.getUserEmail();
     }
 }

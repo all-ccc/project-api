@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.board.PatchBoardRequestDto;
 import com.groupc.weather.dto.request.board.PostBoardRequestDto;
+import com.groupc.weather.dto.response.board.GetBoardListResponseDto;
+import com.groupc.weather.dto.response.board.GetBoardResponseDto;
 
 public interface BoardService {
     
