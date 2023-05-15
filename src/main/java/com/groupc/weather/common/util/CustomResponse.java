@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import com.groupc.weather.dto.ResponseDto;
 
 
-
 public class CustomResponse {
 
     public static ResponseEntity<ResponseDto> success() {
