@@ -4,12 +4,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.groupc.weather.common.util.CustomResponse;
-<<<<<<< HEAD
-import com.groupc.weather.dto.request.PostQnaCommentRequestDto;
-import com.groupc.weather.dto.response.ResponseDto;
-import com.groupc.weather.entity.QnaCommentManagerEntity;
-import com.groupc.weather.entity.QnaCommentEntity;
-=======
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.common.ManagerDto;
 import com.groupc.weather.dto.request.common.UserDto;
@@ -18,7 +12,6 @@ import com.groupc.weather.entity.ManagerEntity;
 import com.groupc.weather.entity.QnaCommentEntity;
 
 import com.groupc.weather.entity.UserEntity;
->>>>>>> f3607802f12e0498efe87a1f512488c2249a7e7a
 import com.groupc.weather.repository.ManagerRepository;
 import com.groupc.weather.repository.QnaBoardRepository;
 import com.groupc.weather.repository.QnaCommentRepository;
