@@ -33,5 +33,4 @@ public class HashListEntity {
     }
     // List<HashListEntity> HashListEntitiy(PostPhotoBoardRequestDto dto){}   연구해봅시다...
     //hashList.add(hashtageContent);
-
 }

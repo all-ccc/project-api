@@ -13,6 +13,7 @@ import com.groupc.weather.dto.request.qnaBoard.PatchQnaBoardRequestDto;
 import com.groupc.weather.dto.request.qnaBoard.PostQnaBoardRequestDto;
 import com.groupc.weather.dto.response.qnaBoard.GetQnaBoardListResponseDto;
 import com.groupc.weather.dto.response.qnaBoard.GetQnaBoardResponseDto;
+import com.groupc.weather.dto.response.qnaBoard.GetQnaBoardSearchListResponseDto;
 import com.groupc.weather.entity.QnaBoardEntity;
 import com.groupc.weather.entity.QnaCommentEntity;
 import com.groupc.weather.entity.UserEntity;
@@ -50,7 +51,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
 
         try {
             // 존재하지 않는 유저 번호 반환 
-            boolean existedUserNumber = userRepository.existsbyUserNumber(userNumber);
+            boolean existedUserNumber = userRepository.existsByUserNumber(userNumber);
             if (!existedUserNumber) {
                 ResponseDto errorBody = new ResponseDto("NU", "Non-Existent User Number");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
@@ -133,7 +134,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
 
             // 존재하지 않는 유저 번호 반환
             boolean existedUserNumber =
-                userRepository.existsbyUserNumber(userNumber);
+                userRepository.existsByUserNumber(userNumber);
             if (!existedUserNumber) return CustomResponse.notExistUserNumber();
             
             // TODO: 인증 실패 -> 권한 없음이랑 뭐가 다름 
@@ -170,7 +171,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
 
             // 존재하지 않는 특정 번호(유저, 관리자) 반환 
             boolean existedUserNumber =
-                userRepository.existsbyUserNumber(userNumber) ||
+                userRepository.existsByUserNumber(userNumber) ||
                 managerRepository.existsbyManagerNumber(userNumber);
             if (!existedUserNumber) return CustomResponse.notExistUserNumber();
 
@@ -188,6 +189,23 @@ public class QnaBoardServiceImplement implements QnaBoardService {
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
 
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> searchQnaBoardList(String searchWord) {
+        GetQnaBoardSearchListResponseDto body = null;
+
+        try {
+            if (searchWord.isBlank()) return CustomResponse.validationError(); // 이렇게 처리하면 되는지
+            
+            List<QnaBoardListResultSet> resultSet = qnaBoardRepository.getQnaBoardSearchList(searchWord);
+            body = new GetQnaBoardSearchListResponseDto(resultSet);
+            
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
 }

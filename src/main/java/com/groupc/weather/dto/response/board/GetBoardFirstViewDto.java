@@ -10,16 +10,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
 public class GetBoardFirstViewDto extends ResponseDto {
-    private List<BoardSummaryFrist> boardList;  
+    private List<BoardSummaryFirst> boardList;  
 
     public GetBoardFirstViewDto(List<GetBoardListResult> resultSet){
         super("SU","Success");
 
-        List<BoardSummaryFrist> boardList = new ArrayList<>();
+        List<BoardSummaryFirst> boardList = new ArrayList<>();
 
         for(GetBoardListResult result : resultSet){
-            BoardSummaryFrist boardSummary = new BoardSummaryFrist(result);
+            BoardSummaryFirst boardSummary = new BoardSummaryFirst(result);
             boardList.add(boardSummary);
         }
         this.boardList = boardList;
@@ -29,12 +31,12 @@ public class GetBoardFirstViewDto extends ResponseDto {
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-class BoardSummaryFrist{
+class BoardSummaryFirst{
     private int boardNumber;
     private String boardfirstImageUrl;
 
-    public BoardSummaryFrist(GetBoardListResult resultSet){
+    public BoardSummaryFirst(GetBoardListResult resultSet){
         this.boardNumber = resultSet.getBoardNumber();
         this.boardfirstImageUrl = resultSet.getBoardfirstImageUrl();
-}
+    }
 }
