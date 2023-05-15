@@ -40,7 +40,6 @@ public class BoardServiceImplement implements BoardService {
     private final CommentRepository commentRepository;
     private final LikeyRepository likeyRepository;
 
-    
     // 게시물 작성
     @Override
     public ResponseEntity<ResponseDto> postBoard(PostBoardRequestDto dto) {
