@@ -117,31 +117,31 @@ class Liky {
 
     }
 }
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    class ImageUrlList {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+class ImageUrlList {
 
-        private int imageNumber;
-        private String imagUrl;
-        private int boardNumber;
+    private int imageNumber;
+    private String imagUrl;
+    private int boardNumber;
 
-        ImageUrlList(ImageUrlEntity imageUrlEntity) {
-            this.imageNumber = imageUrlEntity.getImageNumber();
-            this.imagUrl = imageUrlEntity.getImageUrl();
-            this.boardNumber = imageUrlEntity.getBoradNumber();
-        }
-        static List<ImageUrlList> createList(List<ImageUrlEntity> imageUrlEntities) {
-            List<ImageUrlList> imageUrlList = new ArrayList<>();
-            for (ImageUrlEntity imageUrlEntity : imageUrlEntities) {
-                ImageUrlList imageUrl = new ImageUrlList(imageUrlEntity);
-                imageUrlList.add(imageUrl);
-    
-            }
-            return imageUrlList;
-    
-        }
+    ImageUrlList(ImageUrlEntity imageUrlEntity) {
+        this.imageNumber = imageUrlEntity.getImageNumber();
+        this.imagUrl = imageUrlEntity.getImageUrl();
+        this.boardNumber = imageUrlEntity.getBoradNumber();
     }
+    static List<ImageUrlList> createList(List<ImageUrlEntity> imageUrlEntities) {
+        List<ImageUrlList> imageUrlList = new ArrayList<>();
+        for (ImageUrlEntity imageUrlEntity : imageUrlEntities) {
+            ImageUrlList imageUrl = new ImageUrlList(imageUrlEntity);
+            imageUrlList.add(imageUrl);
+
+        }
+        return imageUrlList;
+
+    }
+}
 
 @Data
 @NoArgsConstructor

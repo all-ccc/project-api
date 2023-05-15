@@ -1,11 +1,9 @@
 package com.groupc.weather.dto.response.board;
 
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.groupc.weather.dto.ResponseDto;
-import com.groupc.weather.entity.resultSet.BoardCommentLikeyCountResultSet;
 import com.groupc.weather.entity.resultSet.GetBoardListResult;
 
 import lombok.AllArgsConstructor;
