@@ -7,6 +7,7 @@ import com.groupc.weather.entity.UserEntity;
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     public boolean existsByEmail(String email);
+    public boolean existsByUserNumber(Integer userNumber);
 
     public boolean existsByNickname(String nickname);
 

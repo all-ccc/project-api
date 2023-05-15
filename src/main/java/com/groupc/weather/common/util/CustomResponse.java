@@ -91,6 +91,12 @@ public class CustomResponse {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody); // 너가 누구인지 모른다
     }
 
+    public static ResponseEntity<ResponseDto> notExistManagerNumber() {
+
+        ResponseDto errorBody = new ResponseDto("NU", "Not-Existent Manager Number");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
+    }
+
     public static ResponseEntity<ResponseDto> signUpFailed() {
 
         ResponseDto errorBody = new ResponseDto("SF", "Sign In Failed");

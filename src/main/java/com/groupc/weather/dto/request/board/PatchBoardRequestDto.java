@@ -6,8 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 
-
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PatchBoardRequestDto {
     @NotBlank
-    private String boardWriteUserNumber;
+    private Integer boardWriteUserNumber;
     @NotBlank
     private Integer boardNumber;  
     @NotBlank
