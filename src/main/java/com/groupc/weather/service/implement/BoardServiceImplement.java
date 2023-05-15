@@ -25,7 +25,7 @@ import com.groupc.weather.entity.resultSet.BoardCommentLikeyCountResultSet;
 import com.groupc.weather.entity.resultSet.GetBoardListResult;
 import com.groupc.weather.repository.BoardRepository;
 import com.groupc.weather.repository.CommentRepository;
-import com.groupc.weather.repository.LikyRepository;
+import com.groupc.weather.repository.LikeyRepository;
 import com.groupc.weather.repository.UserRepository;
 import com.groupc.weather.service.BoardService;
 
@@ -38,7 +38,7 @@ public class BoardServiceImplement implements BoardService {
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
     private final CommentRepository commentRepository;
-    private final LikyRepository likyRepository;
+    private final LikeyRepository likeyRepository;
 
     
     // 게시물 작성
@@ -76,11 +76,11 @@ public class BoardServiceImplement implements BoardService {
             boardEntity.setViewCount(++viewCount);
             Integer boardWriterNumber = boardEntity.getUserNumber();
             UserEntity userEntity = userRepository.findByUserNumber(boardWriterNumber);
-            List<LikeyEntity> likyEntities = likyRepository.findByBoardNumber(boardNumber);
+            List<LikeyEntity> likeyEntities = likeyRepository.findByBoardNumber(boardNumber);
             List<CommentEntity> commentEntities = commentRepository.findByBoardNumber(boardNumber);
             List<HashListEntity> hashListEntities = hashTageRepository.findByBoardNumber(boardNumber);
             List<ImageUrlEntity> imageUrlEntities = imageUrlRepository.findByBoardNumber(boardNumber);
-            body = new GetBoardResponseDto(boardEntity, userEntity, likyEntities, commentEntities, hashListEntities,
+            body = new GetBoardResponseDto(boardEntity, userEntity, likeyEntities, commentEntities, hashListEntities,
                     imageUrlEntities);
 
         } catch (Exception exception) {
@@ -203,7 +203,7 @@ public class BoardServiceImplement implements BoardService {
                 return CustomResponse.noPermissions();
 
             commentRepository.deleteByBoardNumber(boardNumber);
-            likyRepository.deleteByBoardNumber(boardNumber);
+            likeyRepository.deleteByBoardNumber(boardNumber);
             boardRepository.delete(boardEntity);
 
         } catch (Exception exception) {
@@ -227,8 +227,21 @@ public class BoardServiceImplement implements BoardService {
         }
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
-}
 
+    // 특정 게시물 좋아요 등록
+
+
+    // 특정 게시물 좋아요 해제
+
+
+    // 특정 유저 좋아요 게시물 조회
+
+   
+    // 특정 게시물 검색
+
+    
+    // 특정 게시물 검색(해쉬태그)
+}
     
 
 
