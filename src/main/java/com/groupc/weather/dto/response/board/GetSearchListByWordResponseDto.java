@@ -1,7 +1,5 @@
 package com.groupc.weather.dto.response.board;
 
-import java.util.List;
-
 import javax.validation.constraints.NotBlank;
 
 import com.groupc.weather.dto.ResponseDto;
@@ -16,22 +14,9 @@ public class GetSearchListByWordResponseDto extends ResponseDto {
     @NotBlank
     private String searchWord;
     private int userNumber;
-    private List<Temperature> temperature;
-    private WeatherInfo weatherInfo;
+    // 상세검색 값(체크박스) 어떻게 가져오는지..
+    private String[] temperature = 
+        {"spring", "summer", "midsummmer", "fall", "winter", "midwinter"};
+    private String[] weatherInfo;
 
-}
-
-@Data
-@NoArgsConstructor
-class Temperature { // 체크박스 답변은 어떻게 받아올지
-    private int Spring = 1;
-    private int Summer = 2;
-    private int midSummer = 3;
-    private int Fall = 4;
-    private int Winter = 5;
-    private int midWinter = 6;
-}
-
-class WeatherInfo {
-    //! 여기서부터
 }

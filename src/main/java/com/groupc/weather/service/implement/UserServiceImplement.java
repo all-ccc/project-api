@@ -69,7 +69,7 @@ public class UserServiceImplement implements UserService {
             dto.setUserPassword(encodedPassword);
 
             // 유저 레코드 삽입
-            UserEntity userEntity = new UserEntity(dto);
+            UserEntity userEntity = new UserEntity(dto); // 생성자 없음
             userRepository.save(userEntity);
 
         } catch (Exception exception) {
@@ -136,7 +136,7 @@ public class UserServiceImplement implements UserService {
 
             // 이거 반복문 돌려서 이름이랑 폰 번호 일치하는 사람의 이메일을 찾는 로직이 있어햐 하지 않나?
             // ==> DB 쿼리에서 WHRER 조건문 달아서 구분.
-            String currentName = userEntity.getUserName(); // Entity 에 저장된 유저의 데이터 (name)
+            String currentName = userEntity.getName(); // Entity 에 저장된 유저의 데이터 (name)
             String currentPhoneNumber = userEntity.getPhoneNumber();
 
             // 해당하는 이메일 반환.
@@ -231,6 +231,12 @@ public class UserServiceImplement implements UserService {
         }
 
         return CustomResponse.success();
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> patchUser(String userEmail, PatchUserRequestDto2 requestBody) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'patchUser'");
     }
 
 }

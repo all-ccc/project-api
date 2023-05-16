@@ -67,12 +67,12 @@ public class BoardController {
     }
 
     // 6. 첫화면 일반 게시물 목록
-    @GetMapping("/firstImage")
-    public ResponseEntity<? super GetBoardFirstViewDto> getBoardFirstView(){
-        ResponseEntity<? super GetBoardFirstViewDto> response = boardService.getBoardFirstView();
-        return response;
+    // @GetMapping("/firstImage")
+    // public ResponseEntity<? super GetBoardFirstViewDto> getBoardFirstView(){
+    //     ResponseEntity<? super GetBoardFirstViewDto> response = boardService.getBoardList();
+    //     return response;
 
-    }
+    // }
 
     // 7. 특정 게시물 수정
     @PatchMapping("")
@@ -85,11 +85,12 @@ public class BoardController {
     // 8 . 특정 게시물 삭제
     @DeleteMapping("/{userNumber}/{boardNumber}")
     public ResponseEntity<ResponseDto> deleteBoard(
-            @PathVariable("userNumber") Integer userNumber,
-            @PathVariable("boardNumber") Integer boardNumber
-            ){ResponseEntity<ResponseDto> response = boardService.deleteBoard(userNumber, boardNumber);
+        @PathVariable("userNumber") Integer userNumber,
+        @PathVariable("boardNumber") Integer boardNumber
+    ) {
+        ResponseEntity<ResponseDto> response = boardService.deleteBoard(userNumber, boardNumber);
         return response;
-        }
+    }
 
 
     // 9. 특정 게시물 좋아요 등록
@@ -105,7 +106,17 @@ public class BoardController {
 
 
     // 12. 특정 게시물 검색
-
+    @GetMapping("/{searchWord}/{weatherInfo}/{temperature}") // 이렇게 쓰는 게 맞는 건지..
+    public ResponseEntity<? super GetBoardListResponseDto> searchListByWord(
+        @PathVariable("searchWord") String searchWord
+        // @PathVariable("weatherInfo") String weatherInfo,
+        // @PathVariable("temperature") String temperature
+    ) {
+        ResponseEntity<? super GetBoardListResponseDto> response =
+            boardService.getSearchListByWord(searchWord);
+        return response;
+    }
+    
     
 
     // 13. 특정 게시물 검색(해쉬태그)

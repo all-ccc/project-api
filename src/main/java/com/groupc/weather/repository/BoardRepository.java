@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import com.groupc.weather.entity.BoardEntity;
 import com.groupc.weather.entity.resultSet.BoardCommentLikeyCountResultSet;
@@ -12,11 +13,12 @@ import com.groupc.weather.entity.resultSet.GetBoardListResult;
 import com.groupc.weather.entity.resultSet.HashTagResultSet;
 import com.groupc.weather.entity.resultSet.LikeyResultSet;
 
+@Repository
 public interface BoardRepository extends JpaRepository<BoardEntity, Integer> {
 
     public BoardEntity findByBoardNumber(Integer boardNumber);
 
-    public List<GetBoardListResult> findByBoardWriterNumber(Integer userNumber);
+    public List<GetBoardListResult> findByUserNumber(Integer userNumber);
 
     @Query(value =
     "SELECT " + 
