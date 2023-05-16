@@ -78,7 +78,7 @@ public class BoardServiceImplement implements BoardService {
             UserEntity userEntity = userRepository.findByUserNumber(boardWriterNumber);
             List<LikeyEntity> likeyEntities = likeyRepository.findByBoardNumber(boardNumber);
             List<CommentEntity> commentEntities = commentRepository.findByBoardNumber(boardNumber);
-            List<HashListEntity> hashListEntities = hashTageRepository.findByBoardNumber(boardNumber);
+            List<HashListEntity> hashListEntities = hashtagRepository.findByBoardNumber(boardNumber);
             List<ImageUrlEntity> imageUrlEntities = imageUrlRepository.findByBoardNumber(boardNumber);
             body = new GetBoardResponseDto(boardEntity, userEntity, likeyEntities, commentEntities, hashListEntities,
                     imageUrlEntities);
@@ -228,6 +228,7 @@ public class BoardServiceImplement implements BoardService {
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
+
     // 특정 게시물 좋아요 등록
 
 
@@ -238,9 +239,18 @@ public class BoardServiceImplement implements BoardService {
 
    
     // 특정 게시물 검색
-
+    @Override
+    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWord() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getSearchListByWord'");
+    }
     
     // 특정 게시물 검색(해쉬태그)
+    @Override
+    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByHashtag() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getSearchListByHashtag'");
+    }
 }
     
 

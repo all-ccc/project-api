@@ -87,7 +87,7 @@ public class QnaBoardController {
         @PathVariable("searchWord") String searchWord
     ) {
         ResponseEntity<? super GetQnaBoardListResponseDto> response =
-            qnaBoardService.searchQnaBoardList(searchWord);
+            qnaBoardService.getSearchQnaBoardList(searchWord);
         return response;
     }
 

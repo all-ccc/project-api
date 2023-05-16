@@ -18,7 +18,7 @@ public interface QnaBoardService {
     
     public ResponseEntity<ResponseDto> deleteQnaBoard(Integer userNumber, Integer boardNumber);
 
-    public ResponseEntity<ResponseDto> searchQnaBoardList(String searchWord);
+    public ResponseEntity<ResponseDto> getSearchQnaBoardList(String searchWord);
 
 
     

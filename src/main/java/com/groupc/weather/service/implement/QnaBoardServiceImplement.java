@@ -192,7 +192,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
     }
 
     @Override
-    public ResponseEntity<ResponseDto> searchQnaBoardList(String searchWord) {
+    public ResponseEntity<ResponseDto> getSearchQnaBoardList(String searchWord) {
         GetQnaBoardSearchListResponseDto body = null;
 
         try {
@@ -207,6 +207,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
-    //
+
+
 
 }

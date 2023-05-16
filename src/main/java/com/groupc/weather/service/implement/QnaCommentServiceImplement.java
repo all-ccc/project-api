@@ -40,7 +40,7 @@ public class QnaCommentServiceImplement implements QnaCommentService {
 
         try {
             boolean existedWriterManagerNumber = managerRepository.existsbyManagerNumber(qnaBoardWriterNumber);
-            boolean existedWriterUserNumber = userRepositry.existsbyUserNumber(qnaBoardWriterNumber);
+            boolean existedWriterUserNumber = userRepositry.existsByUserNumber(qnaBoardWriterNumber);
             boolean existedQnaBoardNumber = qnaBoardRepsitory.existsByQnaBoardNumber(qnaBoardNumber);
 
             // TODO: Qna 존재 유무

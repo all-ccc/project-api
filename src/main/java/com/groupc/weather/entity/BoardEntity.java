@@ -5,6 +5,10 @@ import com.groupc.weather.dto.request.board.PostBoardRequestDto;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,15 +17,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BoardEntity {
-private Integer boardNumber;
-private Integer userNumber;
-private String title;
-private String content;
-private String boardImageUrl;
-private String writeDatetime;
-private int temperature;
-private String weatherInfo;
-private int viewCount;
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Integer boardNumber;
+        private Integer userNumber;
+        private String title;
+        private String content;
+        private String boardImageUrl;
+        private String writeDatetime;
+        private int temperature;
+        private String weatherInfo;
+        private int viewCount;
 
         public BoardEntity(PostBoardRequestDto dto) {
                 Date now = new Date();
