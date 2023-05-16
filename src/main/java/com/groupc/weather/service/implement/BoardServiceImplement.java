@@ -25,6 +25,8 @@ import com.groupc.weather.entity.resultSet.BoardCommentLikeyCountResultSet;
 import com.groupc.weather.entity.resultSet.GetBoardListResult;
 import com.groupc.weather.repository.BoardRepository;
 import com.groupc.weather.repository.CommentRepository;
+import com.groupc.weather.repository.HashTageRepository;
+import com.groupc.weather.repository.ImageUrlRepository;
 import com.groupc.weather.repository.LikeyRepository;
 import com.groupc.weather.repository.UserRepository;
 import com.groupc.weather.service.BoardService;
@@ -77,8 +79,8 @@ public class BoardServiceImplement implements BoardService {
             UserEntity userEntity = userRepository.findByUserNumber(boardWriterNumber);
             List<LikeyEntity> likeyEntities = likeyRepository.findByBoardNumber(boardNumber);
             List<CommentEntity> commentEntities = commentRepository.findByBoardNumber(boardNumber);
-            List<HashListEntity> hashListEntities = hashTageRepository.findByBoardNumber(boardNumber);
-            List<ImageUrlEntity> imageUrlEntities = imageUrlRepository.findByBoardNumber(boardNumber);
+            List<HashListEntity> hashListEntities = HashTageRepository.findByBoardNumber(boardNumber);
+            List<ImageUrlEntity> imageUrlEntities = ImageUrlRepository.findByBoardNumber(boardNumber);
             body = new GetBoardResponseDto(boardEntity, userEntity, likeyEntities, commentEntities, hashListEntities,
                     imageUrlEntities);
 
@@ -230,6 +232,7 @@ public class BoardServiceImplement implements BoardService {
     // 특정 게시물 좋아요 등록
 
 
+
     // 특정 게시물 좋아요 해제
 
 
@@ -240,6 +243,7 @@ public class BoardServiceImplement implements BoardService {
 
     
     // 특정 게시물 검색(해쉬태그)
+    
 }
     
 

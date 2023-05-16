@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity(name = "Hashtag_Has_Board")
 @Table(name = "Hashtag_Has_Board")
 public class HashListEntity {
- 
+  
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int hashtagNumber;
