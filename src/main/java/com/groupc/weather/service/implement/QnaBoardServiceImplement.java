@@ -47,7 +47,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
     @Override
     public ResponseEntity<ResponseDto> postQnaBoard(PostQnaBoardRequestDto dto) {
         ResponseDto body = null;
-        Integer userNumber = dto.getUserNumber();
+        int userNumber = dto.getUserNumber();
 
         try {
             // 존재하지 않는 유저 번호 반환 
@@ -61,16 +61,13 @@ public class QnaBoardServiceImplement implements QnaBoardService {
 
             QnaBoardEntity qnaBoardEntity = new QnaBoardEntity(dto);
             qnaBoardRepository.save(qnaBoardEntity);
-
-            body = new ResponseDto("SU", "Success");
             
         } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(body);
-
+        return CustomResponse.success();
     }
 
     @Override
@@ -192,14 +189,14 @@ public class QnaBoardServiceImplement implements QnaBoardService {
     }
 
     @Override
-    public ResponseEntity<ResponseDto> searchQnaBoardList(String searchWord) {
-        GetQnaBoardSearchListResponseDto body = null;
+    public ResponseEntity<? super GetQnaBoardListResponseDto> searchQnaBoardList(String searchWord) {
+        GetQnaBoardListResponseDto body = null;
 
         try {
             if (searchWord.isBlank()) return CustomResponse.validationError(); // 이렇게 처리하면 되는지
             
-            //List<QnaBoardListResultSet> resultSet = qnaBoardRepository.getQnaBoardSearchList(searchWord);
-            body = new GetQnaBoardSearchListResponseDto(null); // 이것도 해야함
+            List<QnaBoardListResultSet> resultSet = qnaBoardRepository.getQnaBoardSearchList(searchWord);
+            body = new GetQnaBoardListResponseDto(resultSet); // 이것도 해야함
             
         } catch (Exception exception) {
             exception.printStackTrace();

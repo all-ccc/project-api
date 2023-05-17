@@ -34,8 +34,8 @@ public class QnaCommentEntity {
         private Integer managerNumber;
         private String userNickname;
         private String managerNickname;
-        private String userImageProfileUrl;
-        private String managerProfileUrl;
+        private String userProfileImageUrl;
+        private String managerProfileImageUrl;
 
 
         public QnaCommentEntity(PostQnaCommentRequestDto dto,UserDto userDto){

@@ -38,7 +38,7 @@ private int viewCount;
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 String writeDatetime = simpleDateFormat.format(now);
 
-                this.boardNumber = dto.getUserNumber();
+                this.userNumber = dto.getUserNumber();
                 this.title = dto.getTitle();
                 this.content = dto.getContent();
                 this.boardImageUrl = dto.getImageUrl();
