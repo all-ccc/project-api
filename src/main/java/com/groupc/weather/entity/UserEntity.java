@@ -33,6 +33,15 @@ public class UserEntity {
     private String birthday;
     public UserEntity(PostUserRequestDto dto){
 
+    this.name= dto.getUserName();
+    this.email=dto.getUserEmail();
+    this.password=dto.getUserPassword();
+    this.nickname=dto.getUserNickname();
+    this.phoneNumber=dto.getUserPhoneNumber();
+    this.address=dto.getUserAddress();
+    this.gender=dto.getUserGender();
+    this.birthday=dto.getUserBirthday();
+    this.profileImageUrl=dto.getUserProfileImageUrl();
 
     }
 }

@@ -13,8 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class PostUserRequestDto {
-    @NotBlank
-    private Integer userNumber;
+
     @NotBlank
     private String userName;
     @NotBlank
@@ -26,7 +25,7 @@ public class PostUserRequestDto {
     private String userEmail;
     private String userProfileImageUrl;
     @NotBlank
-    private Date userBirthday;
+    private String userBirthday;
     @NotBlank
     private String userGender;
     @NotBlank
