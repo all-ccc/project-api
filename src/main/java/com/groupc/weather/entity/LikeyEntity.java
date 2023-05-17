@@ -22,8 +22,7 @@ public class LikeyEntity {
     private int boardNumber;     
     @Id
     private int userNumber;
-    private String userEmail;
-    private String userNickname;
-    private String userProfileImageUrl;
+    private boolean like;  // 좋아요를 눌렀을 경우 등록되고 한번 더 누르면 취소가 될 때 사용!?
+
 }
 

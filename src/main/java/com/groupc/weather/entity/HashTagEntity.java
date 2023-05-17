@@ -13,14 +13,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "ImageUrl")
-@Table(name = "Image_Url")
-public class ImageUrlEntity {
-    
+@Entity(name = "Hashtag")
+@Table(name = "Hashtag")
+public class HashTagEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int imageNumber;
-    
-    private String imageUrl;
-    private int boardNumber;
+    private int hashtagNumber;
+    private String hashtagContent;
 }

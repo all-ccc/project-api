@@ -4,10 +4,20 @@ import java.util.List;
 
 import com.groupc.weather.dto.ResponseDto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 public class GetUserBoardLikeDto extends ResponseDto{
     private List<BoardSummary> boardList;
 }
 
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 class BoardSummary{
     private int boardNumber;
     private String boardTitle;

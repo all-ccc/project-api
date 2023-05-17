@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.groupc.weather.dto.response.board.GetBoardFirstViewDto;
 import com.groupc.weather.dto.response.board.GetBoardListResponseDto;
 import com.groupc.weather.dto.response.board.GetBoardResponseDto;
+import com.groupc.weather.repository.LikeyRepository;
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.board.PatchBoardRequestDto;
 import com.groupc.weather.dto.request.board.PostBoardRequestDto;
@@ -68,11 +69,11 @@ public class BoardController {
     }
 
     // 6. 첫화면 일반 게시물 목록
-    @GetMapping("/firstImage")
-    public ResponseEntity<? super GetBoardFirstViewDto> getBoardFirstView(){
-        ResponseEntity<? super GetBoardFirstViewDto> response = boardService.getBoardFirstView();
-        return response;
-    }
+    // @GetMapping("/firstImage")
+    // public ResponseEntity<? super GetBoardFirstViewDto> getBoardFirstView(){
+    //     ResponseEntity<? super GetBoardFirstViewDto> response = boardService.getBoardList();
+    //     return response
+    // }
 
     // 7. 특정 게시물 수정
     @PatchMapping("")
@@ -83,37 +84,46 @@ public class BoardController {
     }
 
     // 8 . 특정 게시물 삭제
+    // @DeleteMapping("/{userNumber}/{boardNumber}")
+    // public ResponseEntity<ResponseDto> deleteBoard(
+    //         @PathVariable("userNumber") Integer userNumber,
+    //         @PathVariable("boardNumber") Integer boardNumber
+    //         ){ResponseEntity<ResponseDto> response = boardService.deleteBoard(userNumber, boardNumber);
+    //     return response;
+    // }
+   
+
+    // 9. 특정 게시물 좋아요 등록
+    // @PostMapping("/{userNumber}/{boardNumber}")
+    
+
+    
+
+
+    // 10. 특정 게시물 좋아요 해제
     @DeleteMapping("/{userNumber}/{boardNumber}")
-    public ResponseEntity<ResponseDto> deleteBoard(
+    public ResponseEntity<ResponseDto> deleteBoardLike(
             @PathVariable("userNumber") Integer userNumber,
             @PathVariable("boardNumber") Integer boardNumber
             ){ResponseEntity<ResponseDto> response = boardService.deleteBoard(userNumber, boardNumber);
         return response;
     }
-   
-
-    // 9. 특정 게시물 좋아요 등록
-
-
-    // 10. 특정 게시물 좋아요 해제
-
 
 
     // 11. 특정 유저 좋아요 게시물 조회
-
-
+    @GetMapping("/{userNumber}/")
+    public ResponseEntity<? super GetBoardResponseDto> getUserBoardLikey(
+        @PathVariable("userNumber") Integer userNumber) {
+        ResponseEntity<? super GetBoardResponseDto> response = boardService.getBoard(userNumber);
+        return response;
+    }
 
     // 12. 특정 게시물 검색
-
+    // @GetMapping()
+    
     
 
     // 13. 특정 게시물 검색(해쉬태그)
-
-
-
-
-
-
-
+    // @GetMapping()
 
 }

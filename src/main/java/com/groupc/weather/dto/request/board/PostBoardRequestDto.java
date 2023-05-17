@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,20 +15,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostBoardRequestDto {
-    @NotBlank
+    @NotNull
     private int userNumber;
-    @NotBlank
+    @NotNull
     private String title;
-    @NotBlank
+    @NotNull
     private String content;
-    @NotBlank
+    @NotNull
     private String imageUrl;
-    @NotBlank
+    @NotNull
     private List<ImageUrlList> imageUrlList;
     private List<HashTag> hashtagList;
-    @NotBlank
+    @NotNull
     private String weatherInfo;
-    @NotBlank
+    @NotNull
     private int temperature;
 
 }
@@ -35,7 +36,6 @@ public class PostBoardRequestDto {
 @NoArgsConstructor
 @AllArgsConstructor
 class ImageUrlList {
-    @Id
     @NotBlank
     private int imageNumber;
     @NotBlank
@@ -48,7 +48,6 @@ class ImageUrlList {
 @NoArgsConstructor
 @AllArgsConstructor
 class HashTag {
-    @Id
     @NotBlank
     private int hashtagNumber;
 

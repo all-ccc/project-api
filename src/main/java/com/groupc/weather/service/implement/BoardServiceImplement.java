@@ -1,5 +1,6 @@
 package com.groupc.weather.service.implement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,13 @@ import com.groupc.weather.dto.request.board.PatchBoardRequestDto;
 import com.groupc.weather.dto.request.board.PostBoardRequestDto;
 import com.groupc.weather.dto.response.board.GetBoardListResponseDto;
 import com.groupc.weather.dto.response.board.GetBoardResponseDto;
+import com.groupc.weather.dto.response.board.GetUserBoardLikeDto;
 import com.groupc.weather.entity.BoardEntity;
 import com.groupc.weather.entity.CommentEntity;
-import com.groupc.weather.entity.HashListEntity;
 import com.groupc.weather.entity.ImageUrlEntity;
 import com.groupc.weather.entity.LikeyEntity;
 import com.groupc.weather.entity.UserEntity;
+import com.groupc.weather.entity.primaryKey.HashListEntity;
 import com.groupc.weather.entity.resultSet.BoardCommentLikeyCountResultSet;
 import com.groupc.weather.entity.resultSet.GetBoardListResult;
 import com.groupc.weather.repository.BoardRepository;
@@ -35,7 +37,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class BoardServiceImplement implements BoardService {
+public class BoardServiceImplement<BoardSummary> implements BoardService {
 
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
@@ -51,6 +53,9 @@ public class BoardServiceImplement implements BoardService {
             boolean isexistUsernumber = userRepository.existsByUserNumber(dto.getUserNumber());
             if (!isexistUsernumber)
                 return CustomResponse.notExistUserNumber();
+
+            BoardEntity boardEntity = new BoardEntity(dto);
+            boardRepository.save(boardEntity);
         } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
@@ -79,8 +84,8 @@ public class BoardServiceImplement implements BoardService {
             UserEntity userEntity = userRepository.findByUserNumber(boardWriterNumber);
             List<LikeyEntity> likeyEntities = likeyRepository.findByBoardNumber(boardNumber);
             List<CommentEntity> commentEntities = commentRepository.findByBoardNumber(boardNumber);
-            List<HashListEntity> hashListEntities = HashTageRepository.findByBoardNumber(boardNumber);
-            List<ImageUrlEntity> imageUrlEntities = ImageUrlRepository.findByBoardNumber(boardNumber);
+            List<HashListEntity> hashListEntities = hashTageRepository.findByBoardNumber(boardNumber);
+            List<ImageUrlEntity> imageUrlEntities = imageUrlRepository.findByBoardNumber(boardNumber);
             body = new GetBoardResponseDto(boardEntity, userEntity, likeyEntities, commentEntities, hashListEntities,
                     imageUrlEntities);
 
@@ -133,7 +138,7 @@ public class BoardServiceImplement implements BoardService {
 
         try {
 
-            List<GetBoardListResult> resultSet = boardRepository.findByBoardWriterNumber(userNumber);
+            List<GetBoardListResult> resultSet = boardRepository.findByUserNumber(userNumber);
             System.out.println(resultSet.size());
             body = new GetBoardListResponseDto(resultSet);
         } catch (Exception exception) {
@@ -185,34 +190,34 @@ public class BoardServiceImplement implements BoardService {
     }
 
     // 게시물 삭제
-    @Override
-    public ResponseEntity<ResponseDto> deleteBoard(Integer userNumber, Integer boardNumber) {
-        try {
-            // TODO 존재하지 않는 게시물 번호 반환
-            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
-            if (boardEntity == null)
-                return CustomResponse.notExistBoardNumber();
+    // @Override
+    // public ResponseEntity<ResponseDto> deleteBoard(Integer userNumber, Integer boardNumber) {
+    //     try {
+    //         // TODO 존재하지 않는 게시물 번호 반환
+    //         BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+    //         if (boardEntity == null)
+    //             return CustomResponse.notExistBoardNumber();
 
-            // TODO 존재 하지 않는 유저 이메일 반환
-            boolean existedUserNumber = userRepository.existsByUserNumber(userNumber);
-            if (!existedUserNumber)
-                return CustomResponse.notExistUserNumber();
+    //         // TODO 존재 하지 않는 유저 번호 반환
+    //         boolean existedUserNumber = userRepository.existsByUserNumber(userNumber);
+    //         if (!existedUserNumber)
+    //             return CustomResponse.notExistUserNumber();
 
-            // TODO 권한 x
-            boolean equalsWriter = boardEntity.getUserNumber().equals(userNumber);
-            if (!equalsWriter)
-                return CustomResponse.noPermissions();
+    //         // TODO 권한 x
+    //         boolean equalsWriter = boardEntity.getUserNumber().equals(userNumber);
+    //         if (!equalsWriter)
+    //             return CustomResponse.noPermissions();
 
-            commentRepository.deleteByBoardNumber(boardNumber);
-            likeyRepository.deleteByBoardNumber(boardNumber);
-            boardRepository.delete(boardEntity);
+    //         commentRepository.deleteByBoardNumber(boardNumber);
+    //         //likeyRepository.deleteByBoardNumber(boardNumber);
+    //         boardRepository.delete(boardEntity);
 
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return CustomResponse.databaseError();
-        }
-        return CustomResponse.success();
-    }
+    //     } catch (Exception exception) {
+    //         exception.printStackTrace();
+    //         return CustomResponse.databaseError();
+    //     }
+    //     return CustomResponse.success();
+    // }
 
     //첫화면 게시물 8개 보기
     @Override
@@ -226,28 +231,128 @@ public class BoardServiceImplement implements BoardService {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(body);
+        return ResponseEntity.status(HttpStatus.OK).body("dd"); //주석처리
+    }
+
+    @Override
+    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWord() {
+        return null;
+      
+    }
+
+    @Override
+    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByHashtag() {
+        return null;
+       
     }
 
     // 특정 게시물 좋아요 등록
+    @Override
+    public ResponseEntity<ResponseDto> Likey(Integer userNumber, Integer boardNumber){
+    try {
+        // 존재하지 않는 유저 번호
+        boolean isexistUsernumber = userRepository.existsByUserNumber(userNumber);
+        if (!isexistUsernumber)
+            return CustomResponse.notExistUserNumber();
 
+        // 존재하지 않는 게시물 번호
+        boolean isexistBoardNumber = boardRepository.existsByBoardNumber(boardNumber);
+        if (!isexistBoardNumber)
+            return CustomResponse.notExistBoardNumber();
+   
+        // 이미 좋아요가 등록된 경우
+        LikeyEntity existingLikey = (likeyRepository).findByBoardNumber(boardNumber, userNumber);
+        if (existingLikey != null)
+            return CustomResponse.alreadyExists();
+   
+        // 좋아요 생성 및 저장
+        LikeyEntity newLikey = new LikeyEntity(userNumber, boardNumber, isexistBoardNumber);
+        likeyRepository.save(newLikey);
 
+    } catch (Exception exception) {
+        exception.printStackTrace();
+        return CustomResponse.databaseError();
+    }
+    return CustomResponse.success();
+}
 
     // 특정 게시물 좋아요 해제
+    @Override
+    public ResponseEntity<ResponseDto> deleteBoardLikey(Integer userNumber, Integer boardNumber){
+    try {
+        // TODO 존재하지 않는 게시물 번호 반환
+       LikeyEntity likeyEntity = likeyRepository.findByBoardNumber(boardNumber);
+        if (likeyEntity == null)
+            return CustomResponse.notExistBoardNumber();
 
+        // TODO 존재 하지 않는 유저 번호 반환    
+        boolean existedUserNumber = userRepository.existsByUserNumber(userNumber);
+        if (!existedUserNumber)
+            return CustomResponse.notExistUserNumber();
+
+        // TODO 권한 x
+        boolean equalsWriter = likeyEntity.getUserNumber().equals(userNumber);
+        if (!equalsWriter)
+            return CustomResponse.noPermissions();
+
+        likeyRepository.deleteByBoardNumber(boardNumber);
+
+    } catch (Exception exception) {
+        exception.printStackTrace();
+        return CustomResponse.databaseError();
+    }
+    return CustomResponse.success();
+}
 
     // 특정 유저 좋아요 게시물 조회
+    @Override
+    public ResponseEntity<? super GetUserBoardLikeDto> getLikeBoards(Integer userNumber) {
+        GetUserBoardLikeDto body = null;
 
+        try {
+            // 매게변수 오류
+            if (userNumber == null)
+                return CustomResponse.validationError();
+            List<LikeyEntity> likeyEntities = likeyRepository.findByUserNumber(userNumber);
+            List<BoardSummary> boardList = new ArrayList<>();
+
+            for (LikeyEntity likeyEntity : likeyEntities) {
+                Integer boardNumber = likeyEntity.getBoardNumber();
+                BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+                BoardSummary boardSummary = new BoardSummary(
+                        boardEntity.getBoardNumber(),
+                        boardEntity.getBoardTitle(),
+                        boardEntity.getBoardContent(),
+                        boardEntity.getBoardWriteDatetime().toString(),
+                        boardEntity.getBoardWriterNumber(),
+
+                        userEntity.getNickname(),
+                        userEntity.getProfileImageUrl(),
+                        boardEntity.getCommentCount(),
+                        boardEntity.getLikeCount(),
+
+                        new BoardImageUrlList(),
+
+                        new ArrayList<HashList>());
+                boardList.add(boardSummary);
+            }
+
+            body = new GetUserBoardLikeDto();
+            body.setBoardList(boardList);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return CustomResponse.success();
+    }
    
     // 특정 게시물 검색
-
     
+
+   
     // 특정 게시물 검색(해쉬태그)
-    
+
+
+
 }
-    
-
-
-    
-
-

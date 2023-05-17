@@ -97,6 +97,11 @@ public class CustomResponse {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
     }
 
+    public static ResponseEntity<ResponseDto> notExistQnaCommentNumber() {
+        
+        ResponseDto errorBody = new ResponseDto("NQC", "Not-Existent Qna Comment Number");        
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody); //너가 누구인지 모른다
+    }
     public static ResponseEntity<ResponseDto> signUpFailed() {
 
         ResponseDto errorBody = new ResponseDto("SF", "Sign Up Failed");
@@ -108,4 +113,9 @@ public class CustomResponse {
         ResponseDto errorBody = new ResponseDto("NT", "No Permissions");
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorBody); // 너가 누구인지는 알지만 권한이없음
     }
+
+    public static ResponseEntity<ResponseDto> alreadyExists() {  
+        ResponseDto errorBody = new ResponseDto();
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorBody);
+    } // 좋아요가 등록된 경우
 }
