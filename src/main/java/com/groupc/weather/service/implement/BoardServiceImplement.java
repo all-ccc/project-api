@@ -230,18 +230,6 @@ public class BoardServiceImplement implements BoardService {
         return ResponseEntity.status(HttpStatus.OK).body("dd"); //주석처리
     }
 
-    @Override
-    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWord() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getSearchListByWord'");
-    }
-
-    @Override
-    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByHashtag() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getSearchListByHashtag'");
-    }
-
     // 특정 게시물 좋아요 등록
 
 
@@ -252,9 +240,19 @@ public class BoardServiceImplement implements BoardService {
 
    
     // 특정 게시물 검색
-
+    @Override
+    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWord(String searchWord) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getSearchListByWord'");
+    }
     
     // 특정 게시물 검색(해쉬태그)
+    @Override
+    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByHashtag(String hashtag) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getSearchListByHashtag'");
+    }
+
 }
     
 
