@@ -43,6 +43,15 @@ public class UserEntity {
         this.birthday=dto.getUserBirthday();
 
 
+    this.name= dto.getUserName();
+    this.email=dto.getUserEmail();
+    this.password=dto.getUserPassword();
+    this.nickname=dto.getUserNickname();
+    this.phoneNumber=dto.getUserPhoneNumber();
+    this.address=dto.getUserAddress();
+    this.gender=dto.getUserGender();
+    this.birthday=dto.getUserBirthday();
+    this.profileImageUrl=dto.getUserProfileImageUrl();
 
     }
 }

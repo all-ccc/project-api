@@ -15,7 +15,6 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.groupc.weather.provider.JwtProvider;
@@ -26,28 +25,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private JwtProvider jwtProvider;
 
     @Autowired
-		public JwtAuthenticationFilter(JwtProvider jwtProvider) {
+    public JwtAuthenticationFilter(JwtProvider jwtProvider) {
         this.jwtProvider = jwtProvider;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-
+        
         try {
 
             String jwt = parseToken(request);
 
-            boolean hasJwt = jwt != null && !jwt.equalsIgnoreCase("null");
-
+            boolean hasJwt = jwt != null;
             if (!hasJwt) {
                 filterChain.doFilter(request, response);
                 return;
             }
-            String subject = jwtProvider.validate(jwt);
 
-            AbstractAuthenticationToken authenticationToken = 
-                new UsernamePasswordAuthenticationToken(subject, null, AuthorityUtils.NO_AUTHORITIES);
+            String email = jwtProvider.validate(jwt);
+
+            AbstractAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(email, null, AuthorityUtils.NO_AUTHORITIES);
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
             SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
@@ -66,7 +65,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String token = request.getHeader("Authorization");
 
-        boolean hasToken = StringUtils.hasText(token);
+        boolean hasToken = 
+            token != null && 
+            !token.equalsIgnoreCase("null");
         if (!hasToken) return null;
 
         boolean isBearer = token.startsWith("Bearer ");
