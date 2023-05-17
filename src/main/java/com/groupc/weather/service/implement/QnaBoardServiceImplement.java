@@ -17,7 +17,6 @@ import com.groupc.weather.entity.QnaBoardEntity;
 import com.groupc.weather.entity.QnaCommentEntity;
 import com.groupc.weather.entity.UserEntity;
 import com.groupc.weather.entity.resultSet.QnaBoardListResultSet;
-import com.groupc.weather.repository.BoardRepository;
 import com.groupc.weather.repository.ManagerRepository;
 import com.groupc.weather.repository.QnaBoardRepository;
 import com.groupc.weather.repository.QnaCommentRepository;
@@ -75,6 +74,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
         GetQnaBoardResponseDto body = null;
 
         try {
+            // 매개변수 검증 작업
             if (boardNumber == null) return CustomResponse.validationError();
 
             // 존재하지 않는 게시물 번호 반환
@@ -180,7 +180,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
             if (!equalWriter && !isManager) return CustomResponse.noPermissions();
 
             qnaBoardRepository.deleteByBoardNumber(boardNumber);
-            qnaCommentRepository.deleteByBoardNumber(boardNumber);
+            qnaCommentRepository.deleteByQnaBoardNumber(boardNumber);
 
         } catch (Exception exception) {
             exception.printStackTrace();

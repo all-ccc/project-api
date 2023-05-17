@@ -20,7 +20,7 @@ public interface QnaCommentRepository extends JpaRepository<QnaCommentEntity, In
     void deleteByQnaCommentNumber(int qnaCommentNumber);
 
     @Transactional
-    void deleteByBoardNumber(int boardNumber);
+    void deleteByQnaBoardNumber(int qnaBoardNumber);
 
     public List<QnaCommentEntity> findByQnaBoardNumber(int qnaBoardNumber);
 }
