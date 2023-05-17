@@ -66,8 +66,8 @@ class Comment {
         this.qnaBoardNumber = qnaCommentEntity.getQnaBoardNumber();
         this.userNumber = qnaCommentEntity.getUserNumber();
         this.managerNumber = qnaCommentEntity.getManagerNumber();
-        this.userProfileImageUrl = qnaCommentEntity.getUserImageProfileUrl();
-        this.managerProfileImageUrl = qnaCommentEntity.getManagerProfileUrl();
+        this.userProfileImageUrl = qnaCommentEntity.getUserProfileImageUrl();
+        this.managerProfileImageUrl = qnaCommentEntity.getManagerProfileImageUrl();
         this.userNickname = qnaCommentEntity.getUserNickname();
         this.managerNickname = qnaCommentEntity.getManagerNickname();
         this.content = qnaCommentEntity.getContent();

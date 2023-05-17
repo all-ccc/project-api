@@ -1,6 +1,6 @@
 package com.groupc.weather.entity.resultSet;
 
-public interface QnaBoardListResultSet {
+public interface QnaBoardListResultSet2 {
     public int getQnaBoardNumber();
     public String getQnaBoardTitle();
     public String getQnaBoardWriteDatetime();
@@ -9,4 +9,3 @@ public interface QnaBoardListResultSet {
     public String getQnaBoardWriterProfileImageUrl();
     public int getReplyComplete();
 }
-

@@ -11,12 +11,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.groupc.weather.dto.request.qnaBoard.PatchQnaBoardRequestDto;
 import com.groupc.weather.dto.request.qnaBoard.PostQnaBoardRequestDto;
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.response.qnaBoard.GetQnaBoardListResponseDto;
+import com.groupc.weather.dto.response.qnaBoard.GetQnaBoardListResponseDto2;
 import com.groupc.weather.dto.response.qnaBoard.GetQnaBoardResponseDto;
 import com.groupc.weather.dto.response.qnaBoard.GetQnaBoardSearchListResponseDto;
 import com.groupc.weather.service.QnaBoardService;
@@ -82,14 +84,34 @@ public class QnaBoardController {
     }
 
     //* 6. 특정 게시물 검색 */
-    @GetMapping("/{searchWord}")
-    public ResponseEntity<? super GetQnaBoardListResponseDto> searchQnaBoard(
+    @GetMapping("/search/{searchWord}")
+    public ResponseEntity<? super GetQnaBoardSearchListResponseDto> searchQnaBoardList(
         @PathVariable("searchWord") String searchWord
     ) {
-        ResponseEntity<? super GetQnaBoardListResponseDto> response =
+        ResponseEntity<? super GetQnaBoardSearchListResponseDto> response =
             qnaBoardService.searchQnaBoardList(searchWord);
         return response;
     }
+
+    // 특정 게시물 검색 실험
+    @GetMapping("/searchlist")
+    public ResponseEntity<? super GetQnaBoardListResponseDto2> getQnaBoardList2(@RequestParam String searchWord){
+        
+        ResponseEntity<? super GetQnaBoardListResponseDto2> response = qnaBoardService.getQnaBoardList2(searchWord);
+     
+        List<QnaBoardSummary> qnaBoardList
+
+
+        return response;
+        
+    }
+
+    @GetMapping("/hello")
+    public String GetMappingTest (@RequestParam String searchword) {
+        
+        return "Get Mapping : " + searchword;
+    }
+
 
 } 
 

@@ -12,12 +12,14 @@ import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.qnaBoard.PatchQnaBoardRequestDto;
 import com.groupc.weather.dto.request.qnaBoard.PostQnaBoardRequestDto;
 import com.groupc.weather.dto.response.qnaBoard.GetQnaBoardListResponseDto;
+import com.groupc.weather.dto.response.qnaBoard.GetQnaBoardListResponseDto2;
 import com.groupc.weather.dto.response.qnaBoard.GetQnaBoardResponseDto;
 import com.groupc.weather.dto.response.qnaBoard.GetQnaBoardSearchListResponseDto;
 import com.groupc.weather.entity.QnaBoardEntity;
 import com.groupc.weather.entity.QnaCommentEntity;
 import com.groupc.weather.entity.UserEntity;
 import com.groupc.weather.entity.resultSet.QnaBoardListResultSet;
+import com.groupc.weather.entity.resultSet.QnaBoardListResultSet2;
 import com.groupc.weather.repository.ManagerRepository;
 import com.groupc.weather.repository.QnaBoardRepository;
 import com.groupc.weather.repository.QnaCommentRepository;
@@ -192,20 +194,36 @@ public class QnaBoardServiceImplement implements QnaBoardService {
     }
 
     @Override
-    public ResponseEntity<ResponseDto> searchQnaBoardList(String searchWord) {
+    public ResponseEntity<? super GetQnaBoardSearchListResponseDto> searchQnaBoardList(String searchWord) {
         GetQnaBoardSearchListResponseDto body = null;
 
         try {
-            if (searchWord.isBlank()) return CustomResponse.validationError(); // 이렇게 처리하면 되는지
+            //if (searchWord.isBlank()) return CustomResponse.validationError(); // 이렇게 처리하면 되는지
             
-            //List<QnaBoardListResultSet> resultSet = qnaBoardRepository.getQnaBoardSearchList(searchWord);
-            body = new GetQnaBoardSearchListResponseDto(null); // 이것도 해야함
+            List<QnaBoardListResultSet> resultSet = qnaBoardRepository.findQnaBoardSearchList(searchWord);
+            body = new GetQnaBoardSearchListResponseDto(resultSet); // 이것도 해야함
             
         } catch (Exception exception) {
             exception.printStackTrace();
+            return CustomResponse.databaseError();
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
+    @Override
+    public ResponseEntity<? super GetQnaBoardListResponseDto2> getQnaBoardList2(String searchWord) {
+        GetQnaBoardListResponseDto2 body = null;
+        try {
+            List<QnaBoardListResultSet2> resultSet = qnaBoardRepository.getQnaBoardSearchList(searchWord);
+            body= new GetQnaBoardListResponseDto2(resultSet);
+
+            
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+    
 }
+

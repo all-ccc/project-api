@@ -51,7 +51,7 @@ class QnaBoardSummary {
         this.qnaBoardWriteDatetime = resultSet.getQnaBoardWriteDatetime();
         this.qnaBoardWriterNickname = resultSet.getQnaBoardWriterNickname();
         this.qnaBoardWriterProfileImageUrl = resultSet.getQnaBoardWriterProfileImageUrl();
-        this.replyComplete = resultSet.getReplyComplete();
+        this.replyComplete = resultSet.getReplyComplete() == 1;
     }
 }
 
