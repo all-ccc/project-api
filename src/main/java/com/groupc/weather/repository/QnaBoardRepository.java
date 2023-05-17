@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.groupc.weather.entity.QnaBoardEntity;
 import com.groupc.weather.entity.resultSet.QnaBoardListResultSet;
@@ -13,6 +14,9 @@ import com.groupc.weather.entity.resultSet.QnaBoardListResultSet;
 public interface QnaBoardRepository extends JpaRepository<QnaBoardEntity, Integer> {
     public boolean existsByBoardNumber(int QnaboardNumber);
     public QnaBoardEntity findByBoardNumber(int qnaBoardNumber);
+    
+    @Transactional
+    void deleteByBoardNumber(int boardNumber);
 
     @Query(
         value = 
@@ -45,10 +49,9 @@ public interface QnaBoardRepository extends JpaRepository<QnaBoardEntity, Intege
         "U.nickname AS boardWriterNickname," +
         "U.profile_image_url AS boardWriterProfileImageUrl," +
         "Q.reply_complete AS replyComplete " +
-        "FROM User U, Qna_Board Q, Qna_Comment C " +
-        "WHERE Q.board_number = C.qna_board_number " +
+        "FROM User U, Qna_Board Q " +
+        "WHERE (Q.title LIKE CONCAT('%', :search_word,'%') OR Q.content LIKE CONCAT('%', :search_word,'%')) " +
         "AND Q.user_number = U.user_number " +
-        "AND (Q.title LIKE CONCAT('%', :search_word,'%') OR Q.content LIKE CONCAT('%', :search_word,'%')) " +
         "GROUP BY Q.board_number " +
         "ORDER BY Q.write_datetime DESC ",
         nativeQuery = true

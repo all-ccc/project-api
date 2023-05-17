@@ -13,11 +13,11 @@ import com.groupc.weather.dto.request.qnaBoard.PatchQnaBoardRequestDto;
 import com.groupc.weather.dto.request.qnaBoard.PostQnaBoardRequestDto;
 import com.groupc.weather.dto.response.qnaBoard.GetQnaBoardListResponseDto;
 import com.groupc.weather.dto.response.qnaBoard.GetQnaBoardResponseDto;
-import com.groupc.weather.dto.response.qnaBoard.GetQnaBoardSearchListResponseDto;
 import com.groupc.weather.entity.QnaBoardEntity;
 import com.groupc.weather.entity.QnaCommentEntity;
 import com.groupc.weather.entity.UserEntity;
 import com.groupc.weather.entity.resultSet.QnaBoardListResultSet;
+import com.groupc.weather.repository.BoardRepository;
 import com.groupc.weather.repository.ManagerRepository;
 import com.groupc.weather.repository.QnaBoardRepository;
 import com.groupc.weather.repository.QnaCommentRepository;
@@ -57,7 +57,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
             }
 
-            // 인증 실패
+            // TODO: 인증 실패
 
             QnaBoardEntity qnaBoardEntity = new QnaBoardEntity(dto);
             qnaBoardRepository.save(qnaBoardEntity);
@@ -137,7 +137,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
                 userRepository.existsByUserNumber(userNumber);
             if (!existedUserNumber) return CustomResponse.notExistUserNumber();
             
-            // 인증 실패 -> 권한 없음이랑 뭐가 다름 
+            // TODO: 인증 실패 -> 권한 없음이랑 뭐가 다름 
             
             // 권한 없음
             boolean equalWriter = qnaBoardEntity.getUserNumber() == userNumber;
@@ -154,7 +154,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
             return CustomResponse.databaseError();
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(body);
+        return CustomResponse.success();
 
     }
 
@@ -175,34 +175,38 @@ public class QnaBoardServiceImplement implements QnaBoardService {
                 managerRepository.existsByManagerNumber(userNumber);
             if (!existedUserNumber) return CustomResponse.notExistUserNumber();
 
-            // 인증 실패
+            // TODO: 인증 실패
 
             // 권한 없음(작성한 유저나 관리자가 아님)
             boolean equalWriter = qnaBoardEntity.getUserNumber() == userNumber;
             boolean isManager = managerRepository.existsByManagerNumber(userNumber);
-            if (!equalWriter || !isManager) return CustomResponse.noPermissions();
+            if (!equalWriter && !isManager) return CustomResponse.noPermissions();
+
+            qnaBoardRepository.deleteByBoardNumber(boardNumber);
+            qnaCommentRepository.deleteByBoardNumber(boardNumber);
 
         } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(body);
+        return CustomResponse.success();
 
     }
 
     @Override
     public ResponseEntity<? super GetQnaBoardListResponseDto> getSearchQnaBoardList(String searchWord) {
-        GetQnaBoardSearchListResponseDto body = null;
+        GetQnaBoardListResponseDto body = null;
 
         try {
             if (searchWord.isBlank()) return CustomResponse.validationError(); // 이렇게 처리하면 되는지
             
             List<QnaBoardListResultSet> resultSet = qnaBoardRepository.getQnaBoardSearchList(searchWord);
-            body = new GetQnaBoardSearchListResponseDto(resultSet);
+            body = new GetQnaBoardListResponseDto(resultSet);
             
         } catch (Exception exception) {
             exception.printStackTrace();
+            return CustomResponse.databaseError();
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
