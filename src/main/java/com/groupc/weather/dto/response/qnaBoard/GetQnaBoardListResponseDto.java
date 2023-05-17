@@ -39,7 +39,7 @@ public class GetQnaBoardListResponseDto extends ResponseDto {
 @NoArgsConstructor
 @AllArgsConstructor
 class QnaBoardSummary {
-    public int qnaBoardNumber;
+    public Integer qnaBoardNumber;
     public String qnaBoardTitle;
     public String qnaBoardWriteDatetime;
     public int qnaBoardWriterNumber;
@@ -54,7 +54,7 @@ class QnaBoardSummary {
         this.qnaBoardWriterNumber = resultSet.getBoardWriterNumber();
         this.qnaBoardWriterNickname = resultSet.getBoardWriterNickname();
         this.qnaBoardWriterProfileImageUrl = resultSet.getBoardWriterProfileImageUrl();
-        this.replyComplete = resultSet.getReplyComplete();
+        this.replyComplete = resultSet.getReplyComplete() == 1;
     }
 }
 

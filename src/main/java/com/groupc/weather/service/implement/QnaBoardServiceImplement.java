@@ -47,7 +47,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
     @Override
     public ResponseEntity<ResponseDto> postQnaBoard(PostQnaBoardRequestDto dto) {
         ResponseDto body = null;
-        Integer userNumber = dto.getUserNumber();
+        int userNumber = dto.getUserNumber();
 
         try {
             // 존재하지 않는 유저 번호 반환 
@@ -61,16 +61,13 @@ public class QnaBoardServiceImplement implements QnaBoardService {
 
             QnaBoardEntity qnaBoardEntity = new QnaBoardEntity(dto);
             qnaBoardRepository.save(qnaBoardEntity);
-
-            body = new ResponseDto("SU", "Success");
             
         } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(body);
-
+        return CustomResponse.success();
     }
 
     @Override

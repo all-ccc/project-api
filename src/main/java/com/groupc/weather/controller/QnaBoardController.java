@@ -81,7 +81,11 @@ public class QnaBoardController {
     }
 
     //* 6. 특정 게시물 검색 */
+<<<<<<< HEAD
     @GetMapping("search/{searchWord}")
+=======
+    @GetMapping("/search/{searchWord}")
+>>>>>>> d4fe188082983308a3c843f7de78e7c8d9456af2
     public ResponseEntity<? super GetQnaBoardListResponseDto> searchQnaBoard(
         @PathVariable("searchWord") String searchWord
     ) {
