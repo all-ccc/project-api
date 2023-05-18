@@ -6,12 +6,10 @@ public interface GetBoardListResult {
     public int getBoardNumber();
     public String getBoardTitle();
     public String getBoardContent();
-    public String getBoardfirstImageUrl();
-    public String getBoardWriterDatetime();
+    public String getBoardWriteDatetime();
     public String getBoardWriterNickname();
-    public String getboardWriterProfileImageUrl();
-
+    public String getBoardWriterProfileImageUrl();
     public int getCommentCount();
     public int getLikeCount();
-    public List<HashTagResultSet> gethashTagList();
+    
 }

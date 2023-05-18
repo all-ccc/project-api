@@ -30,11 +30,10 @@ public class CommentEntity {
     private Integer boardNumber;
     private String userNickname;
     private String managerNickname;
-    private String commentContent;
+    private String content;
     private String writeDatetime;
     private String userProfileImageUrl;
     private String managerProfileImageUrl;
-    private int commentCount;
 
     //가지고 있는 코멘트의 정보
     public CommentEntity(PostCommentRequestDto dto) {
@@ -48,9 +47,8 @@ public class CommentEntity {
         this.userNumber = dto.getCommentWriterNumber();
         this.managerNumber = dto.getManagerNumber();
         this.boardNumber = dto.getBoardNumber();
-        this.commentContent = dto.getCommentContent();
+        this.content = dto.getCommentContent();
         this.writeDatetime = writeDatetime;
-        this.commentCount = 0;
     }
 }
 

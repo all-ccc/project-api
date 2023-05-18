@@ -45,7 +45,7 @@ public class BoardController {
     }
 
     // 3. 게시물 목록 조회(본인 작성)
-    @GetMapping("/{userNumber}")
+    @GetMapping("/myself/{userNumber}")
     public ResponseEntity<? super GetBoardListResponseDto> getBoardMyList(
         @PathVariable("userNumber") Integer userNumber){
         ResponseEntity<? super GetBoardListResponseDto> response = boardService.getBoardMyList(userNumber);

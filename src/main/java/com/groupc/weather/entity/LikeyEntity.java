@@ -18,10 +18,12 @@ import lombok.NoArgsConstructor;
 @Table(name = "likey")
 @IdClass(LikeyPk.class)
 public class LikeyEntity {
-    @Id
-    private int boardNumber;     
+
     @Id
     private int userNumber;
+    @Id
+    private int boardNumber;     
+    
 
 }
 

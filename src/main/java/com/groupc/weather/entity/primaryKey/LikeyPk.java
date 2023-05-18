@@ -11,6 +11,6 @@ public class LikeyPk implements Serializable {
     @Column(name = "boardNumber")
     private int boardNumber;
     @Column(name = "userNumber")
-    private String userNumber;
+    private int userNumber;
     
 }
