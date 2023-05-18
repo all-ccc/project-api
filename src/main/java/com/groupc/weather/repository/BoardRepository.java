@@ -17,6 +17,7 @@ import com.groupc.weather.entity.resultSet.LikeyResultSet;
 public interface BoardRepository extends JpaRepository<BoardEntity, Integer> {
 
     public BoardEntity findByBoardNumber(Integer boardNumber);
+    public boolean existsByBoardNumber(int boardNumber);
 
     public List<GetBoardListResult> findByUserNumber(Integer userNumber);
 

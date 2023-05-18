@@ -1,5 +1,6 @@
 package com.groupc.weather.service.implement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,8 @@ import com.groupc.weather.dto.response.board.GetBoardListResponseDto;
 import com.groupc.weather.dto.response.board.GetBoardResponseDto;
 import com.groupc.weather.entity.BoardEntity;
 import com.groupc.weather.entity.CommentEntity;
-import com.groupc.weather.entity.HashListEntity;
+import com.groupc.weather.entity.HashtagEntity;
+import com.groupc.weather.entity.HashtagHasBoardEntity;
 import com.groupc.weather.entity.ImageUrlEntity;
 import com.groupc.weather.entity.LikeyEntity;
 import com.groupc.weather.entity.UserEntity;
@@ -25,6 +27,9 @@ import com.groupc.weather.entity.resultSet.BoardCommentLikeyCountResultSet;
 import com.groupc.weather.entity.resultSet.GetBoardListResult;
 import com.groupc.weather.repository.BoardRepository;
 import com.groupc.weather.repository.CommentRepository;
+import com.groupc.weather.repository.HashtagHasBoardRepository;
+import com.groupc.weather.repository.HashtagRepository;
+import com.groupc.weather.repository.ImageUrlRepository;
 import com.groupc.weather.repository.LikeyRepository;
 import com.groupc.weather.repository.UserRepository;
 import com.groupc.weather.service.BoardService;
@@ -39,6 +44,9 @@ public class BoardServiceImplement implements BoardService {
     private final BoardRepository boardRepository;
     private final CommentRepository commentRepository;
     private final LikeyRepository likeyRepository;
+    private final ImageUrlRepository imageUrlRepository;
+    private final HashtagRepository hashtagRepository;
+    private final HashtagHasBoardRepository hashtagHasBoardRepository;
 
     
     // 게시물 작성
@@ -48,17 +56,56 @@ public class BoardServiceImplement implements BoardService {
         try {
             // 존재하지 않는 유저 번호
             boolean isexistUsernumber = userRepository.existsByUserNumber(dto.getUserNumber());
-            if (!isexistUsernumber)
-                {return CustomResponse.notExistUserNumber();}
-                BoardEntity BoardEntity = new BoardEntity(dto);
-                boardRepository.save(BoardEntity);
+            if (!isexistUsernumber) return CustomResponse.notExistUserNumber();
+
+                BoardEntity boardEntity = new BoardEntity(dto);
+                boardRepository.save(boardEntity);
+                int boardNumber = boardEntity.getBoardNumber();
+                List<ImageUrlEntity> imageUrlLists = new ArrayList<>();
+                List<HashtagEntity> hashtagLists = new ArrayList<>();
+
+                for (String imageListResult: dto.getImageUrlList()) {
+                    ImageUrlEntity imageUrlEntity = new ImageUrlEntity(imageListResult, boardEntity.getBoardNumber());
+                    imageUrlLists.add(imageUrlEntity);
+                 }
+
+                imageUrlRepository.saveAll(imageUrlLists); 
+
+                List<HashtagEntity> hashtagEntityList = new ArrayList<>();
+                for (String hashtag: dto.getHashtagList()){
+                    HashtagEntity hashtagEntity = new HashtagEntity(hashtag);
+                    hashtagEntityList.add(hashtagEntity);
+                }
+                hashtagRepository.saveAll(hashtagEntityList);
+
+                List<HashtagHasBoardEntity> hashtagHasBoardEntityList = new ArrayList<>();
+                for (HashtagEntity hashtagEntity: hashtagEntityList) {
+                    int hashtagNumber = hashtagEntity.getHashtagNumber();
+                    HashtagHasBoardEntity hashtagHasBoardEntity = new HashtagHasBoardEntity(hashtagNumber, boardNumber);
+                    hashtagHasBoardEntityList.add(hashtagHasBoardEntity);
+                }
+                hashtagHasBoardRepository.saveAll(hashtagHasBoardEntityList);
+
+                //  List<HashtagHasBoardEntity> hashtagHasBoardEntityList = new ArrayList<>();
+
+                //  for (String hashtag: dto.getHashtagList()){
+                //     HashtagEntity hashtagEntity = new HashtagEntity(hashtag);
+                //     hashtagRepository.save(hashtagEntity);
+
+                //     int hashtagNumber = hashtagEntity.getHashtagNumber();
+                //     HashtagHasBoardEntity hashtagHasBoardEntity = new HashtagHasBoardEntity(hashtagNumber, boardNumber);
+
+                //     hashtagHasBoardEntityList.add(hashtagHasBoardEntity);
+                //  }
+
+                //  hashtagHasBoardRepository.saveAll(hashtagHasBoardEntityList);
+
         } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
         return CustomResponse.success();
     }
-
     // 특정 게시물 조회 (게시물 번호)
     @Override
     public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber) {
@@ -174,7 +221,6 @@ public class BoardServiceImplement implements BoardService {
                 return CustomResponse.noPermissions();
 
             boardEntity.setTitle(boardTitle);
-            boardEntity.setBoardImageUrl(boardImageUrl);
             boardRepository.save(boardEntity);
             // hashTagRepository.save(boardHashTag);
 

@@ -29,7 +29,7 @@ public class BoardController {
     private final BoardService boardService;
     
     // 1. 게시물 작성
-    @PostMapping("")
+    @PostMapping("post")
     public ResponseEntity<ResponseDto> postBoard(
             @Valid @RequestBody PostBoardRequestDto requestBody){
         ResponseEntity<ResponseDto> response = boardService.postBoard(requestBody);
@@ -37,7 +37,7 @@ public class BoardController {
     }
 
     // 2. 특정게시물 조회
-    @GetMapping("/{boardNumber}")
+    @GetMapping("/view/{boardNumber}")
     public ResponseEntity<? super GetBoardResponseDto> getBoard(
             @PathVariable("boardNumber") Integer boardNumber) {
         ResponseEntity<? super GetBoardResponseDto> response = boardService.getBoard(boardNumber);

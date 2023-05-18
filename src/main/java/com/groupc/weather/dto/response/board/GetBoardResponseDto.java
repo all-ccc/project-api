@@ -6,7 +6,7 @@ import java.util.List;
 import com.groupc.weather.dto.ResponseDto;
 
 import com.groupc.weather.entity.CommentEntity;
-import com.groupc.weather.entity.HashListEntity;
+import com.groupc.weather.entity.HashtagHasBoardEntity;
 import com.groupc.weather.entity.ImageUrlEntity;
 import com.groupc.weather.entity.BoardEntity;
 import com.groupc.weather.entity.LikeyEntity;
@@ -39,7 +39,7 @@ public class GetBoardResponseDto extends ResponseDto {
     // request 요청 하면 => dto => DB = > dto => response
     public GetBoardResponseDto(
             BoardEntity photoBoardEntity, UserEntity userEntity,
-            List<LikeyEntity> likyEntities, List<CommentEntity> commentEntities, List<HashListEntity> hashListEntities,
+            List<LikeyEntity> likyEntities, List<CommentEntity> commentEntities, List<HashtagHasBoardEntity> hashListEntities,
             List<ImageUrlEntity> imageUrlEntities) {
         super("SU", "Success");
         this.boardNumber = photoBoardEntity.getBoardNumber();
@@ -151,14 +151,14 @@ class HashTag {
     private String hashtagContent;
     private int boardNumber;
    
-    HashTag( HashListEntity hashListEntity){
+    HashTag( HashtagHasBoardEntity hashListEntity){
         //this.hashtagContent = hashListEntity.getHashtagContent();
         this.hashtagNumber = hashListEntity.getHashtagNumber(); // 어떻게 사용할지 모르겠음...
         this.boardNumber = hashListEntity.getBoardNumber();
     }
-    static List<HashTag> createList(List<HashListEntity> hashTagEntities) {
+    static List<HashTag> createList(List<HashtagHasBoardEntity> hashTagEntities) {
         List<HashTag> hashList = new ArrayList<>();
-        for (HashListEntity hashTagEntity : hashTagEntities) {
+        for (HashtagHasBoardEntity hashTagEntity : hashTagEntities) {
             HashTag hashTag = new HashTag(hashTagEntity);
             hashList.add(hashTag);
 
