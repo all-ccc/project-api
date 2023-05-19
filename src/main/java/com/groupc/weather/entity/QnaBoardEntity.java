@@ -29,19 +29,18 @@ public class QnaBoardEntity {
     private String content;
     private String writeDatetime;
     private int userNumber;
-    private String nickname;
-    private String profileImageUrl;
     private String imageUrl;
+    private boolean replyComplete;
 
     public QnaBoardEntity(PostQnaBoardRequestDto dto) {
         Date now = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String writeDatetime = simpleDateFormat.format(now);
-
         this.userNumber = dto.getUserNumber();
         this.title = dto.getTitle();
         this.content = dto.getContent();
         this.writeDatetime = writeDatetime;
         this.imageUrl = dto.getImageUrl();
+        this.replyComplete = false;
     }
 }

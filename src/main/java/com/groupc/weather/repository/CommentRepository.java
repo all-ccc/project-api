@@ -6,11 +6,20 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.groupc.weather.entity.CommentEntity;
+import com.groupc.weather.entity.UserEntity;
 
 
 @Repository
 public interface CommentRepository extends JpaRepository<CommentEntity, Integer>{
+
+    public CommentEntity findByUserNumber(Integer userNumber);
+    //게시물에 대한 댓글 목록
+
     
-    List<CommentEntity> findByBoardNumber(int boardNumber);
+    public List<CommentEntity> findByBoardNumber(Integer boardNumber);
+
+    //게시물에 대한 댓글 삭제
+    public List<CommentEntity> deleteByBoardNumber(Integer commentNumber);
+
     
 }

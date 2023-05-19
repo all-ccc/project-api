@@ -1,46 +1,58 @@
 package com.groupc.weather.entity;
 
-import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 import com.groupc.weather.dto.request.user.PostUserRequestDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-// 데이터베이스의 필드와 직접적인 연관 관계.
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "User")
-@Table(name = "User")
+@Entity(name="User")
+@Table(name="User")
 public class UserEntity {
     @Id
-    // @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer userNumber;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private int userNumber;
     private String name;
-    private String nickname;
-    private String password;
     private String email;
-    private String profileImageUrl;
-    private Date birthday;
-    private String gender;
-    private String address;
+    private String password;
+    private String nickname;
     private String phoneNumber;
+    private String address;
+    private String gender;
+    private String profileImageUrl;
+    private String birthday;
+    public UserEntity(PostUserRequestDto dto){
+        this.name=dto.getUserName();
+        this.email=dto.getUserEmail();
+        this.password=dto.getUserPassword();
+        this.nickname=dto.getUserNickname();
+        this.phoneNumber=dto.getUserPhoneNumber();
+        this.address=dto.getUserAddress();
+        this.gender=dto.getUserGender();
+        this.profileImageUrl=dto.getUserProfileImageUrl();
+        this.birthday=dto.getUserBirthday();
 
-    public UserEntity(PostUserRequestDto dto) {
-        this.userNumber = dto.getUserNumber();
-        this.name = dto.getUserName();
-        this.nickname = dto.getUserNickname();
-        this.password = dto.getUserPassword();
-        this.email = dto.getUserEmail();
-        this.profileImageUrl = dto.getUserProfileImageUrl();
-        this.birthday = dto.getUserBirthday(); // 등록시 생일은 직접 입력(선택)하는것이기 때문에 SimpleDateFormat 필요 없을듯?
-        this.gender = dto.getUserGender();
-        this.address = dto.getUserAddress();
-        this.phoneNumber = dto.getUserPhoneNumber();
+
+    this.name= dto.getUserName();
+    this.email=dto.getUserEmail();
+    this.password=dto.getUserPassword();
+    this.nickname=dto.getUserNickname();
+    this.phoneNumber=dto.getUserPhoneNumber();
+    this.address=dto.getUserAddress();
+    this.gender=dto.getUserGender();
+    this.birthday=dto.getUserBirthday();
+    this.profileImageUrl=dto.getUserProfileImageUrl();
+
     }
 }
+

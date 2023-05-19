@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.groupc.weather.dto.ResponseDto;
+import com.groupc.weather.dto.response.user.FindByEmailResponseDto;
 
 public class CustomResponse {
 
@@ -32,14 +33,32 @@ public class CustomResponse {
     }
 
     public static ResponseEntity<ResponseDto> existUserNickname() {
-        
-        ResponseDto errorBody = new ResponseDto("EM","Existent User Nickname");
+
+        ResponseDto errorBody = new ResponseDto("EM", "Existent User Nickname");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    }
+
+    public static ResponseEntity<ResponseDto> undifindeUsername() {
+
+        ResponseDto errorBody = new ResponseDto("EM", "Existent Undifinde Name");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    }
+
+    public static ResponseEntity<ResponseDto> undifindephonenumber() {
+
+        ResponseDto errorBody = new ResponseDto("EM", "Undifinde Phonenumber");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    }
+
+    public static ResponseEntity<ResponseDto> undifindeEmail() {
+
+        ResponseDto errorBody = new ResponseDto("EM", "Undifinde Email");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
     public static ResponseEntity<ResponseDto> existUserPhoneNumber() {
-        
-        ResponseDto errorBody = new ResponseDto("EP","Existent User PhoneNumber");
+
+        ResponseDto errorBody = new ResponseDto("EP", "Existent User PhoneNumber");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
@@ -66,10 +85,38 @@ public class CustomResponse {
         ResponseDto errorBody = new ResponseDto("NQC", "Not-Existent Qna Comment Number");        
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody); //너가 누구인지 모른다
     }
+    public static ResponseEntity<ResponseDto> signInFailedEmail() {
 
+        ResponseDto errorBody = new ResponseDto("SF", "Sign In Failed Undefinde Email");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    }
+
+    public static ResponseEntity<ResponseDto> signInFailedPassword() {
+
+        ResponseDto errorBody = new ResponseDto("SF", "Sign In Failed Undefinde Password");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    }
+
+    public static ResponseEntity<ResponseDto> notExistUserNumber() {
+
+        ResponseDto errorBody = new ResponseDto("NU", "Not-Existent User Number");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody); // 너가 누구인지 모른다
+    }
+
+    public static ResponseEntity<ResponseDto> notExistManagerNumber() {
+
+        ResponseDto errorBody = new ResponseDto("NU", "Not-Existent Manager Number");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
+    }
+
+    public static ResponseEntity<ResponseDto> notExistQnaCommentNumber() {
+        
+        ResponseDto errorBody = new ResponseDto("NQC", "Not-Existent Qna Comment Number");        
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody); //너가 누구인지 모른다
+    }
     public static ResponseEntity<ResponseDto> signUpFailed() {
 
-        ResponseDto errorBody = new ResponseDto("SF", "Sign In Failed");
+        ResponseDto errorBody = new ResponseDto("SF", "Sign Up Failed");
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorBody);
     }
 
@@ -78,5 +125,4 @@ public class CustomResponse {
         ResponseDto errorBody = new ResponseDto("NP", "No Permissions");
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorBody); // 너가 누구인지는 알지만 권한이없음
     }
-
 }

@@ -8,34 +8,35 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
+public class GetPostListDto extends ResponseDto {
+    private List<BoardSummary> boardList;
+
+}
+
+@Data
+@NoArgsConstructor
+class BoardSummary {
+    private int boardNumber;
+    private String boardTitle;
+    private String boardContetn;
+    private String boardfisrtImageUrl;
+    private String boardWriteDatetime;
+    private String boardWriterNickname;
+    private String boardWriterProfileImageUrl;
+    private String hashtagList;
+    private int commentCount;
+    private int likeCount;
+}
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetNewList extends ResponseDto{
-
-    List<BoardSummary> boardList;
-
-}
-
-
-class BoardSummary{
-    private int boardNumber;
-    private String boardTitle;
-    private String boardWriteDatetime;
-    private String boardWriterNickname;
-    private String boardWriterProfileImageUrl;
-    private int commentCount;
-    private int likeCount;
-    private BoardImageUrlList boardfisrtImageUrl;
-    private List<HashList>hashtagList;
-    
-}
-
-class HashList{
+class HashList {
     private int boardNumber;
     private int hashTagNumber;
     private String hashTagContent;
-
 }
+
 

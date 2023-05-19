@@ -10,7 +10,9 @@ import com.groupc.weather.dto.request.common.UserDto;
 import com.groupc.weather.dto.request.qnaBoard.PatchQnaCommentRequestDto;
 import com.groupc.weather.dto.request.qnaBoard.PostQnaCommentRequestDto;
 import com.groupc.weather.entity.ManagerEntity;
+import com.groupc.weather.entity.QnaBoardEntity;
 import com.groupc.weather.entity.QnaCommentEntity;
+
 import com.groupc.weather.entity.UserEntity;
 import com.groupc.weather.repository.ManagerRepository;
 import com.groupc.weather.repository.QnaBoardRepository;
@@ -23,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class QnaCommentServiceImplement implements QnaCommentService {
-    private final QnaBoardRepository qnaBoardRepsitory;
+    private final QnaBoardRepository qnaBoardRepository;
     private final UserRepository userRepositry;
     private final QnaCommentRepository qnaCommentRepository;
     private final ManagerRepository managerRepository;
@@ -39,12 +41,13 @@ public class QnaCommentServiceImplement implements QnaCommentService {
         // qna 보드 특정
         int qnaBoardNumber = dto.getQnaBoardNumber();
         // qna 글 작성자 특정
-        int qnaBoardWriterNumber = qnaBoardRepsitory.findByQnaBoardNumber(dto.getQnaBoardNumber()).getUserNumber();
+        int qnaBoardWriterNumber = qnaBoardRepository.findByBoardNumber(dto.getQnaBoardNumber()).getUserNumber();
 
         try {
-            boolean existedWriterManagerNumber = managerRepository.existsbyManagerNumber(qnaBoardWriterNumber);
-            boolean existedWriterUserNumber = userRepositry.existsbyUserNumber(qnaBoardWriterNumber);
-            boolean existedQnaBoardNumber = qnaBoardRepsitory.existsByQnaBoardNumber(qnaBoardNumber);
+            
+            boolean existedWriterManagerNumber = managerRepository.existsByManagerNumber(qnaBoardWriterNumber);
+            boolean existedWriterUserNumber = userRepositry.existsByUserNumber(qnaBoardWriterNumber);
+            boolean existedQnaBoardNumber = qnaBoardRepository.existsByBoardNumber(qnaBoardNumber);
 
             // TODO: Qna 존재 유무
             if (!existedQnaBoardNumber) {
@@ -74,9 +77,11 @@ public class QnaCommentServiceImplement implements QnaCommentService {
             // TODO: 관리자일 경우
             ManagerEntity managerEntity = managerRepository.findByManagerNumber(dto.getWriterNumber());
             ManagerDto managerDto = new ManagerDto();
-            managerDto.setManagerNickname(managerEntity.getNickname());
+            managerDto.setManagerNickname(managerEntity.getManagerNickname());
             managerDto.setManagerProfileImageUrl(managerEntity.getProfileImageUrl());
             QnaCommentEntity qnaCommentEntity = new QnaCommentEntity(dto, managerDto);
+
+
             qnaCommentRepository.save(qnaCommentEntity);
 
             // TODO:
@@ -102,17 +107,17 @@ public class QnaCommentServiceImplement implements QnaCommentService {
         int qnaCommentWriterNumber = qnaCommentRepository.findByQnaCommentNumber(dto.getQnaCommentNumber()).getUserNumber();
         // qna 댓글 보드 특정
         int qnaBoardNumber = dto.getQnaBoardNumber();
-
+        QnaBoardEntity qnaBoardEntity = qnaBoardRepository.findByBoardNumber(qnaBoardNumber);
 
     
         // 유저일때랑 관리자일때랑 나눠서 진행
         
         try {            
             QnaCommentEntity qnaCommentEntity = qnaCommentRepository.findByQnaCommentNumber(dto.getQnaCommentNumber());
-            boolean existedQnaBoardNumber = qnaBoardRepsitory.existsByQnaBoardNumber(qnaBoardNumber);
+            boolean existedQnaBoardNumber = qnaBoardRepository.existsByBoardNumber(qnaBoardNumber);
             boolean existedQnaCommentNumber = qnaCommentRepository.existsByQnaCommentNumber(qnaCommentNumber);
-            boolean existedPatcherManagerNumber = managerRepository.existsbyManagerNumber(qnaCommentPatcherNumber);
-            boolean existedPatcherUserNumber = userRepositry.existsbyUserNumber(qnaCommentPatcherNumber);
+            boolean existedPatcherManagerNumber = managerRepository.existsByManagerNumber(qnaCommentPatcherNumber);
+            boolean existedPatcherUserNumber = userRepositry.existsByUserNumber(qnaCommentPatcherNumber);
             //TODO : 유저 존재 유무 확인 + 관리자인지 유저인지 확인한후
             if (!(existedPatcherManagerNumber || existedPatcherUserNumber)) {
                 return CustomResponse.notExistUserNumber();
@@ -130,28 +135,25 @@ public class QnaCommentServiceImplement implements QnaCommentService {
             //TODO : 댓글 작성자와 수정자가 같을때
 
             if(!(qnaCommentPatcherNumber == qnaCommentWriterNumber)){
-                    return CustomResponse.noPermissions();
+                    return CustomResponse.noPermissions(); }
                 
             qnaCommentEntity.setContent(dto.getQnaCommentContent());
+            //qnaBoardEntity.setReplyComplete(true);
+            //qnaBoardRepository.save(qnaBoardEntity);
             qnaCommentRepository.save(qnaCommentEntity);
                 
-            }        
+                   
         } catch (Exception exception) {
             exception.printStackTrace();
-            return CustomResponse.databaseError()
+            return CustomResponse.databaseError();
         }
 
-
+        return CustomResponse.success();
     }
 
 
 
 
-    @Override
-    public ResponseEntity<ResponseDto> getQnaComment(Integer qnaBoardNumber) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getQnaComment'");
-    }
 
     // 댓글 삭제
     @Override
@@ -165,7 +167,7 @@ public class QnaCommentServiceImplement implements QnaCommentService {
             }
             
             //TODO : 존재하는 유저인지 확인
-            boolean existedDeleterUserNumber = userRepositry.existsbyUserNumber(userNumber);
+            boolean existedDeleterUserNumber = userRepositry.existsByUserNumber(userNumber);
             //TODO : 유저 존재 유무 확인 + 관리자인지 유저인지 확인한후
             if (!(existedDeleterUserNumber)) {
                 return CustomResponse.notExistUserNumber();
@@ -177,11 +179,11 @@ public class QnaCommentServiceImplement implements QnaCommentService {
                 if (!equalQnaCommentWriter) {
                     return CustomResponse.noPermissions();
                 }
-                qnaCommentRepository.deleteByCommentNumber(qnaCommentNumber);
+                qnaCommentRepository.deleteByQnaCommentNumber(qnaCommentNumber);
                 return CustomResponse.success();
             }
             //관리자일 경우
-            qnaCommentRepository.deleteByCommentNumber(qnaCommentNumber);
+            qnaCommentRepository.deleteByQnaCommentNumber(qnaCommentNumber);
         
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -189,6 +191,13 @@ public class QnaCommentServiceImplement implements QnaCommentService {
 
         }
         return CustomResponse.success();
+    }
+
+
+    @Override
+    public ResponseEntity<ResponseDto> getQnaComment(Integer qnaBoardNumber) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getQnaComment'");
     }
 
 

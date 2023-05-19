@@ -9,32 +9,31 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
-public class GetPostList extends ResponseDto {
-    private List<BoardSummary> boardList;
+public class GetNewListDto extends ResponseDto{
+
+    List<BoardSummary> boardList;
 
 }
 
-@Data
-@NoArgsConstructor
-class BoardSummary {
+class BoardSummary{
     private int boardNumber;
     private String boardTitle;
-    private String boardContetn;
-    private String boardfisrtImageUrl;
     private String boardWriteDatetime;
     private String boardWriterNickname;
     private String boardWriterProfileImageUrl;
-    private String hashtagList;
     private int commentCount;
     private int likeCount;
+    private BoardImageUrlList boardfisrtImageUrl;
+    private List<HashList>hashtagList;
+    
 }
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-class HashList {
+class HashList{
     private int boardNumber;
     private int hashTagNumber;
     private String hashTagContent;
+
 }
+

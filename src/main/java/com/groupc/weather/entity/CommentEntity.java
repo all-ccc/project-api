@@ -1,38 +1,54 @@
 package com.groupc.weather.entity;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.groupc.weather.dto.request.board.PostCommentRequestDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-public class CommentEntity {
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-    private int commentNumber;
-    private int boardNumber;
-    private int userNumber;
-    private String commentContent;
-    private String writeDatetime;
-    private String userNickname;
-    private String userImageProfileUrl;
+@Table(name="Comment")
+@Entity(name="Comment")
+public class CommentEntity {
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Integer commentNumber;
+    private Integer userNumber;
     private Integer managerNumber;
-    private String managerProfileUrl;
+    private Integer boardNumber;
+    private String userNickname;
+    private String managerNickname;
+    private String content;
+    private String writeDatetime;
+    private String userProfileImageUrl;
+    private String managerProfileImageUrl;
 
-    public CommentEntity(PostCommentRequestDto dto, UserEntity userEntity, ManagerEntity managerEntity) {
-        Date now = new Date();
-        SimpleDateFormat simpleDateFormat =
-                new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        String writeDatetime = simpleDateFormat.format(now);
+    //가지고 있는 코멘트의 정보
+    public CommentEntity(PostCommentRequestDto dto) {
         
-        this.managerProfileUrl = null;
-        this.managerNumber = null;
+        Date now = new Date();
+        SimpleDateFormat simpleDateFormat = 
+            new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String writeDatetime = simpleDateFormat.format(now);
 
-        this.userImageProfileUrl =dto.getUserImageProfileUrl();
-        this.userNickname = dto.();
+        this.commentNumber = dto.getCommentNumber();
+        this.userNumber = dto.getCommentWriterNumber();
+        this.managerNumber = dto.getManagerNumber();
         this.boardNumber = dto.getBoardNumber();
-        this.userNumber = dto.getWriterNumber();
-        this.commentContent = dto.getCommentContent();
+        this.content = dto.getCommentContent();
         this.writeDatetime = writeDatetime;
+    }
 }
+

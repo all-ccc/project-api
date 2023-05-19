@@ -2,7 +2,6 @@ package com.groupc.weather.controller;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,9 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class QnaCommentController {
     private final QnaCommentService qnaCommentService;
     
-
-
-    @PostMapping("")
+    @PostMapping("post")
     public ResponseEntity<ResponseDto> postQnaComment(
         @Valid @RequestBody PostQnaCommentRequestDto requestBody
 
@@ -38,12 +35,12 @@ public class QnaCommentController {
     }
 
 
-    @GetMapping("/{QnaBoardNumber}")
-    public ResponseEntity<ResponseDto> getQnaComment(
-        @PathVariable("QnaBoardNumber") Integer qnaBoardNumber){
-        ResponseEntity<ResponseDto> response = qnaCommentService.getQnaComment(qnaBoardNumber);
-        return response;
-    }
+    // @GetMapping("/{QnaBoardNumber}")
+    // public ResponseEntity<ResponseDto> getQnaComment(
+    //     @PathVariable("QnaBoardNumber") Integer qnaBoardNumber){
+    //     ResponseEntity<ResponseDto> response = qnaCommentService.getQnaComment(qnaBoardNumber);
+    //     return response;
+    // }
 
     @PatchMapping("")
     public ResponseEntity<ResponseDto> patchQnaComment(
@@ -63,11 +60,6 @@ public class QnaCommentController {
         ResponseEntity<ResponseDto> response = qnaCommentService.deleteQnaComment(userNumber,qnaCommentNumber);
         return response;
     }
-
-
-
-
-
 
 
 }

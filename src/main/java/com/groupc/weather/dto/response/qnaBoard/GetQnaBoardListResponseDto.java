@@ -15,6 +15,7 @@ import lombok.Setter;
 @Data
 @NoArgsConstructor
 public class GetQnaBoardListResponseDto extends ResponseDto {
+    
     private List<QnaBoardSummary> qnaBoardList;
 
     public GetQnaBoardListResponseDto(List<QnaBoardListResultSet> resultSet) {
@@ -24,6 +25,7 @@ public class GetQnaBoardListResponseDto extends ResponseDto {
 
         for (QnaBoardListResultSet result: resultSet) {
             QnaBoardSummary qnaBoardSummary = new QnaBoardSummary(result);
+
             qnaBoardList.add(qnaBoardSummary);
         }
 
@@ -36,20 +38,22 @@ public class GetQnaBoardListResponseDto extends ResponseDto {
 @NoArgsConstructor
 @AllArgsConstructor
 class QnaBoardSummary {
-    public int qnaBoardNumber;
+    public Integer qnaBoardNumber;
     public String qnaBoardTitle;
     public String qnaBoardWriteDatetime;
+    public int qnaBoardWriterNumber;
     public String qnaBoardWriterNickname;
     public String qnaBoardWriterProfileImageUrl;
-    public boolean commentComplete;
+    public boolean replyComplete;
 
     public QnaBoardSummary(QnaBoardListResultSet resultSet) {
-        this.qnaBoardNumber = resultSet.getQnaBoardNumber();
-        this.qnaBoardTitle = resultSet.getQnaBoardTitle();
-        this.qnaBoardWriteDatetime = resultSet.getQnaBoardWriteDatetime();
-        this.qnaBoardWriterNickname = resultSet.getQnaBoardWriterNickname();
-        this.qnaBoardWriterProfileImageUrl = resultSet.getQnaBoardWriterProfileImageUrl();
-        this.commentComplete = resultSet.getCommentComplete();
+        this.qnaBoardNumber = resultSet.getBoardNumber();
+        this.qnaBoardTitle = resultSet.getBoardTitle();
+        this.qnaBoardWriteDatetime = resultSet.getBoardWriteDatetime();
+        this.qnaBoardWriterNumber = resultSet.getBoardWriterNumber();
+        this.qnaBoardWriterNickname = resultSet.getBoardWriterNickname();
+        this.qnaBoardWriterProfileImageUrl = resultSet.getBoardWriterProfileImageUrl();
+        this.replyComplete = resultSet.getReplyComplete() == 1;
     }
 }
 

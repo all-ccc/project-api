@@ -3,11 +3,12 @@ package com.groupc.weather.entity;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
-import com.groupc.weather.dto.request.board.PostCommentRequestDto;
 import com.groupc.weather.dto.request.common.ManagerDto;
 import com.groupc.weather.dto.request.common.UserDto;
 import com.groupc.weather.dto.request.qnaBoard.PatchQnaBoardRequestDto;
@@ -21,7 +22,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Entity(name="QnaComment")
+@Table(name="Qna_Comment")
 public class QnaCommentEntity {
 
         @Id
