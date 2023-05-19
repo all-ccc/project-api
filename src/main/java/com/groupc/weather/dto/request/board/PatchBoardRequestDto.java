@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 public class PatchBoardRequestDto {
     @NotBlank
@@ -21,20 +22,25 @@ public class PatchBoardRequestDto {
     private String boardTitle;
     @NotBlank
     private String boardContent;
-    @NotBlank
-    private String boardImageUrl;
-    private List<HashTagList>boardHashtag;
+    // 수정할 거   
+    private List<ImageUrlList> imageUrlList;
+    private List<HashtagList> hashtagList;
+
+    // 추가할 거
+    private String addImageUrlList;
+    private String addHashtagContent;
+  
+    // 삭제할 거 
+    private Integer deleteImageNumber;
+    private Integer deleteHashtagNumber;
+
 }
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-class HashTagList{
-    @Id
-    @NotBlank
-    private int hashtagNumber;
-
-    @NotBlank
-    @GeneratedValue
-    private String hashtagContent;
+class ImageUrlList {
+    Integer imageNumber;
+    String imageUrl;
+}
+class HashtagList{
+    Integer hashtagNumber;
+    String hashtagContent;
 }

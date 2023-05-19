@@ -17,8 +17,4 @@ public class PatchQnaCommentRequestDto {
     private int qnaCommentNumber;
     @NotBlank
     private String qnaCommentContent;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> a75be91f09841d297eacdc1469fceef2db599767

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.groupc.weather.dto.response.board.GetBoardFirstViewDto;
 import com.groupc.weather.dto.response.board.GetBoardListResponseDto;
+import com.groupc.weather.dto.response.board.GetBoardListResponsetop5Dto;
 import com.groupc.weather.dto.response.board.GetBoardResponseDto;
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.board.PatchBoardRequestDto;
@@ -54,8 +55,8 @@ public class BoardController {
 
     // 4. TOP5 게시물 목록 조회
     @GetMapping("/top5")
-    public ResponseEntity<? super GetBoardListResponseDto>getBoardtop5(){
-        ResponseEntity<? super GetBoardListResponseDto> response = boardService.getBoardTop5();
+    public ResponseEntity<? super GetBoardListResponsetop5Dto>getBoardtop5(){
+        ResponseEntity<? super GetBoardListResponsetop5Dto> response = boardService.getBoardTop5();
         return response;
     }
 
@@ -67,18 +68,18 @@ public class BoardController {
     }
 
     // 6. 첫화면 일반 게시물 목록
-    // @GetMapping("/firstImage")
-    // public ResponseEntity<? super GetBoardFirstViewDto> getBoardFirstView(){
-    //     ResponseEntity<? super GetBoardFirstViewDto> response = boardService.getBoardList();
-    //     return response;
+    @GetMapping("/firstImage")
+    public ResponseEntity<? super GetBoardFirstViewDto> getBoardFirstView(){
+        ResponseEntity<? super GetBoardFirstViewDto> response = boardService.getBoardFirstView();
+        return response;
 
-    // }
+    }
 
     // 7. 특정 게시물 수정
     @PatchMapping("")
     public ResponseEntity<ResponseDto> patchBoard(
-            @Valid @RequestBody Integer userNumber, PatchBoardRequestDto dto){
-        ResponseEntity<ResponseDto> response = boardService.patchBoard(userNumber, dto);
+            @Valid @RequestBody String userEmail, PatchBoardRequestDto dto){
+        ResponseEntity<ResponseDto> response = boardService.patchBoard(userEmail, dto);
         return response;
     }
 
