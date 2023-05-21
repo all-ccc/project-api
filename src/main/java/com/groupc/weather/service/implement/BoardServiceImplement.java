@@ -26,6 +26,7 @@ import com.groupc.weather.entity.HashtagHasBoardEntity;
 import com.groupc.weather.entity.ImageUrlEntity;
 import com.groupc.weather.entity.LikeyEntity;
 import com.groupc.weather.entity.UserEntity;
+import com.groupc.weather.entity.primaryKey.LikeyPk;
 import com.groupc.weather.entity.resultSet.GetBoardListResult;
 import com.groupc.weather.repository.BoardRepository;
 import com.groupc.weather.repository.CommentRepository;
@@ -57,8 +58,8 @@ public class BoardServiceImplement implements BoardService {
 
         try {
             // 존재하지 않는 유저 번호
-            boolean isexistUsernumber = userRepository.existsByUserNumber(dto.getUserNumber());
-            if (!isexistUsernumber) {
+            boolean isExistUsernumber = userRepository.existsByUserNumber(dto.getUserNumber());
+            if (!isExistUsernumber) {
                 ResponseDto errorBody = new ResponseDto("NU", "Non-Existent User Number");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
           }
@@ -379,11 +380,78 @@ public class BoardServiceImplement implements BoardService {
     return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
+
+
     // 특정 게시물 좋아요 등록
+    
+    @Override
+    public ResponseEntity<ResponseDto> likeBoard(Integer userNumber, Integer boardNumber) {
+
+
+        
+        try {
+            boolean isExistUsernumber = userRepository.existsByUserNumber(userNumber);
+            if (!isExistUsernumber) return CustomResponse.notExistUserNumber();
+
+            boolean isEixstBoardNumber = boardRepository.existsByBoardNumber(boardNumber);
+            if (!isEixstBoardNumber) return CustomResponse.notExistBoardNumber();
+            LikeyPk likeyPk = new LikeyPk(userNumber, boardNumber);
+            boolean isExistLikey = likeyRepository.existsById(likeyPk);
+            if(isExistLikey) return CustomResponse.alreadyLikeBoard();
+
+
+            LikeyEntity likeyEntity = new LikeyEntity(userNumber,boardNumber);
+            likeyRepository.save(likeyEntity);
+
+
+        }
+        catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+
+
+
+
+        return CustomResponse.success();
+    }
+
 
 
     // 특정 게시물 좋아요 해제
 
+
+    @Override
+    public ResponseEntity<ResponseDto> likeDeleteBoard(Integer userNumber, Integer boardNumber) {
+
+        LikeyPk likeyPk = new LikeyPk(userNumber, boardNumber);
+        
+        try {
+            boolean isExistUsernumber = userRepository.existsByUserNumber(userNumber);
+            if (!isExistUsernumber) return CustomResponse.notExistUserNumber();
+
+            boolean isEixstBoardNumber = boardRepository.existsByBoardNumber(boardNumber);
+            if (!isEixstBoardNumber) return CustomResponse.notExistBoardNumber();
+            boolean isExistLikey = likeyRepository.existsById(likeyPk);
+            if(!isExistLikey) return CustomResponse.notLikeBoard();
+
+
+            likeyRepository.deleteById(likeyPk);
+
+
+        }
+        catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+
+
+
+
+        return CustomResponse.success();
+    }
 
     // 특정 유저 좋아요 게시물 조회
 
@@ -401,6 +469,8 @@ public class BoardServiceImplement implements BoardService {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getSearchListByHashtag'");
     }
+
+
 
 }
     

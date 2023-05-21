@@ -16,6 +16,7 @@ import com.groupc.weather.dto.response.board.GetBoardFirstViewDto;
 import com.groupc.weather.dto.response.board.GetBoardListResponseDto;
 import com.groupc.weather.dto.response.board.GetBoardListResponsetop5Dto;
 import com.groupc.weather.dto.response.board.GetBoardResponseDto;
+import com.groupc.weather.entity.primaryKey.LikeyPk;
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.board.PatchBoardRequestDto;
 import com.groupc.weather.dto.request.board.PostBoardRequestDto;
@@ -94,17 +95,39 @@ public class BoardController {
     }
 
 
-    // 9. 특정 게시물 좋아요 등록
 
+  //=====================================================================================================
+
+
+    // 9. 특정 게시물 좋아요 등록
+    @PostMapping("/like/{userNumber}/{boardNumber}")
+    public ResponseEntity<ResponseDto> likeBoard(
+        @PathVariable("userNumber") Integer userNumber,
+        @PathVariable("boardNumber") Integer boardNumber){
+        ResponseEntity<ResponseDto> response = boardService.likeBoard(userNumber,boardNumber);
+        return response;
+    }
 
 
     // 10. 특정 게시물 좋아요 해제
+
+    @DeleteMapping("/likeDelete/{userNumber}/{boardNumber}")
+    public ResponseEntity<ResponseDto> likeDeleteBoard(
+        @PathVariable("userNumber") Integer userNumber,
+        @PathVariable("boardNumber") Integer boardNumber){
+        ResponseEntity<ResponseDto> response = boardService.likeDeleteBoard(userNumber,boardNumber);
+        return response;
+    }
 
 
 
     // 11. 특정 유저 좋아요 게시물 조회
 
-
+    @GetMapping("/Likelist/{userNumber}")
+    public ResponseEntity<? super GetBoardListResponseDto> getLikeBoardList(@PathVariable("userNumber") Integer userNumber){
+        ResponseEntity<? super GetBoardListResponseDto> response = boardService.getLikeBoardList();
+        return response;
+    }
 
     // 12. 특정 게시물 검색
     @GetMapping("/{searchWord}/{weatherInfo}/{temperature}") // 이렇게 쓰는 게 맞는 건지..

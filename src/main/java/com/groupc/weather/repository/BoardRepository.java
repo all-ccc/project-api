@@ -115,9 +115,9 @@ public List<BoardCommentLikeyCountResultSet> getBoardCommentLikeyList();
 "LEFT JOIN User U " +
 "ON B.user_number = U.user_number " +
 "LEFT JOIN Comment C " +
-"ON B.user_number = C.board_number " +
+"ON B.board_number = C.board_number " +
 "LEFT JOIN likey L " +
-"ON B.user_number = L.board_number " +
+"ON B.board_number = L.board_number " +
 "WHERE B.user_number = :user_number " +
 "GROUP BY B.board_number " +
 "ORDER BY B.write_datetime DESC;",
@@ -154,9 +154,9 @@ public String getBoardFirstImageUrl(@Param("board_number") int boardNumber);
 "LEFT JOIN User U " +
 "ON B.user_number = U.user_number " +
 "LEFT JOIN Comment C " +
-"ON B.user_number = C.board_number " +
+"ON B.board_number = C.board_number " +
 "LEFT JOIN likey L " +
-"ON B.user_number = L.board_number " +
+"ON B.board_number = L.board_number " +
 "GROUP BY B.board_number " +
 "ORDER BY likeCount DESC Limit 5;",
 nativeQuery = true
@@ -185,9 +185,9 @@ public List<GetBoardListResult> getBoardListTop5();
 "LEFT JOIN User U " +
 "ON B.user_number = U.user_number " +
 "LEFT JOIN Comment C " +
-"ON B.user_number = C.board_number " +
+"ON B.board_number = C.board_number " +
 "LEFT JOIN likey L " +
-"ON B.user_number = L.board_number " +
+"ON B.board_number = L.board_number " +
 "GROUP BY B.board_number " +
 "ORDER BY B.write_datetime DESC Limit 8;",
 nativeQuery = true
@@ -211,15 +211,41 @@ public List<GetBoardListResult> getBoardFirstView();
 "LEFT JOIN User U " +
 "ON B.user_number = U.user_number " +
 "LEFT JOIN Comment C " +
-"ON B.user_number = C.board_number " +
+"ON B.board_number = C.board_number " +
 "LEFT JOIN likey L " +
-"ON B.user_number = L.board_number " +
+"ON B.board_number = L.board_number " +
 "GROUP BY B.board_number " +
 "ORDER BY B.write_datetime DESC;" ,
 nativeQuery = true
 )
 public List<GetBoardListResult> getBoardList();
 
+
+
+
+
+@Query(value=
+"SELECT " +
+"B.board_number AS boardNumber, " +
+"B.title AS boardTitle, " +
+"B.content AS boardContent, " +
+"B.write_datetime AS boardWriteDatetime, " +
+"U.nickname AS boardWriterNickname, " +
+"U.profile_image_url AS boardWriterProfileImageUrl, " +
+"count(C.comment_number) AS commentCount, " +
+"count(L.user_number) AS likeCount " +
+"FROM Board B " +
+"LEFT JOIN User U " +
+"ON B.user_number = U.user_number " +
+"LEFT JOIN Comment C " +
+"ON B.board_number = C.board_number " +
+"LEFT JOIN likey L " +
+"ON B.board_number = L.board_number " +
+"WHERE L.user_number = :user_number " +
+"GROUP BY B.board_number " +
+"ORDER BY B.write_datetime DESC;",
+nativeQuery = true
+)
+public List<GetBoardListResult> getLikeBoardList(@Param("user_number") int userNumber);
+
 }
-
-

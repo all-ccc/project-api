@@ -38,6 +38,11 @@ public class CustomResponse {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
+    public static ResponseEntity<ResponseDto> alreadyLikeBoard() {
+        ResponseDto body = new ResponseDto("AL", "Already LikeBoard");
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
     public static ResponseEntity<ResponseDto> undifindeUsername() {
 
         ResponseDto errorBody = new ResponseDto("EM", "Existent Undifinde Name");
@@ -103,6 +108,12 @@ public class CustomResponse {
         
         ResponseDto errorBody = new ResponseDto("NQC", "Not-Existent Qna Comment Number");        
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody); //너가 누구인지 모른다
+    }
+
+    public static ResponseEntity<ResponseDto> notLikeBoard() {
+
+        ResponseDto errorBody = new ResponseDto("NB", "Not-Like Board");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
     }
     public static ResponseEntity<ResponseDto> signUpFailed() {
 
