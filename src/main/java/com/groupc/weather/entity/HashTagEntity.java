@@ -15,9 +15,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity(name = "Hashtag")
 @Table(name = "Hashtag")
-public class HashTagEntity {
+public class HashtagEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int hashtagNumber;
     private String hashtagContent;
+
+    public HashtagEntity(String hashtagContent) {
+        this.hashtagContent = hashtagContent;
+    }
 }

@@ -4,19 +4,21 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.groupc.weather.entity.BoardEntity;
 import com.groupc.weather.entity.resultSet.BoardCommentLikeyCountResultSet;
 import com.groupc.weather.entity.resultSet.BoardCommentResultSet;
 import com.groupc.weather.entity.resultSet.GetBoardListResult;
-import com.groupc.weather.entity.resultSet.HashTagResultSet;
+
 import com.groupc.weather.entity.resultSet.LikeyResultSet;
 
 @Repository
 public interface BoardRepository extends JpaRepository<BoardEntity, Integer> {
 
-    public BoardEntity findByBoardNumber(int boardNumber);
+    public BoardEntity findByBoardNumber(Integer boardNumber);
+    public boolean existsByBoardNumber(Integer boardNumber);
 
     public List<GetBoardListResult> findByUserNumber(Integer userNumber);
 
@@ -61,6 +63,129 @@ nativeQuery = true
 public List<BoardCommentLikeyCountResultSet> getBoardCommentLikeyList();
 
 
+// 2.게시물 조회
+@Query(value=
+"SELECT " +
+"B.board_number AS boardNumber, " +
+"B.title AS boardTitle, " + 
+"B.content AS boardContent, " +
+"I.image_url AS boardfirstImageUrl, " + 
+"B.write_datetime AS boardDatetime, " +
+"U.nickname AS boardWriterNickname, " +
+"U.profile_image_url AS boardWriterProfileImageUrl, " +
+"count(DISTINCT C.comment_number) AS commentCount, " +
+"count(DISTINCT L.user_number) AS likeCount, " +
+"FROM Board B, Comment C, Likey L, User U , Image_Url I " +
+"Where B.board_number= I.board_number" +
+"AND I.image_number = 1 " +
+"AND B.user_number = U.user_number" +
+"AND B.board_number = L.board_number" +
+"GROUP BY B.board_number" +
+"ORDER BY B.write_datetime DESC;" ,
+nativeQuery = true
+)
+public List<GetBoardListResult> getBoardList();
+
+
+// 3. 본인작성 게시물 목록 쿼리문
+@Query(value=
+"SELECT " +
+"B.board_number AS boardNumber, " +
+"B.title AS boardTitle, " +
+"B.content AS boardContent, " +
+"B.write_datetime AS boardWriteDatetime, " +
+"U.nickname AS boardWriterNickname, " +
+"U.profile_image_url AS boardWriterProfileImageUrl, " +
+"count(C.comment_number) AS commentCount, " +
+"count(L.user_number) AS likeCount " +
+"FROM Board B " +
+"LEFT JOIN User U " +
+"ON B.user_number = U.user_number " +
+"LEFT JOIN Comment C " +
+"ON B.user_number = C.board_number " +
+"LEFT JOIN likey L " +
+"ON B.user_number = L.board_number " +
+"WHERE B.user_number = :user_number " +
+"GROUP BY B.board_number " +
+"ORDER BY B.write_datetime DESC;",
+nativeQuery = true
+)
+public List<GetBoardListResult> getMyBoardList(@Param("user_number") int userNumber);
+
+
+// 4.게시물 목록 조회(좋아요 top5)
+// 쿼리문 작성하기!!! List는 ORDER BY boardWriteDatetime DESC
+// Top5는  LIST 쿼리문에서  + ORDER BY viewCount , LIMIT 5 하면댐
+@Query(value=
+"SELECT " +
+"B.board_number AS boardNumber, " +
+"B.title AS boardTitle, " +
+"B.content AS boardContent, " +
+"B.write_datetime AS boardWriteDatetime, " +
+"U.nickname AS boardWriterNickname, " +
+"U.profile_image_url AS boardWriterProfileImageUrl, " +
+"count(C.comment_number) AS commentCount, " +
+"count(L.user_number) AS likeCount " +
+"FROM Board B "+
+"LEFT JOIN User U " +
+"ON B.user_number = U.user_number " +
+"LEFT JOIN Comment C " +
+"ON B.user_number = C.board_number " +
+"LEFT JOIN likey L " +
+"ON B.user_number = L.board_number " +
+"GROUP BY B.board_number " +
+"ORDER BY B.write_datetime DESC Limit 5;",
+nativeQuery = true
+)
+public List<GetBoardListResult> getBoardListTop5();
+
+
+//6.첫화면 8개게시물
+// top 5 에서 limit을 8개로 바꾸고 , 화면 첫 사진만 보고 게시물 번호만 이두개만 나타냄
+// boardNumber , boardFisrtImageUrl , Limit 8 , ORDER BY writeDateTime DESC 
+@Query(value=
+"SELECT " +
+"B.board_number AS boardNumber, " +
+"B.title AS boardTitle, " +
+"B.content AS boardContent, " +
+"B.write_datetime AS boardWriteDatetime, " +
+"U.nickname AS boardWriterNickname, " +
+"U.profile_image_url AS boardWriterProfileImageUrl, " +
+"count(C.comment_number) AS commentCount, " +
+"count(L.user_number) AS likeCount " +
+"FROM Board B "+
+"LEFT JOIN User U " +
+"ON B.user_number = U.user_number " +
+"LEFT JOIN Comment C " +
+"ON B.user_number = C.board_number " +
+"LEFT JOIN likey L " +
+"ON B.user_number = L.board_number " +
+"GROUP BY B.board_number " +
+"ORDER BY B.write_datetime DESC Limit 8;",
+nativeQuery = true
+)
+public List<GetBoardListResult> getBoardFirstView();
+
+//게시물 조회 했을 때 보여지는 첫화면
+@Query(value=
+"Select " +
+"I.image_url AS boardFirstImageUrl " +
+"From Board B, Image_Url I " +
+"Where B.board_number = I.board_number " +
+"AND B.board_number = :board_number " +
+"ORDER BY I.image_number Asc " +
+"limit 1;",
+nativeQuery = true
+)
+public String getBoardFirstImageUrl(@Param("board_number") int boardNumber);
+
+
+
+// 8.특정 게시물 삭제
+public Integer deleteBoardLike(Integer userNumber, Integer boardNumber);
+
+
+// 9.특정 게시물 좋아요
 @Query(value =
 "SELECT " + 
 "B.board_number AS boardNumber, " +
@@ -72,7 +197,7 @@ nativeQuery = true
 )
 public List<LikeyResultSet> getLikeList();
 
-
+// 13.특정 게시물 검색(해쉬태그)
 @Query(value =
 "SELECT " +
 "B.board_number AS boardNumber, " + 
@@ -99,81 +224,5 @@ public List<LikeyResultSet> getLikeList();
 "GROUP BY B.board_number;",
 nativeQuery = true
 )
-public List<HashTagResultSet> getHashTagList();   
-
-// 쿼리문 작성하기!!!
-@Query(value=
-"SELECT " +
-"B.board_number AS boardNumber, " +
-"B.title AS boardTitle, " + 
-"B.content AS boardContent, " +
-"I.image_url AS boardfirstImageUrl, " + 
-"B.write_datetime AS boardDatetime, " +
-"U.nickname AS boardWriterNickname, " +
-"U.profile_image_url AS boardWriterProfileImageUrl, " +
-"count(DISTINCT C.comment_number) AS commentCount, " +
-"count(DISTINCT L.user_number) AS likeCount, " +
-"FROM Board B, Comment C, Likey L, User U , Image_Url I " +
-"Where B.board_number= I.board_number" +
-"AND I.image_number = 1 " +
-"AND B.user_number = U.user_number" +
-"AND B.board_number = L.board_number" +
-"GROUP BY B.board_number" +
-"ORDER BY B.write_datetime DESC;" ,
-nativeQuery = true
-)
-public List<GetBoardListResult> getBoardList();
-
-// 쿼리문 작성하기!!! List는 ORDER BY boardWriteDatetime DESC
-// Top5는  LIST 쿼리문에서  + ORDER BY viewCount , LIMIT 5 하면댐
-@Query(value=
-"SELECT " +
-"B.board_number AS boardNumber, " +
-"B.title AS boardTitle, " + 
-"B.content AS boardContent, " +
-"I.image_url AS boardfirstImageUrl, " + 
-"B.write_datetime AS boardDatetime, " +
-"U.nickname AS boardWriterNickname, " +
-"U.profile_image_url AS boardWriterProfileImageUrl, " +
-"count(DISTINCT C.comment_number) AS commentCount, " +
-"count(DISTINCT L.user_number) AS likeCount, " +
-"FROM Board B, Comment C, Likey L, User U , Image_Url I " +
-"Where B.board_number= I.board_number" +
-"AND I.image_number = 1 " +
-"AND B.user_number = U.user_number" +
-"AND B.board_number = L.board_number" +
-"GROUP BY B.board_number" +
-"ORDER BY B.WriteDatetime DESC" +
-"LIMIT 5",
-nativeQuery = true
-)
-public List<GetBoardListResult> getBoardListTop5();
-
-
-
-// 본인작성 게시물 목록 쿼리문
-// @Query(value=
-
-
-// nativeQuery = true
-// )
-// public List<GetBoardListResult> getBoardMyList();
-
-// //첫화면 8개게시물
-// // top 5 에서 limit을 8개로 바꾸고 , 화면 첫 사진만 보고 게시물 번호만 이두개만 나타냄
-// // boardNumber , boardFisrtImageUrl , Limit 8 , ORDER BY writeDateTime DESC 
-// @Query(value=
-
-
-// nativeQuery = true
-// )
-// public List<GetBoardListResult> getBoardFirstView();
-
-
-
-// public boolean existsByBoardNumber(Integer boardNumber);
-
-
-
-// public Integer deleteBoardLike(Integer userNumber, Integer boardNumber);
+public List<HashTageResultSet> getHashTagList();
 }

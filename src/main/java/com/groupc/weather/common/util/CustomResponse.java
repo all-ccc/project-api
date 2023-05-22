@@ -4,7 +4,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.groupc.weather.dto.ResponseDto;
-import com.groupc.weather.dto.response.user.FindByEmailResponseDto;
 
 public class CustomResponse {
 
@@ -35,6 +34,12 @@ public class CustomResponse {
 
         ResponseDto errorBody = new ResponseDto("EM", "Existent User Nickname");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    }
+
+    public static ResponseEntity<ResponseDto> alreadyLikeBoard() {
+
+        ResponseDto errorBody = new ResponseDto("AL", "Alredy LikeBoard");
+        return ResponseEntity.status(HttpStatus.OK).body(errorBody);
     }
 
     public static ResponseEntity<ResponseDto> undifindeUsername() {
@@ -102,6 +107,13 @@ public class CustomResponse {
         ResponseDto errorBody = new ResponseDto("NQC", "Not-Existent Qna Comment Number");        
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody); //너가 누구인지 모른다
     }
+
+    public static ResponseEntity<ResponseDto>notLikeBoard() { 
+
+        ResponseDto errorBody = new ResponseDto("NB", "Not-Like Board");        
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
+    }
+
     public static ResponseEntity<ResponseDto> signUpFailed() {
 
         ResponseDto errorBody = new ResponseDto("SF", "Sign Up Failed");
@@ -110,12 +122,12 @@ public class CustomResponse {
 
     public static ResponseEntity<ResponseDto> noPermissions() {
 
-        ResponseDto errorBody = new ResponseDto("NT", "No Permissions");
+        ResponseDto errorBody = new ResponseDto("NP", "No Permissions");
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorBody); // 너가 누구인지는 알지만 권한이없음
     }
 
-    public static ResponseEntity<ResponseDto> alreadyExists() {  
-        ResponseDto errorBody = new ResponseDto();
+    public static ResponseEntity<ResponseDto> alreadyLikey() {  
+        ResponseDto errorBody = new ResponseDto("AL","Already Likey");
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorBody);
     } // 좋아요가 등록된 경우
 }

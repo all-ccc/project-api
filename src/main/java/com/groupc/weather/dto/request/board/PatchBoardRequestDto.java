@@ -3,8 +3,11 @@ package com.groupc.weather.dto.request.board;
 import java.util.List;
 
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
+
+import com.groupc.weather.entity.ImageUrlEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PatchBoardRequestDto {
     @NotBlank
-    private Integer boardWriteUserNumber;
+    private Integer userNumber;
     @NotBlank
     private Integer boardNumber;  
     @NotBlank
@@ -22,19 +25,19 @@ public class PatchBoardRequestDto {
     @NotBlank
     private String boardContent;
     @NotBlank
-    private String boardImageUrl;
-    private List<HashTagList>boardHashtag;
+    private List<String> boardImageUrl;
+    private List<String> boardHashtag;
 }
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-class HashTagList{
-    @Id
-    @NotBlank
-    private int hashtagNumber;
+// @Data
+// @NoArgsConstructor
+// @AllArgsConstructor
+// class HashTagList{
+//     @Id
+//     @NotBlank
+//     private int hashtagNumber;
 
-    @NotBlank
-    @GeneratedValue
-    private String hashtagContent;
-}
+//     @NotBlank
+//     @GeneratedValue
+//     private String hashtagContent;
+// }

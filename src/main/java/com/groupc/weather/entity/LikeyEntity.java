@@ -19,10 +19,15 @@ import lombok.NoArgsConstructor;
 @IdClass(LikeyPk.class)
 public class LikeyEntity {
     @Id
-    private int boardNumber;     
+    private Integer boardNumber;     
     @Id
-    private int userNumber;
-    private boolean like;  // 좋아요를 눌렀을 경우 등록되고 한번 더 누르면 취소가 될 때 사용!?
+    private Integer userNumber;
+    // private boolean like;  // 좋아요를 눌렀을 경우 등록되고 한번 더 누르면 취소가 될 때 사용!?
+
+    public LikeyEntity(LikeyPk likeyPk){
+        this.userNumber = likeyPk.getUserNumber();
+        this.boardNumber = likeyPk.getBoardNumber();
+    }
 
 }
 

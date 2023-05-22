@@ -39,9 +39,8 @@ public class UserEntity {
         this.phoneNumber=dto.getUserPhoneNumber();
         this.address=dto.getUserAddress();
         this.gender=dto.getUserGender();
-        this.profileImageUrl=dto.getUserProfileImageUrl();
         this.birthday=dto.getUserBirthday();
-
+        this.profileImageUrl=dto.getUserProfileImageUrl();
     }
 }
 

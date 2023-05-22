@@ -2,8 +2,6 @@ package com.groupc.weather.dto.request.board;
 
 import java.util.List;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -15,43 +13,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostBoardRequestDto {
+    
     @NotNull
     private int userNumber;
-    @NotNull
+    @NotBlank
     private String title;
-    @NotNull
+    @NotBlank
     private String content;
     @NotNull
-    private String imageUrl;
-    @NotNull
-    private List<ImageUrlList> imageUrlList;
-    private List<HashTag> hashtagList;
-    @NotNull
+    private List<String> imageUrlList;
+    private List<String> hashtagList;
+    @NotBlank
     private String weatherInfo;
     @NotNull
     private int temperature;
-
-}
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-class ImageUrlList {
-    @NotBlank
-    private int imageNumber;
-    @NotBlank
-    private String imageUrl;
-    @NotBlank
-    private int boardNumber;
-}
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-class HashTag {
-    @NotBlank
-    private int hashtagNumber;
-
-    @NotBlank
-    @GeneratedValue
-    private String hashtagContent;
 }

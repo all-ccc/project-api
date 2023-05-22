@@ -8,43 +8,53 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.groupc.weather.dto.response.board.BoardFirstViewDto;
+import com.groupc.weather.dto.response.board.BoardListResultDto;
+import com.groupc.weather.dto.response.board.BoardListResultTop5Dto;
 import com.groupc.weather.dto.response.board.GetBoardFirstViewDto;
 import com.groupc.weather.common.util.CustomResponse;
 import com.groupc.weather.dto.ResponseDto;
-import com.groupc.weather.dto.request.board.BoardRequsetDto;
 import com.groupc.weather.dto.request.board.PatchBoardRequestDto;
 import com.groupc.weather.dto.request.board.PostBoardRequestDto;
 import com.groupc.weather.dto.response.board.GetBoardListResponseDto;
+import com.groupc.weather.dto.response.board.GetBoardListResponsetop5Dto;
 import com.groupc.weather.dto.response.board.GetBoardResponseDto;
-import com.groupc.weather.dto.response.board.GetUserBoardLikeDto;
+import com.groupc.weather.dto.response.board.LikeyListDto;
 import com.groupc.weather.entity.BoardEntity;
 import com.groupc.weather.entity.CommentEntity;
+import com.groupc.weather.entity.HashtagEntity;
+import com.groupc.weather.entity.HashtagHasBoardEntity;
 import com.groupc.weather.entity.ImageUrlEntity;
 import com.groupc.weather.entity.LikeyEntity;
 import com.groupc.weather.entity.UserEntity;
-import com.groupc.weather.entity.primaryKey.HashListEntity;
-import com.groupc.weather.entity.resultSet.BoardCommentLikeyCountResultSet;
+import com.groupc.weather.entity.primaryKey.LikeyPk;
 import com.groupc.weather.entity.resultSet.GetBoardListResult;
 import com.groupc.weather.repository.BoardRepository;
 import com.groupc.weather.repository.CommentRepository;
-import com.groupc.weather.repository.HashTageRepository;
+import com.groupc.weather.repository.HashtagHasBoardRepository;
+import com.groupc.weather.repository.HashtagRepository;
 import com.groupc.weather.repository.ImageUrlRepository;
 import com.groupc.weather.repository.LikeyRepository;
 import com.groupc.weather.repository.UserRepository;
 import com.groupc.weather.service.BoardService;
 
+
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class BoardServiceImplement<BoardSummary> implements BoardService {
+public class BoardServiceImplement implements BoardService {
 
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
     private final CommentRepository commentRepository;
-    private final LikeyRepository likeyRepository;
 
-    // 게시물 작성
+    private final LikeyRepository likeyRepository;
+    private final ImageUrlRepository imageUrlRepository;
+    private final HashtagRepository hashtagRepository;
+    private final HashtagHasBoardRepository hashtagHasBoardRepository;
+
+    // 1.게시물 등록
     @Override
     public ResponseEntity<ResponseDto> postBoard(PostBoardRequestDto dto) {
 
@@ -56,6 +66,47 @@ public class BoardServiceImplement<BoardSummary> implements BoardService {
 
             BoardEntity boardEntity = new BoardEntity(dto);
             boardRepository.save(boardEntity);
+            int boardNumber = boardEntity.getBoardNumber();
+            List<ImageUrlEntity> imageUrlLists = new ArrayList<>();
+            List<HashtagEntity> hashtagLists = new ArrayList<>();
+
+            for (String imageListResult : dto.getImageUrlList()) {
+                ImageUrlEntity imageUrlEntity = new ImageUrlEntity(imageListResult, boardEntity.getBoardNumber());
+                imageUrlLists.add(imageUrlEntity);
+            }
+
+            imageUrlRepository.saveAll(imageUrlLists);
+
+            List<HashtagEntity> hashtagEntityList = new ArrayList<>();
+            for (String hashtag : dto.getHashtagList()) {
+                HashtagEntity hashtagEntity = new HashtagEntity(hashtag);
+                hashtagEntityList.add(hashtagEntity);
+            }
+            hashtagRepository.saveAll(hashtagEntityList);
+
+            List<HashtagHasBoardEntity> hashtagHasBoardEntityList = new ArrayList<>();
+            for (HashtagEntity hashtagEntity : hashtagEntityList) {
+                int hashtagNumber = hashtagEntity.getHashtagNumber();
+                HashtagHasBoardEntity hashtagHasBoardEntity = new HashtagHasBoardEntity(hashtagNumber, boardNumber);
+                hashtagHasBoardEntityList.add(hashtagHasBoardEntity);
+            }
+            hashtagHasBoardRepository.saveAll(hashtagHasBoardEntityList);
+
+            // List<HashtagHasBoardEntity> hashtagHasBoardEntityList = new ArrayList<>();
+
+            // for (String hashtag: dto.getHashtagList()){
+            // HashtagEntity hashtagEntity = new HashtagEntity(hashtag);
+            // hashtagRepository.save(hashtagEntity);
+
+            // int hashtagNumber = hashtagEntity.getHashtagNumber();
+            // HashtagHasBoardEntity hashtagHasBoardEntity = new
+            // HashtagHasBoardEntity(hashtagNumber, boardNumber);
+
+            // hashtagHasBoardEntityList.add(hashtagHasBoardEntity);
+            // }
+
+            // hashtagHasBoardRepository.saveAll(hashtagHasBoardEntityList);
+
         } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
@@ -63,7 +114,7 @@ public class BoardServiceImplement<BoardSummary> implements BoardService {
         return CustomResponse.success();
     }
 
-    // 특정 게시물 조회 (게시물 번호)
+    // 2.특정 게시물 조회 (게시물 번호)
     @Override
     public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber) {
         GetBoardResponseDto body = null;
@@ -72,9 +123,9 @@ public class BoardServiceImplement<BoardSummary> implements BoardService {
             // 매게변수 오류
             if (boardNumber == null)
                 return CustomResponse.validationError();
-
+            boolean existsByBoardNumber = boardRepository.existsByBoardNumber(boardNumber);
             // 존재하지 않는 게시물 번호
-            if (boardNumber == null)
+            if (!existsByBoardNumber)
                 return CustomResponse.notExistBoardNumber();
 
             BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
@@ -82,29 +133,30 @@ public class BoardServiceImplement<BoardSummary> implements BoardService {
             boardEntity.setViewCount(++viewCount);
             Integer boardWriterNumber = boardEntity.getUserNumber();
             UserEntity userEntity = userRepository.findByUserNumber(boardWriterNumber);
-            List<LikeyEntity> likeyEntities = likeyRepository.findByBoardNumber(boardNumber);
+            List<LikeyEntity> likeyEntities = likeyRepository.findByBoardNumberForLikeyList(boardNumber);
+            List<LikeyListDto> likeyListDtos = new ArrayList<>();
+            for (LikeyEntity likeyEntity : likeyEntities) {
+
+                UserEntity likeUserEntity = userRepository.findByUserNumber(likeyEntity.getUserNumber());
+                LikeyListDto likeyListDto = new LikeyListDto(likeyEntity, likeUserEntity);
+                likeyListDtos.add(likeyListDto);
+            }
+
             List<CommentEntity> commentEntities = commentRepository.findByBoardNumber(boardNumber);
-            List<HashListEntity> hashListEntities = hashTageRepository.findByBoardNumber(boardNumber);
+            List<HashtagHasBoardEntity> hashtagHasBoardEntities = hashtagHasBoardRepository
+                    .findByBoardNumber(boardNumber);
+
+            List<HashtagEntity> hashListEntities = new ArrayList<>();
+            for (HashtagHasBoardEntity hashtagHasBoardEntity : hashtagHasBoardEntities) {
+                int hashtagNumber = hashtagHasBoardEntity.getHashtagNumber();
+                HashtagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
+                hashListEntities.add(hashtagEntity);
+            }
+
             List<ImageUrlEntity> imageUrlEntities = imageUrlRepository.findByBoardNumber(boardNumber);
-            body = new GetBoardResponseDto(boardEntity, userEntity, likeyEntities, commentEntities, hashListEntities,
+            body = new GetBoardResponseDto(boardEntity, userEntity, likeyListDtos, commentEntities, hashListEntities,
                     imageUrlEntities);
 
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return CustomResponse.databaseError();
-        }
-        return CustomResponse.success();
-    }
-
-    // 게시물 최신순 조회
-    @Override
-    public ResponseEntity<? super GetBoardListResponseDto> getBoardList() {
-        GetBoardListResponseDto body = null;
-
-        try {
-            List<GetBoardListResult> resultSet = boardRepository.getBoardList();
-            System.out.println(resultSet.size()); // 게시물 목록 몇개 나오는지 보는건데 쓸까 말까~?
-            body = new GetBoardListResponseDto(resultSet);
         } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
@@ -112,14 +164,65 @@ public class BoardServiceImplement<BoardSummary> implements BoardService {
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
-    // top5 조회
+    // 3.본인 게시물 목록 조회
+    @Override
+    public ResponseEntity<? super GetBoardListResponseDto> getBoardMyList(Integer userNumber) {
+        GetBoardListResponseDto body = null;
+ 
+        try {
+
+            List<GetBoardListResult> resultSet = boardRepository.getMyBoardList(userNumber);
+            List<BoardListResultDto> boardListResultDtos = new ArrayList<>();
+            for(GetBoardListResult result:resultSet){
+                int boardNumber = result.getBoardNumber();
+                String boardFirstImageUrl=boardRepository.getBoardFirstImageUrl(boardNumber);
+                List<HashtagHasBoardEntity> hashtagHasBoardEntities = hashtagHasBoardRepository.findByBoardNumber(boardNumber);
+
+                List<HashtagEntity> hashListEntities = new ArrayList<>();
+                for(HashtagHasBoardEntity hashtagHasBoardEntity : hashtagHasBoardEntities){
+                    int hashtagNumber = hashtagHasBoardEntity.getHashtagNumber();
+                    HashtagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
+                    hashListEntities.add(hashtagEntity);
+                    }
+                BoardListResultDto boardListResultDto = new BoardListResultDto(result, boardFirstImageUrl, hashListEntities);
+                boardListResultDtos.add(boardListResultDto);
+            }
+
+
+            body = new GetBoardListResponseDto(boardListResultDtos);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+    // 4.top5 조회
     @Override
     public ResponseEntity<? super GetBoardListResponseDto> getBoardTop5() {
+        
         GetBoardListResponseDto body = null;
         try {
+
             List<GetBoardListResult> resultSet = boardRepository.getBoardListTop5();
-            System.out.println(resultSet.size());
-            body = new GetBoardListResponseDto(resultSet);
+            List<BoardListResultDto> boardListResultDtos = new ArrayList<>();
+            for(GetBoardListResult result:resultSet){
+                int boardNumber = result.getBoardNumber();
+                String boardFirstImageUrl=boardRepository.getBoardFirstImageUrl(boardNumber);
+                List<HashtagHasBoardEntity> hashtagHasBoardEntities = hashtagHasBoardRepository.findByBoardNumber(boardNumber);
+
+                List<HashtagEntity> hashListEntities = new ArrayList<>();
+                for(HashtagHasBoardEntity hashtagHasBoardEntity : hashtagHasBoardEntities){
+                    int hashtagNumber = hashtagHasBoardEntity.getHashtagNumber();
+                    HashtagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
+                    hashListEntities.add(hashtagEntity);
+                    }
+
+                BoardListResultDto boardListResultDto = new BoardListResultDto(result, boardFirstImageUrl, hashListEntities);
+                boardListResultDtos.add(boardListResultDto);
+            }
+
+            body = new GetBoardListResponseDto(boardListResultDtos);
         } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
@@ -130,36 +233,81 @@ public class BoardServiceImplement<BoardSummary> implements BoardService {
     // ResponseEntity는 , OK 코드랑 메세지에다가 + 원하는거 보여줌. // 이거는 따로 만들면 Custom으로 쓸수잇는데
     // 따로 안만들어서 이렇게쓰는거임....
 
-
-    // 본인 게시물 조회
+    // 5.게시물 최신순 조회
     @Override
-    public ResponseEntity<? super GetBoardListResponseDto> getBoardMyList(Integer userNumber) {
+    public ResponseEntity<? super GetBoardListResponseDto> getBoardList() {
         GetBoardListResponseDto body = null;
-
         try {
+            List<GetBoardListResult> resultSet = boardRepository.getBoardList();
+            // System.out.println(resultSet.size());  //게시물 목록 몇개 나오는지 보는건데 쓸까 말까~?
 
-            List<GetBoardListResult> resultSet = boardRepository.findByUserNumber(userNumber);
-            System.out.println(resultSet.size());
-            body = new GetBoardListResponseDto(resultSet);
+            List<BoardListResultDto> boardListResultDtos = new ArrayList<>();
+            for(GetBoardListResult result:resultSet){
+                int boardNumber = result.getBoardNumber();
+                String boardFirstImageUrl=boardRepository.getBoardFirstImageUrl(boardNumber);
+                List<HashtagHasBoardEntity> hashtagHasBoardEntities = hashtagHasBoardRepository.findByBoardNumber(boardNumber);
+
+                List<HashtagEntity> hashListEntities = new ArrayList<>();
+                for(HashtagHasBoardEntity hashtagHasBoardEntity : hashtagHasBoardEntities){
+                    int hashtagNumber = hashtagHasBoardEntity.getHashtagNumber();
+                    HashtagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
+                    hashListEntities.add(hashtagEntity);
+                    }
+
+                BoardListResultDto boardListResultDto = new BoardListResultDto(result, boardFirstImageUrl, hashListEntities);
+                boardListResultDtos.add(boardListResultDto);
+            }
+
+            body = new GetBoardListResponseDto(boardListResultDtos);
         } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
-    // 게시물 수정
+
+    // 6.첫화면 게시물 8개 보기
     @Override
-    public ResponseEntity<ResponseDto> patchBoard(Integer userNumber, PatchBoardRequestDto dto) {
-        Integer userNumbers = dto.getBoardWriteUserNumber();
+    public ResponseEntity<? super GetBoardFirstViewDto> getBoardFirstView() {
+        GetBoardFirstViewDto body = null;
+    try {
+
+        List<GetBoardListResult> resultSet = boardRepository.getBoardFirstView();
+        List<BoardFirstViewDto> boardFirstViewDtos = new ArrayList<>();
+        for(GetBoardListResult result:resultSet){
+            int boardNumber = result.getBoardNumber();
+            String boardFirstImageUrl=boardRepository.getBoardFirstImageUrl(boardNumber);
+
+            BoardFirstViewDto BoardFirstViewDto = new BoardFirstViewDto(result, boardFirstImageUrl);
+            boardFirstViewDtos.add(BoardFirstViewDto);
+        }
+
+        body = new GetBoardFirstViewDto(boardFirstViewDtos);
+    } catch (Exception exception) {
+        exception.printStackTrace();
+        return CustomResponse.databaseError();
+    }
+    return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+    // 7.게시물 수정
+    @Override
+    public ResponseEntity<ResponseDto> patchBoard(String userEmail, PatchBoardRequestDto dto) {
+        Integer userNumbers = dto.getUserNumber();
         Integer boardNumbers = dto.getBoardNumber();
         String boardTitle = dto.getBoardTitle();
-        String boardImageUrl = dto.getBoardImageUrl();
-        List<?> boardHashTag = dto.getBoardHashtag();
+        List<String> modifyImageUrlLists = dto.getBoardImageUrl();
+        List<String> modifyHashTags = dto.getBoardHashtag();
 
+        List<ImageUrlEntity> imageUrlEntities = new ArrayList<>();
+        List<HashtagEntity> hashtagEntities = new ArrayList<>();
+        // 로그인하면 토큰을 반환시켜주고 , 해당토큰을 헤더에 넣고 이걸 실행하면
+        // 이메일이 받아와짐 왜냐면 컨트롤러에서 이메일을 받아오게 했기 때문에
+        //
         try {
+            UserEntity userEntity = userRepository.findByUserNumber(userNumbers); // 작성자유저넘버 불러오기
+            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumbers); // 게시물번호 불러오기
 
-            UserEntity userEntity = userRepository.findByUserNumber(userNumbers);
-            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumbers);
             // 매게변수
             if (userNumbers == null || boardNumbers == null) {
                 return CustomResponse.validationError();
@@ -173,14 +321,25 @@ public class BoardServiceImplement<BoardSummary> implements BoardService {
                 return CustomResponse.notExistBoardNumber();
 
             // 유저번호와 게시물 작성자 유저번호 일치 여부 (불일치시 권한 없음)
-            boolean isMatchedUserNumber = userEntity.equals(boardEntity.getUserNumber());
+            UserEntity tryUserEntity = userRepository.findByEmail(userEmail); // 게시물의 수정을 시도하려는 사람의 정보
+            Integer tryUserNumber = tryUserEntity.getUserNumber(); // 해당 정보에서 유저넘버를 가져옴
+            boolean isMatchedUserNumber = tryUserNumber.equals(boardEntity.getUserNumber());
+             // tryUserNumber = 수정시도하려는 유저넘버  / boardEntity.getUserNumber() = 게시물 작성자 넘버
             if (!isMatchedUserNumber)
                 return CustomResponse.noPermissions();
-
+            for (String imageList : modifyImageUrlLists) {
+                ImageUrlEntity imageUrlEntity = new ImageUrlEntity(imageList, boardNumbers);
+                imageUrlEntities.add(imageUrlEntity);
+            }
+           for(String hashTagList : modifyHashTags){
+                HashtagEntity hashtagEntity = new HashtagEntity(hashTagList);
+                hashtagEntities.add(hashtagEntity);
+           }
+           
+            hashtagRepository.saveAll(hashtagEntities);
+            imageUrlRepository.saveAll(imageUrlEntities);
             boardEntity.setTitle(boardTitle);
-            boardEntity.setBoardImageUrl(boardImageUrl);
             boardRepository.save(boardEntity);
-            // hashTagRepository.save(boardHashTag);
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -189,170 +348,120 @@ public class BoardServiceImplement<BoardSummary> implements BoardService {
         return CustomResponse.success();
     }
 
-    // 게시물 삭제
+    // 8.게시물 삭제
+    @Override
+    public ResponseEntity<ResponseDto> deleteBoard(Integer userNumber, Integer boardNumber) {
+        try {
+            // TODO 존재하지 않는 게시물 번호 반환
+            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+            if (boardEntity == null)
+                return CustomResponse.notExistBoardNumber();
+
+            // TODO 존재 하지 않는 유저 번호 반환
+            boolean existedUserNumber = userRepository.existsByUserNumber(userNumber);
+            if (!existedUserNumber)
+                return CustomResponse.notExistUserNumber();
+
+            // TODO 권한 x
+            boolean equalsWriter = boardEntity.getUserNumber().equals(userNumber);
+            if (!equalsWriter)
+                return CustomResponse.noPermissions();
+
+            commentRepository.deleteByBoardNumber(boardNumber);
+            likeyRepository.deleteByBoardNumber(boardNumber);
+            boardRepository.delete(boardEntity);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return CustomResponse.success();
+    }
+
+    // 9.특정 게시물 좋아요 등록
+    @Override
+    public ResponseEntity<ResponseDto> likeBoard(LikeyPk likeyPk) {
+        try {
+            // 존재하지 않는 유저 번호
+            boolean isexistUsernumber = userRepository.existsByUserNumber(likeyPk.getUserNumber());
+            if (!isexistUsernumber)
+                return CustomResponse.notExistUserNumber();
+
+            // 존재하지 않는 게시물 번호
+            boolean isexistBoardNumber = boardRepository.existsByBoardNumber(likeyPk.getBoardNumber());
+            if (!isexistBoardNumber)
+                return CustomResponse.notExistBoardNumber();
+
+            boolean isExistLikey = likeyRepository.existsById(likeyPk);
+            if(isExistLikey) 
+                return CustomResponse.alreadyLikeBoard();
+
+            // 이미 좋아요가 등록된 경우
+            LikeyEntity existingLikey = likeyRepository.findByBoardNumberAndUserNumber(likeyPk.getUserNumber(), likeyPk.getBoardNumber());
+            if (existingLikey != null)
+                return CustomResponse.alreadyLikey();
+
+            // 좋아요 생성 및 저장
+            LikeyEntity likeyEntity = new LikeyEntity(likeyPk.getUserNumber(), likeyPk.getBoardNumber());
+            likeyRepository.save(likeyEntity);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return CustomResponse.success();
+    }
+
+    // 10.특정 게시물 좋아요 해제
+    @Override
+    public ResponseEntity<ResponseDto> likeDeleteBoard(Integer userNumber, Integer boardNumber) {
+       
+        LikeyPk likeyPk = new LikeyPk(userNumber, boardNumber);
+        try {
+            boolean isExistUsernumber = userRepository.existsByUserNumber(userNumber);
+            if (!isExistUsernumber) return CustomResponse.notExistUserNumber();
+            boolean isEixstBoardNumber = boardRepository.existsByBoardNumber(boardNumber);
+            if (!isEixstBoardNumber) return CustomResponse.notExistBoardNumber();
+            boolean isExistLikey = likeyRepository.existsById(likeyPk);
+            if(!isExistLikey) return CustomResponse.notLikeBoard();
+
+            likeyRepository.deleteById(likeyPk);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return CustomResponse.success();
+    }
+
+    // 11.특정 유저 좋아요 게시물 조회
+    @Override
+    public ResponseEntity<? super GetUserBoardLikeDto> getLikeyBoardList(Integer userNumber) {
+        GetUserBoardLikeDto body = null;
+        try {
+ 
+            List<GetBoardListResult> resultSet = boardRepository.findByUserNumber(userNumber);
+            System.out.println(resultSet.size());
+            body = new GetUserBoardLikeDto(resultSet);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return CustomResponse.success();
+    }
+
+    // 12.특정 게시물 검색
     // @Override
-    // public ResponseEntity<ResponseDto> deleteBoard(Integer userNumber, Integer boardNumber) {
-    //     try {
-    //         // TODO 존재하지 않는 게시물 번호 반환
-    //         BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
-    //         if (boardEntity == null)
-    //             return CustomResponse.notExistBoardNumber();
-
-    //         // TODO 존재 하지 않는 유저 번호 반환
-    //         boolean existedUserNumber = userRepository.existsByUserNumber(userNumber);
-    //         if (!existedUserNumber)
-    //             return CustomResponse.notExistUserNumber();
-
-    //         // TODO 권한 x
-    //         boolean equalsWriter = boardEntity.getUserNumber().equals(userNumber);
-    //         if (!equalsWriter)
-    //             return CustomResponse.noPermissions();
-
-    //         commentRepository.deleteByBoardNumber(boardNumber);
-    //         //likeyRepository.deleteByBoardNumber(boardNumber);
-    //         boardRepository.delete(boardEntity);
-
-    //     } catch (Exception exception) {
-    //         exception.printStackTrace();
-    //         return CustomResponse.databaseError();
-    //     }
-    //     return CustomResponse.success();
+    // public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWord()
+    // {
+    // return null;
     // }
 
-    //첫화면 게시물 8개 보기
-    @Override
-    public ResponseEntity<? super GetBoardFirstViewDto> getBoardFirstView() {
-        GetBoardListResponseDto body = null;
-        try {
-            List<GetBoardListResult> resultSet = boardRepository.getBoardFirstView();
-            System.out.println(resultSet.size());
-            body = new GetBoardListResponseDto(resultSet);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return CustomResponse.databaseError();
-        }
-        return ResponseEntity.status(HttpStatus.OK).body("dd"); //주석처리
-    }
-
-    @Override
-    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWord() {
-        return null;
-      
-    }
-
-    @Override
-    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByHashtag() {
-        return null;
-       
-    }
-
-    // 특정 게시물 좋아요 등록
-    @Override
-    public ResponseEntity<ResponseDto> Likey(Integer userNumber, Integer boardNumber){
-    try {
-        // 존재하지 않는 유저 번호
-        boolean isexistUsernumber = userRepository.existsByUserNumber(userNumber);
-        if (!isexistUsernumber)
-            return CustomResponse.notExistUserNumber();
-
-        // 존재하지 않는 게시물 번호
-        boolean isexistBoardNumber = boardRepository.existsByBoardNumber(boardNumber);
-        if (!isexistBoardNumber)
-            return CustomResponse.notExistBoardNumber();
-   
-        // 이미 좋아요가 등록된 경우
-        LikeyEntity existingLikey = (likeyRepository).findByBoardNumber(boardNumber, userNumber);
-        if (existingLikey != null)
-            return CustomResponse.alreadyExists();
-   
-        // 좋아요 생성 및 저장
-        LikeyEntity newLikey = new LikeyEntity(userNumber, boardNumber, isexistBoardNumber);
-        likeyRepository.save(newLikey);
-
-    } catch (Exception exception) {
-        exception.printStackTrace();
-        return CustomResponse.databaseError();
-    }
-    return CustomResponse.success();
-}
-
-    // 특정 게시물 좋아요 해제
-    @Override
-    public ResponseEntity<ResponseDto> deleteBoardLikey(Integer userNumber, Integer boardNumber){
-    try {
-        // TODO 존재하지 않는 게시물 번호 반환
-       LikeyEntity likeyEntity = likeyRepository.findByBoardNumber(boardNumber);
-        if (likeyEntity == null)
-            return CustomResponse.notExistBoardNumber();
-
-        // TODO 존재 하지 않는 유저 번호 반환    
-        boolean existedUserNumber = userRepository.existsByUserNumber(userNumber);
-        if (!existedUserNumber)
-            return CustomResponse.notExistUserNumber();
-
-        // TODO 권한 x
-        boolean equalsWriter = likeyEntity.getUserNumber().equals(userNumber);
-        if (!equalsWriter)
-            return CustomResponse.noPermissions();
-
-        likeyRepository.deleteByBoardNumber(boardNumber);
-
-    } catch (Exception exception) {
-        exception.printStackTrace();
-        return CustomResponse.databaseError();
-    }
-    return CustomResponse.success();
-}
-
-    // 특정 유저 좋아요 게시물 조회
-    @Override
-    public ResponseEntity<? super GetUserBoardLikeDto> getLikeBoards(Integer userNumber) {
-        GetUserBoardLikeDto body = null;
-
-        try {
-            // 매게변수 오류
-            if (userNumber == null)
-                return CustomResponse.validationError();
-            List<LikeyEntity> likeyEntities = likeyRepository.findByUserNumber(userNumber);
-            List<BoardSummary> boardList = new ArrayList<>();
-
-            for (LikeyEntity likeyEntity : likeyEntities) {
-                Integer boardNumber = likeyEntity.getBoardNumber();
-                BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
-                BoardSummary boardSummary = new BoardSummary(
-                        boardEntity.getBoardNumber(),
-                        boardEntity.getBoardTitle(),
-                        boardEntity.getBoardContent(),
-                        boardEntity.getBoardWriteDatetime().toString(),
-                        boardEntity.getBoardWriterNumber(),
-
-                        userEntity.getNickname(),
-                        userEntity.getProfileImageUrl(),
-                        boardEntity.getCommentCount(),
-                        boardEntity.getLikeCount(),
-
-                        new BoardImageUrlList(),
-
-                        new ArrayList<HashList>());
-                boardList.add(boardSummary);
-            }
-
-            body = new GetUserBoardLikeDto();
-            body.setBoardList(boardList);
-
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return CustomResponse.databaseError();
-        }
-        return CustomResponse.success();
-    }
-   
-    // 특정 게시물 검색
-    
-
-   
-    // 특정 게시물 검색(해쉬태그)
-
-
+    // 13.특정 게시물 검색(해쉬태그)
+    // @Override
+    // public ResponseEntity<? super GetBoardListResponseDto>
+    // getSearchListByHashtag() {
+    // return null;
+    // }
 
 }

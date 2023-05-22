@@ -32,6 +32,7 @@ private int temperature;
 private String weatherInfo;
 private int viewCount;
 
+
         public BoardEntity(PostBoardRequestDto dto) {
                 Date now = new Date();
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -44,5 +45,4 @@ private int viewCount;
                 this.weatherInfo = dto.getWeatherInfo();
                 this.viewCount = 0;
         }
-
 }
