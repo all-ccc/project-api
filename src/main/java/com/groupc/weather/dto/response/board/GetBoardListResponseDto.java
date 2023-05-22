@@ -12,9 +12,11 @@ public class GetBoardListResponseDto extends ResponseDto{
     private List<BoardListResultDto> boardList; 
 
 
+
     public GetBoardListResponseDto(List<BoardListResultDto>resultSet){
         super("SU","Success");
         this.boardList = resultSet;
+
 }
-   
+
 }

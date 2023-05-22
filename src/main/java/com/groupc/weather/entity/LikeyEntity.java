@@ -20,9 +20,16 @@ import lombok.NoArgsConstructor;
 public class LikeyEntity {
 
     @Id
-    private int userNumber;
+    private Integer userNumber;
     @Id
-    private int boardNumber;     
+    private Integer boardNumber;     
+    
+
+    public LikeyEntity(LikeyPk likeyPk){
+        this.userNumber=likeyPk.getUserNumber();
+        this.boardNumber=likeyPk.getBoardNumber();
+
+    }
     
 
 }
