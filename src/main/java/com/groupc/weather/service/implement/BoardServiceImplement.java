@@ -58,8 +58,10 @@ public class BoardServiceImplement implements BoardService {
         try {
             // 존재하지 않는 유저 번호
             boolean isexistUsernumber = userRepository.existsByUserNumber(dto.getUserNumber());
-            if (!isexistUsernumber) return CustomResponse.notExistUserNumber();
-
+            if (!isexistUsernumber) {
+                ResponseDto errorBody = new ResponseDto("NU", "Non-Existent User Number");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
+          }
                 BoardEntity boardEntity = new BoardEntity(dto);
                 boardRepository.save(boardEntity);
                 int boardNumber = boardEntity.getBoardNumber();

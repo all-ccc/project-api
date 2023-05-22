@@ -74,17 +74,7 @@ public class CustomResponse {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
-    public static ResponseEntity<ResponseDto> notExistUserNumber() {
-        
-        ResponseDto errorBody = new ResponseDto("NU", "Not-Existent User Number");        
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody); //너가 누구인지 모른다
-    }
 
-    public static ResponseEntity<ResponseDto> notExistQnaCommentNumber() {
-        
-        ResponseDto errorBody = new ResponseDto("NQC", "Not-Existent Qna Comment Number");        
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody); //너가 누구인지 모른다
-    }
     public static ResponseEntity<ResponseDto> signInFailedEmail() {
 
         ResponseDto errorBody = new ResponseDto("SF", "Sign In Failed Undefinde Email");
