@@ -13,8 +13,9 @@ public class BoardFirstViewDto {
     private int boardNumber;
     private String boardFirstImageUrl;
 
-    public BoardFirstViewDto(GetBoardListResult resultSet, String boardFirstImageUrl){
+
+    public BoardFirstViewDto(GetBoardListResult resultSet){
         this.boardNumber = resultSet.getBoardNumber();
-        this.boardFirstImageUrl = boardFirstImageUrl;
+        this.boardFirstImageUrl=resultSet.getBoardFirstImageUrl();
     }
 }

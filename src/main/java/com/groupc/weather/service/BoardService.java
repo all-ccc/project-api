@@ -1,5 +1,7 @@
 package com.groupc.weather.service;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import com.groupc.weather.dto.response.board.GetBoardListResponseDto;
 import com.groupc.weather.dto.response.board.GetBoardListResponsetop5Dto;

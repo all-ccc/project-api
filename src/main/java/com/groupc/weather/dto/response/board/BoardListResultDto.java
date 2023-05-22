@@ -25,7 +25,7 @@ public class BoardListResultDto {
     private String boardFirstImageUrl;
     private List<HashtagEntity> hashtagList;
 
-     public BoardListResultDto(GetBoardListResult resultSet,String boardFirstImageUrl, List<HashtagEntity> hashtagList){
+     public BoardListResultDto(GetBoardListResult resultSet,List<HashtagEntity> hashtagList){
         this.boardNumber = resultSet.getBoardNumber();
         this.boardTitle = resultSet.getBoardTitle();
         this.boardContent = resultSet.getBoardContent();
@@ -34,7 +34,7 @@ public class BoardListResultDto {
         this.boardWriterProfileImageUrl = resultSet.getBoardWriterProfileImageUrl();
         this.likeCount = resultSet.getLikeCount();
         this.commentCount = resultSet.getCommentCount();
-        this.boardFirstImageUrl = boardFirstImageUrl;
+        this.boardFirstImageUrl = resultSet.getBoardFirstImageUrl();
         this.hashtagList=hashtagList;
 
     

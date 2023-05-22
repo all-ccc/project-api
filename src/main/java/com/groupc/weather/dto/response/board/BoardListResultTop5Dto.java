@@ -13,10 +13,10 @@ public class BoardListResultTop5Dto {
     private String boardTitle;
     private String boardFirstImageUrl;
 
-    public BoardListResultTop5Dto(GetBoardListResult result,String boardFirstImageUrl){
+    public BoardListResultTop5Dto(GetBoardListResult result){
         this.boardNumber=result.getBoardNumber();
         this.boardTitle=result.getBoardTitle();
-        this.boardFirstImageUrl=boardFirstImageUrl;
+        this.boardFirstImageUrl=result.getBoardFirstImageUrl();
     }
 
 }

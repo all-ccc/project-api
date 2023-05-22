@@ -9,6 +9,7 @@ public interface GetBoardListResult {
     public String getBoardWriteDatetime();
     public String getBoardWriterNickname();
     public String getBoardWriterProfileImageUrl();
+    public String getBoardFirstImageUrl();
     public int getCommentCount();
     public int getLikeCount();
     

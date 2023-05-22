@@ -1,5 +1,7 @@
 package com.groupc.weather.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -117,7 +119,7 @@ public class BoardController {
         ResponseEntity<ResponseDto> response = boardService.likeDeleteBoard(userNumber,boardNumber);
         return response;
     }
-
+    
 
 
     // 11. 특정 유저 좋아요 게시물 조회
