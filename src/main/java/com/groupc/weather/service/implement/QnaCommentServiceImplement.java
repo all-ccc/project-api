@@ -194,12 +194,7 @@ public class QnaCommentServiceImplement implements QnaCommentService {
     }
 
 
-    @Override
-    public ResponseEntity<ResponseDto> getQnaComment(Integer qnaBoardNumber) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getQnaComment'");
-    }
-
+ 
 
 
 

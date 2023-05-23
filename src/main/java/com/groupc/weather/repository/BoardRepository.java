@@ -345,4 +345,49 @@ nativeQuery = true
 )
 public List<GetBoardListResult> getSearchListByWord(@Param("search_word") String searchWord);
 
+
+
+@Query(value=
+"SELECT " +
+"B.board_number AS boardNumber, " +
+"B.title AS boardTitle, " +
+"B.content AS boardContent, " +
+"B.write_datetime AS boardWriteDatetime, " +
+"BF.image_url AS boardFirstImageUrl, " +
+"U.nickname AS boardWriterNickname, " +
+"U.profile_image_url AS boardWriterProfileImageUrl, " +
+"count(C.comment_number) AS commentCount, " +
+"LC.likeCount AS likeCount " +
+"FROM Board B " +
+"LEFT JOIN (SELECT * FROM( " +
+"SELECT image_number, image_url, board_number, " +
+"ROW_NUMBER() OVER (PARTITION BY board_number) " +
+"AS N FROM image_url) AS T " +
+"WHERE T.N=1) AS BF " +
+"ON B.board_number = BF.board_number " +
+"LEFT JOIN User U " +
+"ON B.user_number = U.user_number " +
+"LEFT JOIN Comment C " +
+"ON B.board_number = C.board_number " +
+"LEFT JOIN ( " +
+"Select B.board_number,count(L.user_number) AS likeCount FROM Board B " +
+"LEFT JOIN likey L " +
+"ON B.board_number = L.board_number " +
+"GROUP BY B.board_number " +
+") AS LC " +
+"ON LC.board_number = B.board_number " +
+"LEFT JOIN ( " +
+"SELECT HB.board_number AS board_number " +
+"FROM hashtag H, hashtag_has_board HB " +
+"WHERE H.hashtag_number = HB.hashtag_number " +
+"AND H.hashtag_content LIKE CONCAT('%',:search_word,'%') " +
+") AS H " +
+"ON B.board_number = H.board_number " +
+"WHERE B.board_number = H.board_number " +
+"GROUP BY B.board_number, BF.image_url " +
+"ORDER BY B.write_datetime DESC; ",
+nativeQuery = true
+)
+public List<GetBoardListResult> getSearchHashtagByWord(@Param("search_word") String searchWord);
+
 }
