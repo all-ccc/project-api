@@ -45,7 +45,6 @@ public class QnaBoardServiceImplement implements QnaBoardService {
 
     @Override
     public ResponseEntity<ResponseDto> postQnaBoard(PostQnaBoardRequestDto dto) {
-        ResponseDto body = null;
         int userNumber = dto.getUserNumber();
 
         try {
@@ -117,7 +116,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
     public ResponseEntity<ResponseDto> patchQnaBoard(PatchQnaBoardRequestDto dto) {
         ResponseDto body = null;
 
-        int userNumber = dto.getUserNumber();
+        Integer userNumber = dto.getUserNumber();
         Integer qnaBoardNumber = dto.getQnaBoardNumber();
         String title = dto.getTitle();
         String content = dto.getContent();
