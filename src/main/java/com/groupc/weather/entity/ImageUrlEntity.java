@@ -6,6 +6,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.groupc.weather.dto.request.board.ImageUrlListDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,5 +28,12 @@ public class ImageUrlEntity {
     public ImageUrlEntity(String imageUrl, int boardNumber){
         this.imageUrl = imageUrl;
         this.boardNumber = boardNumber;
+    }
+    public ImageUrlEntity(int imageNumber, int boardNumber){
+        this.imageNumber = imageNumber;
+        this.boardNumber = boardNumber;
+    }
+
+    public ImageUrlEntity(ImageUrlListDto imageList, Integer boardNumbers) {
     }
 }

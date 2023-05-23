@@ -120,11 +120,13 @@ public class BoardController {
     // 11. 특정 유저 좋아요 게시물 조회
     @GetMapping("/Likelist/{userNumber}/") // like를 붙여야하나,,,?
     public ResponseEntity<? super GetBoardListResponseDto> getLikeBoardList(
-        @PathVariable("userNumber") Integer userNumber) {
+        @PathVariable("userNumber") Integer userNumber
+    ) {
         ResponseEntity<? super GetBoardListResponseDto> response = boardService.getLikeBoardList(userNumber);
         return response;
     }
 
+    
     // 12. 특정 게시물 검색
     @GetMapping("/{searchWord}/{weatherInfo}/{temperature}") // 이렇게 쓰는 게 맞는 건지..
     public ResponseEntity<? super GetBoardListResponseDto> searchListByWord(

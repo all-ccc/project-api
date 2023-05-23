@@ -65,23 +65,24 @@ public List<BoardCommentLikeyCountResultSet> getBoardCommentLikeyList();
 
 // 2.게시물 조회
 @Query(value=
-"SELECT " +
-"B.board_number AS boardNumber, " +
-"B.title AS boardTitle, " + 
-"B.content AS boardContent, " +
-"I.image_url AS boardfirstImageUrl, " + 
-"B.write_datetime AS boardDatetime, " +
-"U.nickname AS boardWriterNickname, " +
-"U.profile_image_url AS boardWriterProfileImageUrl, " +
-"count(DISTINCT C.comment_number) AS commentCount, " +
-"count(DISTINCT L.user_number) AS likeCount, " +
-"FROM Board B, Comment C, Likey L, User U , Image_Url I " +
-"Where B.board_number= I.board_number" +
-"AND I.image_number = 1 " +
-"AND B.user_number = U.user_number" +
-"AND B.board_number = L.board_number" +
-"GROUP BY B.board_number" +
-"ORDER BY B.write_datetime DESC;" ,
+"SELECT * FROM get_board; ",
+// "SELECT " +
+// "B.board_number AS boardNumber, " +
+// "B.title AS boardTitle, " + 
+// "B.content AS boardContent, " +
+// "I.image_url AS boardfirstImageUrl, " + 
+// "B.write_datetime AS boardDatetime, " +
+// "U.nickname AS boardWriterNickname, " +
+// "U.profile_image_url AS boardWriterProfileImageUrl, " +
+// "count(DISTINCT C.comment_number) AS commentCount, " +
+// "count(DISTINCT L.user_number) AS likeCount, " +
+// "FROM Board B, Comment C, Likey L, User U , Image_Url I " +
+// "Where B.board_number= I.board_number" +
+// "AND I.image_number = 1 " +
+// "AND B.user_number = U.user_number" +
+// "AND B.board_number = L.board_number" +
+// "GROUP BY B.board_number" +
+// "ORDER BY B.write_datetime DESC;" ,
 nativeQuery = true
 )
 public List<GetBoardListResult> getBoardList();
@@ -197,32 +198,127 @@ nativeQuery = true
 )
 public List<LikeyResultSet> getLikeList();
 
-// 13.특정 게시물 검색(해쉬태그)
-@Query(value =
-"SELECT " +
-"B.board_number AS boardNumber, " + 
+
+//11.특정 유저 좋아요 게시물 조회
+@Query(value=
+"SELECT B.board_number AS boardNumber, " +
 "B.title AS boardTitle, " +
 "B.content AS boardContent, " +
-"B.write_datetime AS boardDatetime, " +
-"U.user_number AS boardWriterNumber, " +
+"B.write_datetime AS boardWriteDatetime, " +
+"BF.image_url AS boardFirstImageUrl, " +
 "U.nickname AS boardWriterNickname, " +
 "U.profile_image_url AS boardWriterProfileImageUrl, " +
-"count(DISTINCT C.comment_number) AS commentCount, " +
-"count(DISTINCT L.user_number) AS likeCount, " +
-"B.weather_info AS weatherInfo, " +
-"B.temperature AS temperature, " +
-"count(DISTINCT H.hashtag_number) AS hashtagCount, " +
-"FROM Board B, Comment C, Likey L, User U, Hashtag H, "  +
-"(SELECT HB.board_number AS HboardNumber, H.hashtag_content AS Hcontent " +
-"FROM Hashtag H,Hashtag_Has_Board HB, Board B " +
-"WHERE B.board_number = HB.board_number " +
-"AND HB.hashtag_number = H.hashtag_number " +
-"AND H.hashtag_content like '%hash%') A " +
-"Where B.board_number= C.board_number" +
-"AND B.user_number = U.user_number" +
-"AND B.board_number = L.board_number" +
-"GROUP BY B.board_number;",
+"count(C.comment_number) AS commentCount, " +
+"LC.likeCount AS likeCount " +
+"FROM Board B " +
+"LEFT JOIN (SELECT * FROM " +
+"(select image_number, image_url, board_number, " +
+"ROW_NUMBER() OVER (PARTITION BY board_number) " +
+"AS N FROM image_url) AS T " +
+"WHERE T.N=1) AS BF " +
+"ON B.board_number = BF.board_number " +
+"LEFT JOIN User U " +
+"ON B.user_number = U.user_number " +
+"LEFT JOIN Likey L " +
+"ON B.board_number = L.board_number " +
+"LEFT JOIN Comment C " +
+"ON B.board_number = C.board_number " +
+"LEFT JOIN ( " +
+"Select B.board_number,count(L.user_number) AS likeCount FROM Board B " +
+"LEFT JOIN likey L " +
+"ON B.board_number = L.board_number " +
+"GROUP BY B.board_number) AS LC " +
+"ON LC.board_number = B.board_number " +
+"WHERE L.user_number =:user_number " +
+"GROUP BY B.board_number, BF.image_url " +
+"ORDER BY B.write_datetime DESC; ",
 nativeQuery = true
 )
-public List<HashTageResultSet> getHashTagList();
+public List<GetBoardListResult> getLikeBoardList(@Param("user_number") int userNumber);
+
+// 12. 특정 게시물 검색
+@Query(value=
+"SELECT " +
+"B.board_number AS boardNumber, " +
+"B.title AS boardTitle, " +
+"B.content AS boardContent, " +
+"B.write_datetime AS boardWriteDatetime, " +
+"BF.image_url AS boardFirstImageUrl, " +
+"U.nickname AS boardWriterNickname, " + 
+"U.profile_image_url AS boardWriterProfileImageUrl, " +
+"count(C.comment_number) AS commentCount, " +
+"LC.likeCount AS likeCount " + 
+"FROM Board B " +
+"LEFT JOIN (SELECT * FROM( " +
+"select image_number, image_url, board_number, " +
+"ROW_NUMBER() OVER (PARTITION BY board_number) " +
+"AS N FROM image_url) AS T " +
+"WHERE T.N=1) AS BF " +
+"ON B.board_number = BF.board_number " +
+"LEFT JOIN User U " +
+"ON B.user_number = U.user_number " +
+"LEFT JOIN Comment C " +
+"ON B.board_number = C.board_number " +
+"LEFT JOIN Likey L " +
+"ON B.board_number = L.board_number " +
+"LEFT JOIN ( " +
+"Select B.board_number,count(L.user_number) AS likeCount FROM Board B " +
+"LEFT JOIN likey L " +
+"ON B.board_number = L.board_number " +
+"GROUP BY B.board_number) AS LC " +
+"ON LC.board_number = B.board_number " +
+"WHERE (B.title LIKE CONCAT('%',:search_word,'%') " +
+"or B.content LIKE CONCAT ('%',:search_word,'%') " +
+"OR B.weather_info Like CONCAT('%',:search_word,'%') " +
+"OR B.temperature Like CONCAT('%',:search_word,'%')) " +
+"GROUP BY B.board_number, BF.image_url " +
+"ORDER BY B.write_datetime DESC; ",
+nativeQuery = true
+)
+public List<GetBoardListResult> getSearchListByWord(@Param("search_word") String searchWord);
+
+
+// 13.특정 게시물 검색(해쉬태그)
+@Query(value=
+"SELECT " +
+"B.board_number AS boardNumber, " +
+"B.title AS boardTitle, " +
+"B.content AS boardContent, " +
+"B.write_datetime AS boardWriteDatetime, " +
+"BF.image_url AS boardFirstImageUrl, " +
+"U.nickname AS boardWriterNickname, " +
+"U.profile_image_url AS boardWriterProfileImageUrl, " +
+"count(C.comment_number) AS commentCount, " +
+"LC.likeCount AS likeCount " +
+"FROM Board B " +
+"LEFT JOIN (SELECT * FROM( " +
+"SELECT image_number, image_url, board_number, " +
+"ROW_NUMBER() OVER (PARTITION BY board_number) " +
+"AS N FROM image_url) AS T " +
+"WHERE T.N=1) AS BF " +
+"ON B.board_number = BF.board_number " +
+"LEFT JOIN User U " +
+"ON B.user_number = U.user_number " +
+"LEFT JOIN Comment C " +
+"ON B.board_number = C.board_number " +
+"LEFT JOIN ( " +
+"Select B.board_number,count(L.user_number) AS likeCount FROM Board B " +
+"LEFT JOIN likey L " +
+"ON B.board_number = L.board_number " +
+"GROUP BY B.board_number " +
+") AS LC " +
+"ON LC.board_number = B.board_number " +
+"LEFT JOIN ( " +
+"SELECT HB.board_number AS board_number " +
+"FROM hashtag H, hashtag_has_board HB " +
+"WHERE H.hashtag_number = HB.hashtag_number " +
+"AND H.hashtag_content LIKE CONCAT('%',:search_word,'%') " +
+") AS H " +
+"ON B.board_number = H.board_number " +
+"WHERE B.board_number = H.board_number " +
+"GROUP BY B.board_number, BF.image_url " +
+"ORDER BY B.write_datetime DESC; ",
+nativeQuery = true
+)
+public List<GetBoardListResult> getSearchHashtagByWord(@Param("search_word") String searchWord);
 }

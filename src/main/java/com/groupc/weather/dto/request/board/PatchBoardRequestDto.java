@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.groupc.weather.entity.ImageUrlEntity;
 
@@ -14,11 +15,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 public class PatchBoardRequestDto {
-    @NotBlank
+    @NotNull
     private Integer userNumber;
-    @NotBlank
+    @NotNull
     private Integer boardNumber;  
     @NotBlank
     private String boardTitle;
@@ -27,17 +29,16 @@ public class PatchBoardRequestDto {
     @NotBlank
     private List<String> boardImageUrl;
     private List<String> boardHashtag;
+
+    // 수정할 거 
+    private List<ImageUrlListDto> imageUrlList;
+    private List<HashtagDto> hashtagList;
+
+    // 추가할 거
+    private List<String> addImageUrlList;
+    private List<String> addHashtageContent;
+
+    // 삭제할 거
+    private List<Integer> deleteImageNumber;
+    private List<Integer> deleteHashtageNumber;
 }
-
-// @Data
-// @NoArgsConstructor
-// @AllArgsConstructor
-// class HashTagList{
-//     @Id
-//     @NotBlank
-//     private int hashtagNumber;
-
-//     @NotBlank
-//     @GeneratedValue
-//     private String hashtagContent;
-// }

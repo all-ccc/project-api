@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
         private List<BoardListResultDto> boardList; 
     
     
-        public GetBoardListResponseDto(List<BoardListResultDto>resultSet){
+        public GetBoardListResponseDto(List<BoardListResultDto> resultSet){
             super("SU","Success");
             this.boardList = resultSet;
     }

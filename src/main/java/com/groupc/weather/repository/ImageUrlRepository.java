@@ -11,4 +11,5 @@ import com.groupc.weather.entity.ImageUrlEntity;
 public interface ImageUrlRepository extends JpaRepository<ImageUrlEntity, Integer> {
     
     public List<ImageUrlEntity> findByBoardNumber(int boardNumber);
+    public ImageUrlEntity findByBoardNumberAndImageNumber(int boardNumber, int imageNumber);
 }
