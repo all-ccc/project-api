@@ -11,6 +11,8 @@ import javax.persistence.Table;
 
 import com.groupc.weather.dto.request.common.ManagerDto;
 import com.groupc.weather.dto.request.common.UserDto;
+import com.groupc.weather.dto.request.qnaBoard.PatchQnaBoardRequestDto;
+import com.groupc.weather.dto.request.qnaBoard.PatchQnaCommentRequestDto;
 import com.groupc.weather.dto.request.qnaBoard.PostQnaCommentRequestDto;
 
 import lombok.AllArgsConstructor;
@@ -69,5 +71,6 @@ public class QnaCommentEntity {
                 this.userProfileImageUrl=null;
                 this.managerProfileImageUrl=managerDto.getManagerProfileImageUrl();
                 }
-        
+
+     
 }

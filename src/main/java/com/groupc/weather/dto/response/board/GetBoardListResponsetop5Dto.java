@@ -5,21 +5,26 @@ import java.util.List;
 
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.entity.resultSet.GetBoardListResult;
-import com.groupc.weather.repository.BoardRepository;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Data
 @NoArgsConstructor
-public class GetBoardFirstViewDto extends ResponseDto {
-    private List<BoardFirstViewDto> boardList;  
+public class GetBoardListResponsetop5Dto extends ResponseDto {
+    private List<BoardListResultTop5Dto> boardList; 
 
-    public GetBoardFirstViewDto(List<BoardFirstViewDto> resultSet){
+
+    public GetBoardListResponsetop5Dto(List<BoardListResultTop5Dto>resultSet){
         super("SU","Success");
         this.boardList = resultSet;
-    
+
 }
+
+
+
+
 }

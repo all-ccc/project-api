@@ -18,10 +18,19 @@ import lombok.NoArgsConstructor;
 @Table(name = "likey")
 @IdClass(LikeyPk.class)
 public class LikeyEntity {
+
     @Id
-    private int boardNumber;     
+    private Integer userNumber;
     @Id
-    private int userNumber;
+    private Integer boardNumber;     
+    
+
+    public LikeyEntity(LikeyPk likeyPk){
+        this.userNumber=likeyPk.getUserNumber();
+        this.boardNumber=likeyPk.getBoardNumber();
+
+    }
+    
 
 }
 
