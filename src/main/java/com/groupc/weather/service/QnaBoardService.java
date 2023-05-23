@@ -6,6 +6,7 @@ import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.qnaBoard.PatchQnaBoardRequestDto;
 import com.groupc.weather.dto.request.qnaBoard.PostQnaBoardRequestDto;
 import com.groupc.weather.dto.response.qnaBoard.GetQnaBoardListResponseDto;
+
 import com.groupc.weather.dto.response.qnaBoard.GetQnaBoardResponseDto;
 
 public interface QnaBoardService {

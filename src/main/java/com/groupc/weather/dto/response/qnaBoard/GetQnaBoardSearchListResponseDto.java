@@ -14,11 +14,11 @@ import lombok.Setter;
 
 @Data
 @NoArgsConstructor
-public class GetQnaBoardListResponseDto extends ResponseDto {
-    
+public class GetQnaBoardSearchListResponseDto extends ResponseDto {
+
     private List<QnaBoardSummary> qnaBoardList;
 
-    public GetQnaBoardListResponseDto(List<QnaBoardListResultSet> resultSet) {
+    public GetQnaBoardSearchListResponseDto(List<QnaBoardListResultSet> resultSet) {
         super("SU", "Success");
 
         List<QnaBoardSummary> qnaBoardList = new ArrayList<>();
@@ -38,22 +38,19 @@ public class GetQnaBoardListResponseDto extends ResponseDto {
 @NoArgsConstructor
 @AllArgsConstructor
 class QnaBoardSummary {
-    public Integer qnaBoardNumber;
+    public int qnaBoardNumber;
     public String qnaBoardTitle;
     public String qnaBoardWriteDatetime;
-    public int qnaBoardWriterNumber;
     public String qnaBoardWriterNickname;
     public String qnaBoardWriterProfileImageUrl;
-    public boolean replyComplete;
+    public int replyComplete;
 
     public QnaBoardSummary(QnaBoardListResultSet resultSet) {
-        this.qnaBoardNumber = resultSet.getBoardNumber();
-        this.qnaBoardTitle = resultSet.getBoardTitle();
-        this.qnaBoardWriteDatetime = resultSet.getBoardWriteDatetime();
-        this.qnaBoardWriterNumber = resultSet.getBoardWriterNumber();
-        this.qnaBoardWriterNickname = resultSet.getBoardWriterNickname();
-        this.qnaBoardWriterProfileImageUrl = resultSet.getBoardWriterProfileImageUrl();
-        this.replyComplete = resultSet.getReplyComplete() == 1;
+        this.qnaBoardNumber = resultSet.getQnaBoardNumber();
+        this.qnaBoardTitle = resultSet.getQnaBoardTitle();
+        this.qnaBoardWriteDatetime = resultSet.getQnaBoardWriteDatetime();
+        this.qnaBoardWriterNickname = resultSet.getQnaBoardWriterNickname();
+        this.qnaBoardWriterProfileImageUrl = resultSet.getQnaBoardWriterProfileImageUrl();
+        this.replyComplete = resultSet.getReplyComplete();
     }
 }
-

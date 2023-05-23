@@ -27,7 +27,6 @@ public class BoardEntity {
         private Integer userNumber;
         private String title;
         private String content;
-        private String boardImageUrl;
         private String writeDatetime;
         private int temperature;
         private String weatherInfo;
@@ -41,8 +40,9 @@ public class BoardEntity {
                 this.userNumber = dto.getUserNumber();
                 this.title = dto.getTitle();
                 this.content = dto.getContent();
-                this.boardImageUrl = dto.getImageUrl();
-                this.weatherInfo = writeDatetime;
+                this.temperature = dto.getTemperature();
+                this.weatherInfo = dto.getWeatherInfo();
+                this.writeDatetime = writeDatetime;
                 this.viewCount = 0;
         }
 

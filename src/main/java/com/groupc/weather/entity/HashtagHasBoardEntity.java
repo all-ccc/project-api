@@ -6,9 +6,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 import com.groupc.weather.dto.request.board.PostBoardRequestDto;
+import com.groupc.weather.entity.primaryKey.HashPk;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,7 +21,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity(name = "HashtagHasBoard")
 @Table(name = "Hashtag_Has_Board")
-public class HashListEntity {
+@IdClass(HashPk.class)
+public class HashtagHasBoardEntity {
  
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

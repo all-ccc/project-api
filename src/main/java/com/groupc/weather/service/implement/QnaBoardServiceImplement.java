@@ -195,7 +195,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
         GetQnaBoardListResponseDto body = null;
 
         try {
-            if (searchWord.isBlank()) return CustomResponse.validationError(); // 이렇게 처리하면 되는지
+            //if (searchWord.isBlank()) return CustomResponse.validationError(); // 이렇게 처리하면 되는지
             
             List<QnaBoardListResultSet> resultSet = qnaBoardRepository.getQnaBoardSearchList(searchWord);
             body = new GetQnaBoardListResponseDto(resultSet);
@@ -207,7 +207,5 @@ public class QnaBoardServiceImplement implements QnaBoardService {
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
-
-
 
 }
