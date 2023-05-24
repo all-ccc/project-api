@@ -24,9 +24,5 @@ public class PostBoardRequestDto {
     @NotNull
     private List<String> imageUrlList;
     private List<String> hashtagList;
-    @NotBlank
-    private String weatherInfo;
-    @NotNull
-    private int temperature;
-
+    private String location;
 }

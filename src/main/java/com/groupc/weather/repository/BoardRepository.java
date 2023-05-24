@@ -43,7 +43,7 @@ public List<BoardCommentResultSet> getBoardCommentList();
 "B.title AS boardTitle, " +
 "B.content AS boardContent, " +
 "B.write_datetime AS boardWriterDatetime, " +
-"B.weather_info AS weatherInfo, " +
+"B.weather_description AS weatherDescription, " +
 "B.temperature AS temperature, " +
 "B.view_count AS viewCount, " +
 "U.nickname AS writerNickname, " +
@@ -337,7 +337,7 @@ public List<GetBoardListResult> getLikeBoardList(@Param("user_number") int userN
 "ON LC.board_number = B.board_number " +
 "WHERE (B.title LIKE CONCAT('%',:search_word,'%') " +
 "or B.content LIKE CONCAT ('%',:search_word,'%') " +
-"OR B.weather_info Like CONCAT('%',:search_word,'%') " +
+"OR B.weather_description Like CONCAT('%',:search_word,'%') " +
 "OR B.temperature Like CONCAT('%',:search_word,'%')) " +
 "GROUP BY B.board_number, BF.image_url " +
 "ORDER BY B.write_datetime DESC; ",

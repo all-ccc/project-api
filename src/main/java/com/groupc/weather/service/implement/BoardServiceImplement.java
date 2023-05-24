@@ -1,20 +1,26 @@
 package com.groupc.weather.service.implement;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.json.JSONObject;
 
 import com.groupc.weather.dto.response.board.BoardFirstViewDto;
 import com.groupc.weather.dto.response.board.BoardListResultDto;
 import com.groupc.weather.dto.response.board.BoardListResultTop5Dto;
 import com.groupc.weather.dto.response.board.GetBoardFirstViewDto;
+import com.groupc.weather.OpenWeather;
 import com.groupc.weather.common.util.CustomResponse;
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.board.PatchBoardRequestDto;
 import com.groupc.weather.dto.request.board.PostBoardRequestDto;
+import com.groupc.weather.dto.request.common.WeatherDto;
 import com.groupc.weather.dto.response.board.GetBoardListResponseDto;
 import com.groupc.weather.dto.response.board.GetBoardListResponsetop5Dto;
 import com.groupc.weather.dto.response.board.GetBoardResponseDto;
@@ -36,6 +42,7 @@ import com.groupc.weather.repository.ImageUrlRepository;
 import com.groupc.weather.repository.LikeyRepository;
 import com.groupc.weather.repository.UserRepository;
 import com.groupc.weather.service.BoardService;
+import com.groupc.weather.service.WeatherService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -50,12 +57,12 @@ public class BoardServiceImplement implements BoardService {
     private final ImageUrlRepository imageUrlRepository;
     private final HashtagRepository hashtagRepository;
     private final HashtagHasBoardRepository hashtagHasBoardRepository;
-
+    private final WeatherService weatherService;
     
     // 게시물 작성
     @Override
     public ResponseEntity<ResponseDto> postBoard(PostBoardRequestDto dto) {
-
+        dto.getLocation();
         try {
             // 존재하지 않는 유저 번호
             boolean isExistUsernumber = userRepository.existsByUserNumber(dto.getUserNumber());
@@ -63,16 +70,17 @@ public class BoardServiceImplement implements BoardService {
                 ResponseDto errorBody = new ResponseDto("NU", "Non-Existent User Number");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
           }
-                BoardEntity boardEntity = new BoardEntity(dto);
+                WeatherDto weatherDto =  weatherService.getWeatherData(dto.getLocation());
+
+                BoardEntity boardEntity = new BoardEntity(dto,weatherDto);
                 boardRepository.save(boardEntity);
                 int boardNumber = boardEntity.getBoardNumber();
                 List<ImageUrlEntity> imageUrlLists = new ArrayList<>();
-                List<HashtagEntity> hashtagLists = new ArrayList<>();
 
                 for (String imageListResult: dto.getImageUrlList()) {
                     ImageUrlEntity imageUrlEntity = new ImageUrlEntity(imageListResult, boardEntity.getBoardNumber());
                     imageUrlLists.add(imageUrlEntity);
-                 }
+                }
 
                 imageUrlRepository.saveAll(imageUrlLists); 
 
@@ -540,12 +548,10 @@ public class BoardServiceImplement implements BoardService {
         }
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
-
-
 }
-    
 
 
-    
+
+
 
 
