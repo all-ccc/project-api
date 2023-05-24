@@ -62,16 +62,22 @@ public class BoardServiceImplement2 implements BoardService2 {
     
     // 게시물 작성
     @Override
-    public ResponseEntity<ResponseDto> postBoard(String userEmail, PostBoardRequestDto2 dto) {
+    public ResponseEntity<ResponseDto> postBoard(String userEmail,boolean isManager, PostBoardRequestDto2 dto) {
         try {
+
+
+            
             // 존재하지 않는 유저 번호
+
+            System.out.println(isManager);
             boolean isExistUserEmail = userRepository.existsByEmail(userEmail);
+            Integer userNumber = userRepository.findByEmail(userEmail).getUserNumber();
+            WeatherDto weatherDto =  weatherService.getWeatherData(dto.getLocation());
             if (!isExistUserEmail) {
                 ResponseDto errorBody = new ResponseDto("NU", "Non-Existent User Number");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
             } 
-                Integer userNumber = userRepository.findByEmail(userEmail).getUserNumber();
-                WeatherDto weatherDto =  weatherService.getWeatherData(dto.getLocation());
+
 
                 BoardEntity boardEntity = new BoardEntity(dto,weatherDto,userNumber);
                 boardRepository.save(boardEntity);

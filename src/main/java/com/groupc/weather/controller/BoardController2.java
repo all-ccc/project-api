@@ -25,6 +25,7 @@ import com.groupc.weather.dto.request.board.PostBoardRequestDto2;
 import com.groupc.weather.service.BoardService;
 import com.groupc.weather.service.BoardService2;
 
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -35,10 +36,12 @@ public class BoardController2 {
     
     // 1. 게시물 작성
     @PostMapping("post2")
-    public ResponseEntity<ResponseDto> postBoard(@AuthenticationPrincipal String userEmail,
-        @AuthenticationPrincipal String isManager , 
+    public ResponseEntity<ResponseDto> postBoard(@AuthenticationPrincipal Claims claims,
             @Valid @RequestBody PostBoardRequestDto2 requestBody){
-        ResponseEntity<ResponseDto> response = boardService.postBoard(userEmail,requestBody);
+                String email=claims.getSubject();
+                boolean isManager = (Boolean) claims.get("isManager");
+
+        ResponseEntity<ResponseDto> response = boardService.postBoard(email,isManager,requestBody);
         return response;
     }
     // @PostMapping("post")

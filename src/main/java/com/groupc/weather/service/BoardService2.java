@@ -11,7 +11,7 @@ import com.groupc.weather.dto.request.board.PatchBoardRequestDto;
 import com.groupc.weather.dto.request.board.PostBoardRequestDto2;
 public interface BoardService2 {
     
-    public ResponseEntity<ResponseDto> postBoard(String userEmail, PostBoardRequestDto2 dto);
+    public ResponseEntity<ResponseDto> postBoard(String userEmail, boolean isManager,PostBoardRequestDto2 dto);
     
     public ResponseEntity<? super GetBoardListResponseDto> getBoardMyList(String userEmail); //게시물 조회(본인 작성)
     public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber);
