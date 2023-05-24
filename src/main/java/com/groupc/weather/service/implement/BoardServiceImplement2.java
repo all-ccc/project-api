@@ -41,14 +41,14 @@ import com.groupc.weather.repository.HashtagRepository;
 import com.groupc.weather.repository.ImageUrlRepository;
 import com.groupc.weather.repository.LikeyRepository;
 import com.groupc.weather.repository.UserRepository;
-import com.groupc.weather.service.BoardService;
+import com.groupc.weather.service.BoardService2;
 import com.groupc.weather.service.WeatherService;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class BoardServiceImplement implements BoardService {
+public class BoardServiceImplement2 implements BoardService2 {
 
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
@@ -62,18 +62,18 @@ public class BoardServiceImplement implements BoardService {
     
     // 게시물 작성
     @Override
-    public ResponseEntity<ResponseDto> postBoard(PostBoardRequestDto dto) {
-        dto.getLocation();
+    public ResponseEntity<ResponseDto> postBoard(String userEmail, PostBoardRequestDto2 dto) {
         try {
             // 존재하지 않는 유저 번호
-            boolean isExistUsernumber = userRepository.existsByUserNumber(dto.getUserNumber());
-            if (!isExistUsernumber) {
+            boolean isExistUserEmail = userRepository.existsByEmail(userEmail);
+            if (!isExistUserEmail) {
                 ResponseDto errorBody = new ResponseDto("NU", "Non-Existent User Number");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
-          }
+            } 
+                Integer userNumber = userRepository.findByEmail(userEmail).getUserNumber();
                 WeatherDto weatherDto =  weatherService.getWeatherData(dto.getLocation());
 
-                BoardEntity boardEntity = new BoardEntity(dto,weatherDto);
+                BoardEntity boardEntity = new BoardEntity(dto,weatherDto,userNumber);
                 boardRepository.save(boardEntity);
                 int boardNumber = boardEntity.getBoardNumber();
                 List<ImageUrlEntity> imageUrlLists = new ArrayList<>();
@@ -120,9 +120,6 @@ public class BoardServiceImplement implements BoardService {
         }
         return CustomResponse.success();
     }
-    //POST 버전 2
-
-    
     // 특정 게시물 조회 (게시물 번호)
 
 
@@ -244,8 +241,9 @@ public class BoardServiceImplement implements BoardService {
 
     // 본인 게시물 조회
     @Override
-    public ResponseEntity<? super GetBoardListResponseDto> getBoardMyList(Integer userNumber) {
-        GetBoardListResponseDto body = null;
+    public ResponseEntity<? super GetBoardListResponseDto> getBoardMyList(String userEmail) {
+        GetBoardListResponseDto body =  null;
+        Integer userNumber = userRepository.findByEmail(userEmail).getUserNumber();
 
         try {
 

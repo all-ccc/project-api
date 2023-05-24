@@ -22,7 +22,7 @@ public class GetBoardResponseDto extends ResponseDto {
     private String boardTitle;
     private String boardContent;
     private String boardWriteDatetime;
-    private String weatherInfo;
+    private String weatherDescription;
     private int temperature;
     private int viewCount;
     private String boardWriterNickname;
@@ -44,7 +44,7 @@ public class GetBoardResponseDto extends ResponseDto {
         this.boardTitle = boardEntity.getTitle();
         this.boardContent = boardEntity.getContent();
         this.boardWriteDatetime = boardEntity.getWriteDatetime();
-        this.weatherInfo = boardEntity.getWeatherInfo();
+        this.weatherDescription = boardEntity.getWeatherDescription();
         this.temperature = boardEntity.getTemperature();
         this.viewCount = boardEntity.getViewCount();
         this.boardWriterNickname = userEntity.getNickname();

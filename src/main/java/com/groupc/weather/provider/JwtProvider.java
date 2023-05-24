@@ -3,6 +3,8 @@ package com.groupc.weather.provider;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -17,15 +19,20 @@ public class JwtProvider {
     @Value("${jwt.secret-key}")
     private String SECRET_KEY;
 
-    public String create(String email) {
+    public String create(String email,boolean isManager) {
 
         Date expireDate = Date.from(Instant.now().plus(1, ChronoUnit.HOURS));
+
+        Map<String, Object> managerMap = new HashMap<>();
+        managerMap.put("isManager", isManager);
+
+        Claims claims = Jwts.claims(managerMap).setSubject(email).setIssuedAt(expireDate)
+        .setExpiration(expireDate);
 
         String jwt = Jwts.builder()
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .setSubject(email)
-                .setIssuedAt(new Date())
-                .setExpiration(expireDate)
+                .setClaims(claims)
                 .compact();
 
         return jwt;
@@ -36,6 +43,8 @@ public class JwtProvider {
                 .setSigningKey(SECRET_KEY)
                 .parseClaimsJws(jwt)
                 .getBody();
+        
+        boolean isManager = (Boolean) claims.get("isManager");
 
         return claims.getSubject();
     }

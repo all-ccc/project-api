@@ -1,7 +1,5 @@
 package com.groupc.weather.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -25,22 +23,30 @@ import com.groupc.weather.dto.request.board.PatchBoardRequestDto;
 import com.groupc.weather.dto.request.board.PostBoardRequestDto;
 import com.groupc.weather.dto.request.board.PostBoardRequestDto2;
 import com.groupc.weather.service.BoardService;
+import com.groupc.weather.service.BoardService2;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1/photoBoard")
+@RequestMapping("/api/v2/photoBoard")
 @RequiredArgsConstructor
-public class BoardController {
-    private final BoardService boardService;
+public class BoardController2 {
+    private final BoardService2 boardService;
     
     // 1. 게시물 작성
-    @PostMapping("post")
-    public ResponseEntity<ResponseDto> postBoard(
-            @Valid @RequestBody PostBoardRequestDto requestBody){
-        ResponseEntity<ResponseDto> response = boardService.postBoard(requestBody);
+    @PostMapping("post2")
+    public ResponseEntity<ResponseDto> postBoard(@AuthenticationPrincipal String userEmail,
+        @AuthenticationPrincipal String isManager , 
+            @Valid @RequestBody PostBoardRequestDto2 requestBody){
+        ResponseEntity<ResponseDto> response = boardService.postBoard(userEmail,requestBody);
         return response;
     }
+    // @PostMapping("post")
+    // public ResponseEntity<ResponseDto> postBoard(
+    //         @Valid @RequestBody PostBoardRequestDto requestBody){
+    //     ResponseEntity<ResponseDto> response = boardService.postBoard(requestBody);
+    //     return response;
+    // }
 
 
     
@@ -53,10 +59,10 @@ public class BoardController {
     }
 
     // 3. 게시물 목록 조회(본인 작성)
-    @GetMapping("/myself/{userNumber}")
+    @GetMapping("/myself")
     public ResponseEntity<? super GetBoardListResponseDto> getBoardMyList(
-        @PathVariable("userNumber") Integer userNumber){
-        ResponseEntity<? super GetBoardListResponseDto> response = boardService.getBoardMyList(userNumber);
+        @AuthenticationPrincipal String userEmail){
+        ResponseEntity<? super GetBoardListResponseDto> response = boardService.getBoardMyList(userEmail);
         return response;
     }
 
