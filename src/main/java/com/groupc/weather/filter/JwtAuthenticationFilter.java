@@ -19,6 +19,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.groupc.weather.provider.JwtProvider;
 
+import io.jsonwebtoken.Claims;
+
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     
@@ -43,8 +45,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
 
-            String email = jwtProvider.validate(jwt);
-
+            Claims claims = jwtProvider.validate(jwt);
+ 
+            boolean isManager = (Boolean) claims.get("isManager");
+            String email = claims.getSubject();
             AbstractAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(email, null, AuthorityUtils.NO_AUTHORITIES);
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

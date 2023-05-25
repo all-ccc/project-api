@@ -24,7 +24,7 @@ public class JwtProvider {
         Date expireDate = Date.from(Instant.now().plus(1, ChronoUnit.HOURS));
 
         Map<String, Object> managerMap = new HashMap<>();
-        managerMap.put("isManager", isManager);
+        managerMap.put("key", isManager);
 
         Claims claims = Jwts.claims(managerMap).setSubject(email).setIssuedAt(expireDate)
         .setExpiration(expireDate);
@@ -38,14 +38,14 @@ public class JwtProvider {
         return jwt;
     }
 
-    public String validate(String jwt) {
+    public Claims validate(String jwt) {
         Claims claims = Jwts.parser()
                 .setSigningKey(SECRET_KEY)
                 .parseClaimsJws(jwt)
                 .getBody();
         
-        boolean isManager = (Boolean) claims.get("isManager");
+       
 
-        return claims.getSubject();
+        return claims;
     }
 }
