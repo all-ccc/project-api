@@ -2,6 +2,8 @@ package com.groupc.weather.entity;
 
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -18,6 +20,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "Manager")
 public class ManagerEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer managerNumber;
     private String managerNickname;
     private String email;
@@ -26,11 +29,11 @@ public class ManagerEntity {
     private String profileImageUrl;
 
     public ManagerEntity(PostManagerRequestDto dto) {
-        this.managerNumber = dto.getManagerNumber();
+
         this.managerNickname = dto.getManagerNickname();
         this.email = dto.getManagerEmail();
         this.password = dto.getManagerPassword();
         this.phoneNumber = dto.getManagerPhoneNumber();
-        this.profileImageUrl = dto.getManagerProfileImage();
+        this.profileImageUrl = dto.getManagerProfileImageUrl();
     }
 }

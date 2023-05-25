@@ -9,4 +9,7 @@ public interface ManagerRepository extends JpaRepository<ManagerEntity,Integer> 
     
     public boolean existsByManagerNumber(Integer managerNumber); //Integer userNumber 이렇게 되어있길래 managerNumber로 바꿈
     public ManagerEntity findByManagerNumber(Integer managerNumber);
+
+    public ManagerEntity findByEmail(String email);
+
 }

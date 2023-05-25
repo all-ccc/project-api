@@ -22,5 +22,5 @@ public class PostManagerRequestDto {
     @NotNull
     @Email
     private String managerEmail;
-    private String managerProfileImage;
+    private String managerProfileImageUrl;
 }
