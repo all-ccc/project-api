@@ -9,6 +9,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.groupc.weather.common.model.AuthenticationObject;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -19,7 +21,7 @@ public class JwtProvider {
     @Value("${jwt.secret-key}")
     private String SECRET_KEY;
 
-    public String create(String email,boolean isManager) {
+    public String create(String email,Object isManager) {
 
         Date expireDate = Date.from(Instant.now().plus(1, ChronoUnit.HOURS));
 
@@ -31,21 +33,22 @@ public class JwtProvider {
 
         String jwt = Jwts.builder()
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
-                .setSubject(email)
                 .setClaims(claims)
                 .compact();
 
         return jwt;
     }
-
-    public Claims validate(String jwt) {
+    
+    public AuthenticationObject validate(String jwt) {
         Claims claims = Jwts.parser()
                 .setSigningKey(SECRET_KEY)
                 .parseClaimsJws(jwt)
                 .getBody();
         
-       
+        String email = claims.getSubject();
+        boolean isManager = (Boolean) claims.get("key");
 
-        return claims;
+        AuthenticationObject authenticationObject = new AuthenticationObject(email, isManager);
+        return authenticationObject;
     }
 }

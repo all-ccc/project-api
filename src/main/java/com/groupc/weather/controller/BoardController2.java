@@ -18,6 +18,7 @@ import com.groupc.weather.dto.response.board.GetBoardListResponseDto;
 import com.groupc.weather.dto.response.board.GetBoardListResponsetop5Dto;
 import com.groupc.weather.dto.response.board.GetBoardResponseDto;
 import com.groupc.weather.entity.primaryKey.LikeyPk;
+import com.groupc.weather.common.model.AuthenticationObject;
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.board.PatchBoardRequestDto;
 import com.groupc.weather.dto.request.board.PostBoardRequestDto;
@@ -25,6 +26,7 @@ import com.groupc.weather.dto.request.board.PostBoardRequestDto2;
 import com.groupc.weather.service.BoardService;
 import com.groupc.weather.service.BoardService2;
 
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -34,11 +36,12 @@ public class BoardController2 {
     private final BoardService2 boardService;
     
     // 1. 게시물 작성
-    @PostMapping("post2")
-    public ResponseEntity<ResponseDto> postBoard(@AuthenticationPrincipal String userEmail,
-        @AuthenticationPrincipal String isManager , 
-            @Valid @RequestBody PostBoardRequestDto2 requestBody){
-        ResponseEntity<ResponseDto> response = boardService.postBoard(userEmail,requestBody);
+    @PostMapping("post")
+    public ResponseEntity<ResponseDto> postBoard(
+        @AuthenticationPrincipal AuthenticationObject authenticationObject,
+        @Valid @RequestBody PostBoardRequestDto2 requestBody
+    ){
+        ResponseEntity<ResponseDto> response = boardService.postBoard(authenticationObject,requestBody);
         return response;
     }
     // @PostMapping("post")
@@ -81,7 +84,7 @@ public class BoardController2 {
     }
 
     // 6. 첫화면 일반 게시물 목록
-    @GetMapping("/firstImage")
+    @GetMapping("/firstView")
     public ResponseEntity<? super GetBoardFirstViewDto> getBoardFirstView(){
         ResponseEntity<? super GetBoardFirstViewDto> response = boardService.getBoardFirstView();
         return response;
@@ -141,9 +144,12 @@ public class BoardController2 {
     }
 
     // 12. 특정 게시물 검색
-    @GetMapping("search/{searchWord}") // 이렇게 쓰는 게 맞는 건지..
+    @GetMapping("search/{searchWord}/{weatherMain}/{minTemperature}/{maxTemerature}") // 이렇게 쓰는 게 맞는 건지..
     public ResponseEntity<? super GetBoardListResponseDto> searchListByWord(
-        @PathVariable("searchWord") String searchWord
+        @PathVariable("searchWord") String searchWord,
+        @PathVariable("weatherMain") String searchWord,
+        @PathVariable("minTemperature") Integer minTemperature, 
+        @PathVariable("maxTemperature") Integer maxTemperature
     ) {
         ResponseEntity<? super GetBoardListResponseDto> response =
             boardService.getSearchListByWord(searchWord);

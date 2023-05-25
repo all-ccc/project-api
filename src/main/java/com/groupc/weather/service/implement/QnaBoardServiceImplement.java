@@ -92,10 +92,11 @@ public class QnaBoardServiceImplement implements QnaBoardService {
             return CustomResponse.databaseError();
         }
 
+        
         return ResponseEntity.status(HttpStatus.OK).body(body);
 
     }
-
+    // d
     @Override
     public ResponseEntity<? super GetQnaBoardListResponseDto> getQnaBoardList() {
         GetQnaBoardListResponseDto body = null;

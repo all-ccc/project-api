@@ -15,6 +15,7 @@ import com.groupc.weather.dto.response.board.BoardFirstViewDto;
 import com.groupc.weather.dto.response.board.BoardListResultDto;
 import com.groupc.weather.dto.response.board.BoardListResultTop5Dto;
 import com.groupc.weather.dto.response.board.GetBoardFirstViewDto;
+import com.groupc.weather.common.model.AuthenticationObject;
 import com.groupc.weather.common.util.CustomResponse;
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.board.PatchBoardRequestDto;
@@ -62,16 +63,22 @@ public class BoardServiceImplement2 implements BoardService2 {
     
     // 게시물 작성
     @Override
-    public ResponseEntity<ResponseDto> postBoard(String userEmail, PostBoardRequestDto2 dto) {
+    public ResponseEntity<ResponseDto> postBoard(AuthenticationObject authenticationObject, PostBoardRequestDto2 dto) {
+
+        String email = authenticationObject.getEmail();
+        boolean isManager = authenticationObject.isManagerFlag();
+
         try {
             // 존재하지 않는 유저 번호
-            boolean isExistUserEmail = userRepository.existsByEmail(userEmail);
+
+            boolean isExistUserEmail = userRepository.existsByEmail(email);
+            Integer userNumber = userRepository.findByEmail(email).getUserNumber();
+            WeatherDto weatherDto =  weatherService.getWeatherData(dto.getLocation());
             if (!isExistUserEmail) {
-                ResponseDto errorBody = new ResponseDto("NU", "Non-Existent User Number");
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
+  
+                return CustomResponse.notExistUserNumber();
             } 
-                Integer userNumber = userRepository.findByEmail(userEmail).getUserNumber();
-                WeatherDto weatherDto =  weatherService.getWeatherData(dto.getLocation());
+
 
                 BoardEntity boardEntity = new BoardEntity(dto,weatherDto,userNumber);
                 boardRepository.save(boardEntity);
@@ -171,7 +178,9 @@ public class BoardServiceImplement2 implements BoardService2 {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(body);
+
+        return CustomResponse.success();
+       // return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     // 게시물 최신순 조회
@@ -208,7 +217,8 @@ public class BoardServiceImplement2 implements BoardService2 {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(body);
+        return CustomResponse.success();
+       // return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     // top5 조회
@@ -232,7 +242,8 @@ public class BoardServiceImplement2 implements BoardService2 {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(body);
+        return CustomResponse.success();
+        //return ResponseEntity.status(HttpStatus.OK).body(body);
     }
     // return에 coustom.success , ResposeEntity 쓸수도잇음.
     // ResponseEntity는 , OK 코드랑 메세지에다가 + 원하는거 보여줌. // 이거는 따로 만들면 Custom으로 쓸수잇는데
@@ -244,8 +255,13 @@ public class BoardServiceImplement2 implements BoardService2 {
     public ResponseEntity<? super GetBoardListResponseDto> getBoardMyList(String userEmail) {
         GetBoardListResponseDto body =  null;
         Integer userNumber = userRepository.findByEmail(userEmail).getUserNumber();
+        boolean isExistUserEmail = userRepository.existsByEmail(userEmail);
 
         try {
+            if (!isExistUserEmail) {
+  
+                return CustomResponse.notExistUserNumber();
+            } 
 
             List<GetBoardListResult> resultSet = boardRepository.getMyBoardList(userNumber);
             List<BoardListResultDto> boardListResultDtos = new ArrayList<>();
@@ -269,7 +285,8 @@ public class BoardServiceImplement2 implements BoardService2 {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(body);
+        return CustomResponse.success();
+        //return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     // 게시물 수정
@@ -458,9 +475,11 @@ public class BoardServiceImplement2 implements BoardService2 {
     @Override
     public ResponseEntity<? super GetBoardListResponseDto> getLikeBoardList(Integer userNumber) {
         GetBoardListResponseDto body = null;
+        boolean isExistUsernumber = userRepository.existsByUserNumber(userNumber);
 
         try {
-
+            
+            if (!isExistUsernumber) return CustomResponse.notExistUserNumber();
             List<GetBoardListResult> resultSet = boardRepository.getLikeBoardList(userNumber);
             List<BoardListResultDto> boardListResultDtos = new ArrayList<>();
             for(GetBoardListResult result:resultSet){
@@ -483,7 +502,8 @@ public class BoardServiceImplement2 implements BoardService2 {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(body);
+        //return ResponseEntity.status(HttpStatus.OK).body(body);
+        return CustomResponse.success();
     }
 
    
@@ -517,7 +537,8 @@ public class BoardServiceImplement2 implements BoardService2 {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(body);
+        //return ResponseEntity.status(HttpStatus.OK).body(body); 
+        return CustomResponse.success();
     }
     
     // 특정 게시물 검색(해쉬태그)

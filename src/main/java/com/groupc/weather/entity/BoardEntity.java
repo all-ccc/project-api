@@ -26,11 +26,11 @@ public class BoardEntity {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Integer boardNumber;
-        private Integer userNumber;
+        private Integer userNumber; 
         private String title;
         private String content;
-        private String writeDatetime;
-        private int temperature;
+        private String writeDatetime; 
+        private int temperature; 
         private String weatherDescription;
         private int weatherId;
         private int viewCount;

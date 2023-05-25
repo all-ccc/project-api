@@ -91,7 +91,7 @@ public class BoardController {
     }
 
     // 8 . 특정 게시물 삭제
-    @DeleteMapping("/{userNumber}/{boardNumber}")
+    @DeleteMapping("/delete/{userNumber}/{boardNumber}")
     public ResponseEntity<ResponseDto> deleteBoard(
         @PathVariable("userNumber") Integer userNumber,
         @PathVariable("boardNumber") Integer boardNumber
@@ -128,7 +128,7 @@ public class BoardController {
 
     // 11. 특정 유저 좋아요 게시물 조회
 
-    @GetMapping("/Likelist/{userNumber}")
+    @GetMapping("/likeList/{userNumber}")
     public ResponseEntity<? super GetBoardListResponseDto> getLikeBoardList(@PathVariable("userNumber") Integer userNumber){
         ResponseEntity<? super GetBoardListResponseDto> response = boardService.getLikeBoardList(userNumber);
         return response;

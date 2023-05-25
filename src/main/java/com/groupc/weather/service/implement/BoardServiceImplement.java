@@ -32,6 +32,7 @@ import com.groupc.weather.entity.HashtagHasBoardEntity;
 import com.groupc.weather.entity.ImageUrlEntity;
 import com.groupc.weather.entity.LikeyEntity;
 import com.groupc.weather.entity.UserEntity;
+import com.groupc.weather.entity.primaryKey.HashPk;
 import com.groupc.weather.entity.primaryKey.LikeyPk;
 import com.groupc.weather.entity.resultSet.GetBoardListResult;
 import com.groupc.weather.repository.BoardRepository;
@@ -348,10 +349,46 @@ public class BoardServiceImplement implements BoardService {
             boolean equalsWriter = boardEntity.getUserNumber().equals(userNumber);
             if (!equalsWriter)
                 return CustomResponse.noPermissions();
+            List<CommentEntity> commentEntitys = commentRepository.findByBoardNumber(boardNumber);
+            List<HashtagHasBoardEntity> hashtagHasBoardEntities = hashtagHasBoardRepository.findByBoardNumber(boardNumber);
+            List<ImageUrlEntity> imageUrlEntities = imageUrlRepository.findByBoardNumber(boardNumber);
+            List<LikeyEntity> likeyEntities = likeyRepository.findByBoardNumber(boardNumber);
+            
 
-            commentRepository.deleteByBoardNumber(boardNumber);
-            //likeyRepository.deleteByBoardNumber(boardNumber);
-            boardRepository.delete(boardEntity);
+            //보드에 해당된 코멘트 지우기
+            for(CommentEntity boardcommentNumber : commentEntitys){
+                Integer commentNumber=boardcommentNumber.getCommentNumber();
+                commentRepository.deleteByCommentNumber(commentNumber);
+            }
+            //보드에 해당된 해시태그 지우기
+            for(HashtagHasBoardEntity hashtagHasBoard :hashtagHasBoardEntities){
+
+                Integer hashtagNumber = hashtagHasBoard.getHashtagNumber();
+                HashPk hashPk = new HashPk(hashtagNumber,boardNumber);
+                hashtagHasBoardRepository.deleteById(hashPk);
+                hashtagRepository.deleteByHashtagNumber(hashtagNumber);
+            }
+
+            //보드에 해당된 이미지 지우기
+            for(ImageUrlEntity imageUrlNumberByBoardNumber : imageUrlEntities ){
+
+                Integer imageNumber = imageUrlNumberByBoardNumber.getImageNumber();
+                imageUrlRepository.deleteById(imageNumber);
+
+            }
+
+            HashtagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(2);
+            hashtagEntity.setHashtagContent("dfadf");
+
+            //보드에 해당된 좋아요 지우기
+            for(LikeyEntity likeyNumberByBoardNumber : likeyEntities )
+            { Integer likeyUserNumber = likeyNumberByBoardNumber.getUserNumber();
+                LikeyPk likeyPk = new LikeyPk(likeyUserNumber,boardNumber);
+                likeyRepository.deleteById(likeyPk);
+
+                }
+
+            boardRepository.deleteById(boardNumber);
 
         } catch (Exception exception) {
             exception.printStackTrace();
