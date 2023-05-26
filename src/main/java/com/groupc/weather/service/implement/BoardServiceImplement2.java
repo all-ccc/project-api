@@ -179,7 +179,7 @@ public class BoardServiceImplement2 implements BoardService2 {
             return CustomResponse.databaseError();
         }
 
-        return CustomResponse.success();
+        return ResponseEntity.status(HttpStatus.OK).body(body);
        // return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
@@ -217,7 +217,7 @@ public class BoardServiceImplement2 implements BoardService2 {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
-        return CustomResponse.success();
+        return ResponseEntity.status(HttpStatus.OK).body(body);
        // return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
@@ -242,7 +242,7 @@ public class BoardServiceImplement2 implements BoardService2 {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
-        return CustomResponse.success();
+        return ResponseEntity.status(HttpStatus.OK).body(body);
         //return ResponseEntity.status(HttpStatus.OK).body(body);
     }
     // return에 coustom.success , ResposeEntity 쓸수도잇음.
@@ -285,7 +285,7 @@ public class BoardServiceImplement2 implements BoardService2 {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
-        return CustomResponse.success();
+        return ResponseEntity.status(HttpStatus.OK).body(body);
         //return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
@@ -295,7 +295,7 @@ public class BoardServiceImplement2 implements BoardService2 {
         Integer userNumber = dto.getBoardWriteUserNumber();
         Integer boardNumber = dto.getBoardNumber();
         String boardTitle = dto.getBoardTitle();
-        List<ImageUrlList> modifyImageUrlLists = dto.getImageUrlList();
+        List<imageUrlList> modifyImageUrlLists = dto.getImageUrlList();
         List<String> modifyHashTags = dto.getBoardHashtag();
 
         List<ImageUrlEntity> imageUrlEntities = new ArrayList<>();
@@ -305,9 +305,9 @@ public class BoardServiceImplement2 implements BoardService2 {
         //
         try {
             UserEntity userEntity = userRepository.findByUserNumber(userNumber); // 작성자유저넘버 불러오기
-            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumbers); // 게시물번호 불러오기
+            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber); // 게시물번호 불러오기
 // 매게변수
-            if (userNumbers == null || boardNumbers == null) {
+            if (boardNumber == null || boardNumber == null) {
                 return CustomResponse.validationError();
             }
             // 유저 번호 존재여부
@@ -326,13 +326,13 @@ public class BoardServiceImplement2 implements BoardService2 {
             if (!isMatchedUserNumber)
                 return CustomResponse.noPermissions();
             for (String imageList : modifyImageUrlLists) {
-                ImageUrlEntity imageUrlEntity = new ImageUrlEntity(imageList, boardNumbers);
+                ImageUrlEntity imageUrlEntity = new ImageUrlEntity(imageList, boardNumber);
                 imageUrlEntities.add(imageUrlEntity);
             }
-           for(String hashTagList : modifyHashTags){
+        for(String hashTagList : modifyHashTags){
                 HashtagEntity hashtagEntity = new HashtagEntity(hashTagList);
                 hashtagEntities.add(hashtagEntity);
-           }
+        }
 
             hashtagRepository.saveAll(hashtagEntities);
             imageUrlRepository.saveAll(imageUrlEntities);
@@ -503,7 +503,7 @@ public class BoardServiceImplement2 implements BoardService2 {
             return CustomResponse.databaseError();
         }
         //return ResponseEntity.status(HttpStatus.OK).body(body);
-        return CustomResponse.success();
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
    
@@ -538,8 +538,7 @@ public class BoardServiceImplement2 implements BoardService2 {
             return CustomResponse.databaseError();
         }
         //return ResponseEntity.status(HttpStatus.OK).body(body); 
-        return CustomResponse.success();
-    }
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     
     // 특정 게시물 검색(해쉬태그)
     @Override
@@ -574,7 +573,15 @@ public class BoardServiceImplement2 implements BoardService2 {
 }
 
 
+    @Override
+    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByHashtag(String hashtag) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getSearchListByHashtag'");
+    }
 
 
 
 
+
+
+}

@@ -24,11 +24,11 @@ public class QnaBoardEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int boardNumber;
+    private Integer boardNumber;
     private String title;
     private String content;
     private String writeDatetime;
-    private int userNumber;
+    private Integer userNumber;
     private String imageUrl;
     private boolean replyComplete;
 

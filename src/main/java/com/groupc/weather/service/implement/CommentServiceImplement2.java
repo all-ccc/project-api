@@ -46,8 +46,8 @@ public class CommentServiceImplement2 implements CommentService2{
         try {
 
                // 존재하는 게시물인지!
-               boolean existedBoardNumber = boardRepository.existsByBoardNumber(boardNumber);
-               if(!existedBoardNumber) return CustomResponse.notExistBoardNumber();
+            boolean existedBoardNumber = boardRepository.existsByBoardNumber(boardNumber);
+            if(!existedBoardNumber) return CustomResponse.notExistBoardNumber();
 
             //isManager가 false = 유저임
             if(!isManager){
