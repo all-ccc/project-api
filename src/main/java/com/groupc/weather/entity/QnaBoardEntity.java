@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.groupc.weather.dto.request.qnaBoard.PostQnaBoardRequestDto;
+import com.groupc.weather.dto.request.qnaBoard2.PostQnaBoardRequestDto2;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,14 +25,26 @@ public class QnaBoardEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int boardNumber;
+    private Integer boardNumber;
     private String title;
     private String content;
     private String writeDatetime;
-    private int userNumber;
+    private Integer userNumber;
     private String imageUrl;
     private boolean replyComplete;
 
+    public QnaBoardEntity(PostQnaBoardRequestDto2 dto, Integer userNumber) {
+        Date now = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String writeDatetime = simpleDateFormat.format(now);
+        this.userNumber = userNumber;
+        this.title = dto.getTitle();
+        this.content = dto.getContent();
+        this.writeDatetime = writeDatetime;
+        this.imageUrl = dto.getImageUrl();
+        this.replyComplete = false;
+    }
+    
     public QnaBoardEntity(PostQnaBoardRequestDto dto) {
         Date now = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");

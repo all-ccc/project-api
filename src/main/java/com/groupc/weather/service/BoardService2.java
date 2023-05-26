@@ -6,25 +6,20 @@ import com.groupc.weather.dto.response.board.GetBoardListResponsetop5Dto;
 import com.groupc.weather.dto.response.board.GetBoardResponseDto;
 import com.groupc.weather.entity.primaryKey.LikeyPk;
 import com.groupc.weather.dto.response.board.GetBoardFirstViewDto;
+import com.groupc.weather.common.model.AuthenticationObject;
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.board.PatchBoardRequestDto;
-import com.groupc.weather.dto.request.board.PostBoardRequestDto;
-
-public interface BoardService {
+import com.groupc.weather.dto.request.board.PostBoardRequestDto2;
+public interface BoardService2 {
     
-    public ResponseEntity<ResponseDto> postBoard(PostBoardRequestDto dto);
+    public ResponseEntity<ResponseDto> postBoard(AuthenticationObject authenticationObject,PostBoardRequestDto2 dto);
     
-    public ResponseEntity<? super GetBoardListResponseDto> getBoardMyList(Integer userNumber); //게시물 조회(본인 작성)
+    public ResponseEntity<? super GetBoardListResponseDto> getBoardMyList(String userEmail); //게시물 조회(본인 작성)
     public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber);
     public ResponseEntity<? super GetBoardListResponseDto> getBoardList();
     public ResponseEntity<? super GetBoardListResponsetop5Dto> getBoardTop5();
     public ResponseEntity<? super GetBoardFirstViewDto> getBoardFirstView();
-
     public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWord(String searchWord);
-    // public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWordAndWeather(String searchWord, String weather);
-    // public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWordAndTemperature(String searchWord, String temperature);
-    // public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWordAndAll(String searchWord, String weather, String temperature);
-
     public ResponseEntity<? super GetBoardListResponseDto> getSearchListByHashtag(String hashtag);
     public ResponseEntity<ResponseDto> likeBoard(LikeyPk likeyPk); 
     public ResponseEntity<ResponseDto> likeDeleteBoard(Integer userNumber, Integer boardNumber); 

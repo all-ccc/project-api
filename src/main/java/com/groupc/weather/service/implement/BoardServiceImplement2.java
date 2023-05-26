@@ -4,26 +4,27 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.json.JSONObject;
 
 import com.groupc.weather.dto.response.board.BoardFirstViewDto;
 import com.groupc.weather.dto.response.board.BoardListResultDto;
 import com.groupc.weather.dto.response.board.BoardListResultTop5Dto;
 import com.groupc.weather.dto.response.board.GetBoardFirstViewDto;
+import com.groupc.weather.common.model.AuthenticationObject;
 import com.groupc.weather.common.util.CustomResponse;
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.board.PatchBoardRequestDto;
 import com.groupc.weather.dto.request.board.PostBoardRequestDto;
+import com.groupc.weather.dto.request.board.PostBoardRequestDto2;
 import com.groupc.weather.dto.request.common.WeatherDto;
 import com.groupc.weather.dto.response.board.GetBoardListResponseDto;
 import com.groupc.weather.dto.response.board.GetBoardListResponsetop5Dto;
 import com.groupc.weather.dto.response.board.GetBoardResponseDto;
-import com.groupc.weather.dto.response.board.GetWeatherDataResponseDto;
 import com.groupc.weather.dto.response.board.LikeyListDto;
 import com.groupc.weather.entity.BoardEntity;
 import com.groupc.weather.entity.CommentEntity;
@@ -41,16 +42,16 @@ import com.groupc.weather.repository.HashtagRepository;
 import com.groupc.weather.repository.ImageUrlRepository;
 import com.groupc.weather.repository.LikeyRepository;
 import com.groupc.weather.repository.UserRepository;
-import com.groupc.weather.service.BoardService;
+import com.groupc.weather.service.BoardService2;
 import com.groupc.weather.service.WeatherService;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class BoardServiceImplement implements BoardService {
+public class BoardServiceImplement2 implements BoardService2 {
 
-   private final UserRepository userRepository;
+    private final UserRepository userRepository;
     private final BoardRepository boardRepository;
     private final CommentRepository commentRepository;
     private final LikeyRepository likeyRepository;
@@ -58,21 +59,26 @@ public class BoardServiceImplement implements BoardService {
     private final HashtagRepository hashtagRepository;
     private final HashtagHasBoardRepository hashtagHasBoardRepository;
     private final WeatherService weatherService;
+
     
     // 게시물 작성
     @Override
-    public ResponseEntity<ResponseDto> postBoard(PostBoardRequestDto dto) {
-        dto.getLocation();
+    public ResponseEntity<ResponseDto> postBoard(AuthenticationObject authenticationObject, PostBoardRequestDto2 dto) {
+        String email = authenticationObject.getEmail();
+        boolean isManager = authenticationObject.isManagerFlag();
+
         try {
             // 존재하지 않는 유저 번호
-            boolean isExistUsernumber = userRepository.existsByUserNumber(dto.getUserNumber());
-            if (!isExistUsernumber) {
-                ResponseDto errorBody = new ResponseDto("NU", "Non-Existent User Number");
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
-          }
-                WeatherDto weatherDto =  weatherService.getWeatherData(dto.getLocation());
 
-                BoardEntity boardEntity = new BoardEntity(dto, weatherDto);
+            boolean isExistUserEmail = userRepository.existsByEmail(email);
+            Integer userNumber = userRepository.findByEmail(email).getUserNumber();
+            WeatherDto weatherDto =  weatherService.getWeatherData(dto.getLocation());
+            if (!isExistUserEmail) {
+  
+                return CustomResponse.notExistUserNumber();
+            } 
+
+                BoardEntity boardEntity = new BoardEntity(dto,weatherDto,userNumber);
                 boardRepository.save(boardEntity);
                 int boardNumber = boardEntity.getBoardNumber();
                 List<ImageUrlEntity> imageUrlLists = new ArrayList<>();
@@ -240,8 +246,9 @@ public class BoardServiceImplement implements BoardService {
 
     // 본인 게시물 조회
     @Override
-    public ResponseEntity<? super GetBoardListResponseDto> getBoardMyList(Integer userNumber) {
-        GetBoardListResponseDto body = null;
+    public ResponseEntity<? super GetBoardListResponseDto> getBoardMyList(String userEmail) {
+        GetBoardListResponseDto body =  null;
+        Integer userNumber = userRepository.findByEmail(userEmail).getUserNumber();
 
         try {
 
@@ -474,6 +481,7 @@ public class BoardServiceImplement implements BoardService {
                 BoardListResultDto boardListResultDto = new BoardListResultDto(result, hashListEntities);
                 boardListResultDtos.add(boardListResultDto);
             }
+            
 
             body = new GetBoardListResponseDto(boardListResultDtos);
         } catch (Exception exception) {
@@ -727,7 +735,10 @@ public class BoardServiceImplement implements BoardService {
     }
 
 
-
-
 }
-    
+
+
+
+
+
+

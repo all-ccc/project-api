@@ -43,7 +43,7 @@ public List<BoardCommentResultSet> getBoardCommentList();
 "B.title AS boardTitle, " +
 "B.content AS boardContent, " +
 "B.write_datetime AS boardWriterDatetime, " +
-"B.weather_info AS weatherInfo, " +
+"B.weather_description AS weatherDescription, " +
 "B.temperature AS temperature, " +
 "B.view_count AS viewCount, " +
 "U.nickname AS writerNickname, " +
@@ -336,14 +336,141 @@ public List<GetBoardListResult> getLikeBoardList(@Param("user_number") int userN
 "GROUP BY B.board_number) AS LC " +
 "ON LC.board_number = B.board_number " +
 "WHERE (B.title LIKE CONCAT('%',:search_word,'%') " +
-"or B.content LIKE CONCAT ('%',:search_word,'%') " +
-"OR B.weather_info Like CONCAT('%',:search_word,'%') " +
-"OR B.temperature Like CONCAT('%',:search_word,'%')) " +
+"OR B.content LIKE CONCAT ('%',:search_word,'%')) " +
+// "OR B.weather_description Like CONCAT('%',:search_word,'%') " +
+// "OR B.temperature Like CONCAT('%',:search_word,'%')) " +
 "GROUP BY B.board_number, BF.image_url " +
 "ORDER BY B.write_datetime DESC; ",
 nativeQuery = true
 )
 public List<GetBoardListResult> getSearchListByWord(@Param("search_word") String searchWord);
+
+    @Query(
+        value = 
+        "SELECT " +
+        "B.board_number AS boardNumber, " +
+        "B.title AS boardTitle, " +
+        "B.content AS boardContent, " +
+        "B.write_datetime AS boardWriteDatetime, " +
+        "BF.image_url AS boardFirstImageUrl, " +
+        "U.nickname AS boardWriterNickname, " + 
+        "U.profile_image_url AS boardWriterProfileImageUrl, " +
+        "count(C.comment_number) AS commentCount, " +
+        "LC.likeCount AS likeCount " + 
+        "FROM Board B " +
+        "LEFT JOIN (SELECT * FROM( " +
+        "select image_number, image_url, board_number, " +
+        "ROW_NUMBER() OVER (PARTITION BY board_number) " +
+        "AS N FROM image_url) AS T " +
+        "WHERE T.N=1) AS BF " +
+        "ON B.board_number = BF.board_number " +
+        "LEFT JOIN User U " +
+        "ON B.user_number = U.user_number " +
+        "LEFT JOIN Comment C " +
+        "ON B.board_number = C.board_number " +
+        "LEFT JOIN Likey L " +
+        "ON B.board_number = L.board_number " +
+        "LEFT JOIN ( " +
+        "Select B.board_number,count(L.user_number) AS likeCount FROM Board B " +
+        "LEFT JOIN likey L " +
+        "ON B.board_number = L.board_number " +
+        "GROUP BY B.board_number) AS LC " +
+        "ON LC.board_number = B.board_number " +
+        "WHERE (B.title LIKE CONCAT('%',:search_word,'%') " +
+        "OR B.content LIKE CONCAT ('%',:search_word,'%')) " +
+        "AND (B.weather_main LIKE CONCAT('%', :weather, '%')) " +
+        "GROUP BY B.board_number, BF.image_url " +
+        "ORDER BY B.write_datetime DESC; ",
+        nativeQuery = true
+    )
+    public List<GetBoardListResult> getSearchListByWordAndWeather(@Param("search_word") String searchWord,
+                                                                  @Param("weather") String weather);
+
+    @Query(
+        value = 
+        "SELECT " +
+        "B.board_number AS boardNumber, " +
+        "B.title AS boardTitle, " +
+        "B.content AS boardContent, " +
+        "B.write_datetime AS boardWriteDatetime, " +
+        "BF.image_url AS boardFirstImageUrl, " +
+        "U.nickname AS boardWriterNickname, " + 
+        "U.profile_image_url AS boardWriterProfileImageUrl, " +
+        "count(C.comment_number) AS commentCount, " +
+        "LC.likeCount AS likeCount " + 
+        "FROM Board B " +
+        "LEFT JOIN (SELECT * FROM( " +
+        "select image_number, image_url, board_number, " +
+        "ROW_NUMBER() OVER (PARTITION BY board_number) " +
+        "AS N FROM image_url) AS T " +
+        "WHERE T.N=1) AS BF " +
+        "ON B.board_number = BF.board_number " +
+        "LEFT JOIN User U " +
+        "ON B.user_number = U.user_number " +
+        "LEFT JOIN Comment C " +
+        "ON B.board_number = C.board_number " +
+        "LEFT JOIN Likey L " +
+        "ON B.board_number = L.board_number " +
+        "LEFT JOIN ( " +
+        "Select B.board_number,count(L.user_number) AS likeCount FROM Board B " +
+        "LEFT JOIN likey L " +
+        "ON B.board_number = L.board_number " +
+        "GROUP BY B.board_number) AS LC " +
+        "ON LC.board_number = B.board_number " +
+        "WHERE (B.title LIKE CONCAT('%',:search_word,'%') " +
+        "OR B.content LIKE CONCAT ('%',:search_word,'%')) " +
+        "AND (B.temperature BETWEEN :minTemperature AND :maxTemperature) " +
+        "GROUP BY B.board_number, BF.image_url " +
+        "ORDER BY B.write_datetime DESC; ",
+        nativeQuery = true
+    )
+    public List<GetBoardListResult> getSearchListByWordAndTemperatures(@Param("search_word") String searchWord,
+                                                                    @Param("minTemperature") Integer minTemperature,
+                                                                    @Param("maxTemperature") Integer maxTemperature);
+
+    @Query(
+        value = 
+        "SELECT " +
+        "B.board_number AS boardNumber, " +
+        "B.title AS boardTitle, " +
+        "B.content AS boardContent, " +
+        "B.write_datetime AS boardWriteDatetime, " +
+        "BF.image_url AS boardFirstImageUrl, " +
+        "U.nickname AS boardWriterNickname, " + 
+        "U.profile_image_url AS boardWriterProfileImageUrl, " +
+        "count(C.comment_number) AS commentCount, " +
+        "LC.likeCount AS likeCount " + 
+        "FROM Board B " +
+        "LEFT JOIN (SELECT * FROM( " +
+        "select image_number, image_url, board_number, " +
+        "ROW_NUMBER() OVER (PARTITION BY board_number) " +
+        "AS N FROM image_url) AS T " +
+        "WHERE T.N=1) AS BF " +
+        "ON B.board_number = BF.board_number " +
+        "LEFT JOIN User U " +
+        "ON B.user_number = U.user_number " +
+        "LEFT JOIN Comment C " +
+        "ON B.board_number = C.board_number " +
+        "LEFT JOIN Likey L " +
+        "ON B.board_number = L.board_number " +
+        "LEFT JOIN ( " +
+        "Select B.board_number,count(L.user_number) AS likeCount FROM Board B " +
+        "LEFT JOIN likey L " +
+        "ON B.board_number = L.board_number " +
+        "GROUP BY B.board_number) AS LC " +
+        "ON LC.board_number = B.board_number " +
+        "WHERE (B.title LIKE CONCAT('%',:search_word,'%') " +
+        "OR B.content LIKE CONCAT ('%',:search_word,'%')) " +
+        "AND ((B.temperature BETWEEN :minTemperature AND :maxTemperature) " +
+        "OR (B.weather_main LIKE CONCAT('%', :weather, '%')) " +
+        "GROUP BY B.board_number, BF.image_url " +
+        "ORDER BY B.write_datetime DESC; ",
+        nativeQuery = true
+    )
+    public List<GetBoardListResult> getSearchListByWordAndAll(@Param("search_word") String searchWord,
+                                                              @Param("weather") String weather,
+                                                              @Param("minTemperature") Integer minTemperature,
+                                                              @Param("maxTemperature") Integer maxTemperature);
 
 
 
@@ -389,5 +516,150 @@ public List<GetBoardListResult> getSearchListByWord(@Param("search_word") String
 nativeQuery = true
 )
 public List<GetBoardListResult> getSearchHashtagByWord(@Param("search_word") String searchWord);
+
+
+    @Query(
+        value=
+        "SELECT " +
+        "B.board_number AS boardNumber, " +
+        "B.title AS boardTitle, " +
+        "B.content AS boardContent, " +
+        "B.write_datetime AS boardWriteDatetime, " +
+        "BF.image_url AS boardFirstImageUrl, " +
+        "U.nickname AS boardWriterNickname, " +
+        "U.profile_image_url AS boardWriterProfileImageUrl, " +
+        "count(C.comment_number) AS commentCount, " +
+        "LC.likeCount AS likeCount " +
+        "FROM Board B " +
+        "LEFT JOIN (SELECT * FROM( " +
+        "SELECT image_number, image_url, board_number, " +
+        "ROW_NUMBER() OVER (PARTITION BY board_number) " +
+        "AS N FROM image_url) AS T " +
+        "WHERE T.N=1) AS BF " +
+        "ON B.board_number = BF.board_number " +
+        "LEFT JOIN User U " +
+        "ON B.user_number = U.user_number " +
+        "LEFT JOIN Comment C " +
+        "ON B.board_number = C.board_number " +
+        "LEFT JOIN ( " +
+        "Select B.board_number,count(L.user_number) AS likeCount FROM Board B " +
+        "LEFT JOIN likey L " +
+        "ON B.board_number = L.board_number " +
+        "GROUP BY B.board_number " +
+        ") AS LC " +
+        "ON LC.board_number = B.board_number " +
+        "LEFT JOIN ( " +
+        "SELECT HB.board_number AS board_number " +
+        "FROM hashtag H, hashtag_has_board HB " +
+        "WHERE H.hashtag_number = HB.hashtag_number " +
+        "AND H.hashtag_content LIKE CONCAT('%',:search_word,'%') " +
+        ") AS H " +
+        "ON B.board_number = H.board_number " +
+        "WHERE B.board_number = H.board_number " +
+        "AND B.weather_main LIKE CONCAT('%', :weather, '%') " +
+        "GROUP BY B.board_number, BF.image_url " +
+        "ORDER BY B.write_datetime DESC; ",
+        nativeQuery = true
+    )
+    public List<GetBoardListResult> getSearchHashtagByWordAndWeather(@Param("search_word") String searchWord,
+                                                                     @Param("weather") String weather);
+
+
+    @Query(
+        value=
+        "SELECT " +
+        "B.board_number AS boardNumber, " +
+        "B.title AS boardTitle, " +
+        "B.content AS boardContent, " +
+        "B.write_datetime AS boardWriteDatetime, " +
+        "BF.image_url AS boardFirstImageUrl, " +
+        "U.nickname AS boardWriterNickname, " +
+        "U.profile_image_url AS boardWriterProfileImageUrl, " +
+        "count(C.comment_number) AS commentCount, " +
+        "LC.likeCount AS likeCount " +
+        "FROM Board B " +
+        "LEFT JOIN (SELECT * FROM( " +
+        "SELECT image_number, image_url, board_number, " +
+        "ROW_NUMBER() OVER (PARTITION BY board_number) " +
+        "AS N FROM image_url) AS T " +
+        "WHERE T.N=1) AS BF " +
+        "ON B.board_number = BF.board_number " +
+        "LEFT JOIN User U " +
+        "ON B.user_number = U.user_number " +
+        "LEFT JOIN Comment C " +
+        "ON B.board_number = C.board_number " +
+        "LEFT JOIN ( " +
+        "Select B.board_number,count(L.user_number) AS likeCount FROM Board B " +
+        "LEFT JOIN likey L " +
+        "ON B.board_number = L.board_number " +
+        "GROUP BY B.board_number " +
+        ") AS LC " +
+        "ON LC.board_number = B.board_number " +
+        "LEFT JOIN ( " +
+        "SELECT HB.board_number AS board_number " +
+        "FROM hashtag H, hashtag_has_board HB " +
+        "WHERE H.hashtag_number = HB.hashtag_number " +
+        "AND H.hashtag_content LIKE CONCAT('%',:search_word,'%') " +
+        ") AS H " +
+        "ON B.board_number = H.board_number " +
+        "WHERE B.board_number = H.board_number " +
+        "AND (B.temperature BETWEEN :minTemperature AND :maxTemperature) " +
+        "GROUP BY B.board_number, BF.image_url " +
+        "ORDER BY B.write_datetime DESC; ",
+        nativeQuery = true
+    )
+    public List<GetBoardListResult> getSearchHashtagByWordAndTemperatures(@Param("search_word") String searchWord,
+                                                                          @Param("minTemperature") Integer minTemperature,
+                                                                          @Param("maxTemperature") Integer maxTemperature);
+
+
+    @Query(
+        value=
+        "SELECT " +
+        "B.board_number AS boardNumber, " +
+        "B.title AS boardTitle, " +
+        "B.content AS boardContent, " +
+        "B.write_datetime AS boardWriteDatetime, " +
+        "BF.image_url AS boardFirstImageUrl, " +
+        "U.nickname AS boardWriterNickname, " +
+        "U.profile_image_url AS boardWriterProfileImageUrl, " +
+        "count(C.comment_number) AS commentCount, " +
+        "LC.likeCount AS likeCount " +
+        "FROM Board B " +
+        "LEFT JOIN (SELECT * FROM( " +
+        "SELECT image_number, image_url, board_number, " +
+        "ROW_NUMBER() OVER (PARTITION BY board_number) " +
+        "AS N FROM image_url) AS T " +
+        "WHERE T.N=1) AS BF " +
+        "ON B.board_number = BF.board_number " +
+        "LEFT JOIN User U " +
+        "ON B.user_number = U.user_number " +
+        "LEFT JOIN Comment C " +
+        "ON B.board_number = C.board_number " +
+        "LEFT JOIN ( " +
+        "Select B.board_number,count(L.user_number) AS likeCount FROM Board B " +
+        "LEFT JOIN likey L " +
+        "ON B.board_number = L.board_number " +
+        "GROUP BY B.board_number " +
+        ") AS LC " +
+        "ON LC.board_number = B.board_number " +
+        "LEFT JOIN ( " +
+        "SELECT HB.board_number AS board_number " +
+        "FROM hashtag H, hashtag_has_board HB " +
+        "WHERE H.hashtag_number = HB.hashtag_number " +
+        "AND H.hashtag_content LIKE CONCAT('%',:search_word,'%') " +
+        ") AS H " +
+        "ON B.board_number = H.board_number " +
+        "WHERE B.board_number = H.board_number " +
+        "AND ((B.temperature BETWEEN :minTemperature AND :maxTemperature) " +
+        "OR (B.weather_main LIKE CONCAT('%', :weather, '%'))) " +
+        "GROUP BY B.board_number, BF.image_url " +
+        "ORDER BY B.write_datetime DESC; ",
+        nativeQuery = true
+    )                                                                 
+    public List<GetBoardListResult> getSearchHashtagByWordAndAll(@Param("search_word") String searchWord,
+                                                                 @Param("weather") String weather,
+                                                                 @Param("minTemperature") Integer minTemperature,
+                                                                 @Param("maxTemperature") Integer maxTemperature);
 
 }
