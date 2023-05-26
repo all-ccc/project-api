@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.groupc.weather.dto.response.board.GetWeatherDataResponseDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,5 +26,6 @@ public class PostBoardRequestDto {
     @NotNull
     private List<String> imageUrlList;
     private List<String> hashtagList;
+    @NotBlank
     private String location;
 }

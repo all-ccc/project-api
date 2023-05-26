@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class PostQnaCommentRequestDto {
     @NotNull
     private int writerNumber;
-    @NotBlank
+    @NotNull
     private int qnaBoardNumber;
     @NotBlank
     private String qnaCommentContent;

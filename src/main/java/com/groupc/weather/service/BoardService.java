@@ -1,7 +1,5 @@
 package com.groupc.weather.service;
 
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 import com.groupc.weather.dto.response.board.GetBoardListResponseDto;
 import com.groupc.weather.dto.response.board.GetBoardListResponsetop5Dto;
@@ -22,7 +20,12 @@ public interface BoardService {
     public ResponseEntity<? super GetBoardListResponseDto> getBoardList();
     public ResponseEntity<? super GetBoardListResponsetop5Dto> getBoardTop5();
     public ResponseEntity<? super GetBoardFirstViewDto> getBoardFirstView();
+
     public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWord(String searchWord);
+    // public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWordAndWeather(String searchWord, String weather);
+    // public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWordAndTemperature(String searchWord, String temperature);
+    // public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWordAndAll(String searchWord, String weather, String temperature);
+
     public ResponseEntity<? super GetBoardListResponseDto> getSearchListByHashtag(String hashtag);
     public ResponseEntity<ResponseDto> likeBoard(LikeyPk likeyPk); 
     public ResponseEntity<ResponseDto> likeDeleteBoard(Integer userNumber, Integer boardNumber); 

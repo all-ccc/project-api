@@ -46,11 +46,11 @@ class QnaBoardSummary {
     public int replyComplete;
 
     public QnaBoardSummary(QnaBoardListResultSet resultSet) {
-        this.qnaBoardNumber = resultSet.getQnaBoardNumber();
-        this.qnaBoardTitle = resultSet.getQnaBoardTitle();
-        this.qnaBoardWriteDatetime = resultSet.getQnaBoardWriteDatetime();
-        this.qnaBoardWriterNickname = resultSet.getQnaBoardWriterNickname();
-        this.qnaBoardWriterProfileImageUrl = resultSet.getQnaBoardWriterProfileImageUrl();
+        this.qnaBoardNumber = resultSet.getBoardNumber();
+        this.qnaBoardTitle = resultSet.getBoardTitle();
+        this.qnaBoardWriteDatetime = resultSet.getBoardWriteDatetime();
+        this.qnaBoardWriterNickname = resultSet.getBoardWriterNickname();
+        this.qnaBoardWriterProfileImageUrl = resultSet.getBoardWriterProfileImageUrl();
         this.replyComplete = resultSet.getReplyComplete();
     }
 }

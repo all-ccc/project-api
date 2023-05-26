@@ -56,5 +56,6 @@ public class GetBoardResponseDto extends ResponseDto {
         this.commentList = commentEntities;
         this.likeListDto = likeyListDto;
     }
+
 }
 

@@ -34,7 +34,7 @@ public class CustomResponse {
 
     public static ResponseEntity<ResponseDto> existUserNickname() {
 
-        ResponseDto errorBody = new ResponseDto("EM", "Existent User Nickname");
+        ResponseDto errorBody = new ResponseDto("EN", "Existent User Nickname");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
@@ -45,13 +45,13 @@ public class CustomResponse {
 
     public static ResponseEntity<ResponseDto> undifindeUsername() {
 
-        ResponseDto errorBody = new ResponseDto("EM", "Existent Undifinde Name");
+        ResponseDto errorBody = new ResponseDto("EN", "Existent Undifinde Name");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
     public static ResponseEntity<ResponseDto> undifindephonenumber() {
 
-        ResponseDto errorBody = new ResponseDto("EM", "Undifinde Phonenumber");
+        ResponseDto errorBody = new ResponseDto("EP", "Undifinde Phonenumber");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
@@ -100,7 +100,7 @@ public class CustomResponse {
 
     public static ResponseEntity<ResponseDto> notExistManagerNumber() {
 
-        ResponseDto errorBody = new ResponseDto("NU", "Not-Existent Manager Number");
+        ResponseDto errorBody = new ResponseDto("NM", "Not-Existent Manager Number");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
     }
 

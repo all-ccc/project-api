@@ -12,7 +12,7 @@ import com.groupc.weather.entity.QnaBoardEntity;
 import com.groupc.weather.entity.resultSet.QnaBoardListResultSet;
 @Repository
 public interface QnaBoardRepository extends JpaRepository<QnaBoardEntity, Integer> {
-    public boolean existsByBoardNumber(int qnaBoardNumber);
+    public boolean existsByBoardNumber(int qnaboardNumber);
     public QnaBoardEntity findByBoardNumber(int qnaBoardNumber);
     
     @Transactional

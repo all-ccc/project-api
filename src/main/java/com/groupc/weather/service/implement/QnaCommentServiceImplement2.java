@@ -72,6 +72,7 @@ public class QnaCommentServiceImplement2 implements QnaCommentService2 {
                 UserEntity userEntity = userRepositry.findByUserNumber(qnaCommentWriterNumber);
 
                 QnaCommentEntity qnaCommentEntity = new QnaCommentEntity(dto, userEntity);
+              
                 qnaCommentRepository.save(qnaCommentEntity);
 
                 return CustomResponse.success();
@@ -133,6 +134,7 @@ public class QnaCommentServiceImplement2 implements QnaCommentService2 {
                 //동일하다면 코멘트 내용이 수정됨
                 qnaCommentEntity.setContent(commentContent);
                 qnaCommentRepository.save(qnaCommentEntity);
+                return CustomResponse.success();
                 
             }
 
@@ -197,6 +199,7 @@ public class QnaCommentServiceImplement2 implements QnaCommentService2 {
 
                 //동일하다면 코멘트 내용이 수정됨
                 qnaCommentRepository.deleteByQnaCommentNumber(qnaCommentNumber);
+                return CustomResponse.success();
 
             }
 

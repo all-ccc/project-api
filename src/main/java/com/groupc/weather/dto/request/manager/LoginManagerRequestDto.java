@@ -1,4 +1,4 @@
-package com.groupc.weather.dto.request.user;
+package com.groupc.weather.dto.request.manager;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class LoginUserRequestDto {
+public class LoginManagerRequestDto {
     @NotBlank
     @Email
-    private String userEmail;
+    private String managerEmail;
     @NotBlank
-    private String userPassword;
+    private String managerPassword;
 }

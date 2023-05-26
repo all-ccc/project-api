@@ -29,10 +29,10 @@ public class BoardEntity {
         private Integer userNumber; 
         private String title;
         private String content;
-        private String writeDatetime; 
-        private int temperature; 
+        private String writeDatetime;
+        private int temperature;
+        private String weatherMain;
         private String weatherDescription;
-        private int weatherId;
         private int viewCount;
 
         public BoardEntity(PostBoardRequestDto2 dto, WeatherDto dto2, Integer userNumber) {
@@ -45,7 +45,7 @@ public class BoardEntity {
                 this.content = dto.getContent();
                 this.temperature = dto2.getTemperature();
                 this.weatherDescription = dto2.getWeatherDescription();
-                this.weatherId=dto2.getWeatherId();
+                this.weatherMain = dto2.getWeatherMain();
                 this.writeDatetime = writeDatetime;
                 this.viewCount = 0;
         }
@@ -60,7 +60,7 @@ public class BoardEntity {
                 this.content = dto.getContent();
                 this.temperature = dto2.getTemperature();
                 this.weatherDescription = dto2.getWeatherDescription();
-                this.weatherId=dto2.getWeatherId();
+                this.weatherMain=dto2.getWeatherMain();
                 this.writeDatetime = writeDatetime;
                 this.viewCount = 0;
         }

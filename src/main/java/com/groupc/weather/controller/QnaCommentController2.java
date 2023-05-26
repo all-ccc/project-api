@@ -17,7 +17,6 @@ import com.groupc.weather.common.model.AuthenticationObject;
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.qnaBoard.PatchQnaCommentRequestDto2;
 import com.groupc.weather.dto.request.qnaBoard.PostQnaCommentRequestDto2;
-import com.groupc.weather.service.QnaCommentService;
 import com.groupc.weather.service.QnaCommentService2;
 
 import lombok.RequiredArgsConstructor;

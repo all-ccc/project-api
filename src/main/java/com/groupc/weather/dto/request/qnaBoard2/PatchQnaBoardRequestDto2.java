@@ -1,4 +1,4 @@
-package com.groupc.weather.dto.request.qnaBoard;
+package com.groupc.weather.dto.request.qnaBoard2;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -8,9 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class PatchQnaBoardRequestDto {
-    @NotNull
-    private Integer userNumber;
+public class PatchQnaBoardRequestDto2 {
     @NotNull
     private Integer qnaBoardNumber;
     @NotBlank

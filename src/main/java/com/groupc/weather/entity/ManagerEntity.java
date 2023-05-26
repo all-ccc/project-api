@@ -22,18 +22,18 @@ public class ManagerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer managerNumber;
-    private String managerNickname;
+    private String nickname;
     private String email;
     private String password;
     private String phoneNumber;
     private String profileImageUrl;
 
-    public ManagerEntity(PostManagerRequestDto dto) {
+    public ManagerEntity(UserEntity userEntity) {
 
-        this.managerNickname = dto.getManagerNickname();
-        this.email = dto.getManagerEmail();
-        this.password = dto.getManagerPassword();
-        this.phoneNumber = dto.getManagerPhoneNumber();
-        this.profileImageUrl = dto.getManagerProfileImageUrl();
+        this.nickname = userEntity.getNickname();
+        this.email = userEntity.getEmail();
+        this.password = userEntity.getPassword();
+        this.phoneNumber = userEntity.getPhoneNumber();
+        this.profileImageUrl = userEntity.getProfileImageUrl();
     }
 }

@@ -33,9 +33,9 @@ public class WeatherService {
 
             JSONObject jsonObject = new JSONObject(response);
 
-            int id_value = jsonObject.getJSONArray("weather")
+            String main_value = jsonObject.getJSONArray("weather")
                     .getJSONObject(0)
-                    .getInt("id");
+                    .getString("main");
 
             String description_value = jsonObject.getJSONArray("weather")
                     .getJSONObject(0)
@@ -46,7 +46,7 @@ public class WeatherService {
 
             dto = new WeatherDto();
 
-            dto.setWeatherId(id_value);
+            dto.setWeatherMain(main_value);
             dto.setWeatherDescription(description_value);
             dto.setTemperature((int) Math.round(temp_value)); // double -> int
         }
@@ -56,10 +56,6 @@ public class WeatherService {
 
         return dto;
     }
-
-
-
-
 
     
 }

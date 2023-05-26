@@ -147,7 +147,7 @@ public class BoardController2 {
     @GetMapping("search/{searchWord}/{weatherMain}/{minTemperature}/{maxTemerature}") // 이렇게 쓰는 게 맞는 건지..
     public ResponseEntity<? super GetBoardListResponseDto> searchListByWord(
         @PathVariable("searchWord") String searchWord,
-        @PathVariable("weatherMain") String searchWord,
+        @PathVariable("weatherMain") String weatherMain,
         @PathVariable("minTemperature") Integer minTemperature, 
         @PathVariable("maxTemperature") Integer maxTemperature
     ) {
