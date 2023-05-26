@@ -1,4 +1,4 @@
-package com.groupc.weather;
+package com.groupc.weather.dto.request.common;
 
 import java.util.List;
 
@@ -8,13 +8,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-public class OpenWeather {
+public class OpenWeatherDto {
 
     private Coord coord;
 
     private List<Weather> weather;
 
-    /** 내부 매개 변수 */
+    /** 내부 매개 변수 */ 
     private String base;
 
     private Main main;
@@ -54,8 +54,7 @@ public class OpenWeather {
         /** 기상 조건 ID */
         private int id;
         /** 날씨 매개 변수 그룹 (비, 눈, 극한 등) */
-        @JsonProperty("main")
-        private String weatherMain;
+        private String main;
         /** 그룹 내 날씨 조건 */
         private String description;
         /** 날씨 아이콘 ID */

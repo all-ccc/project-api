@@ -1,6 +1,8 @@
 package com.groupc.weather.entity;
 
 import com.groupc.weather.dto.request.board.PostBoardRequestDto;
+import com.groupc.weather.dto.request.board.PostBoardRequestDto2;
+import com.groupc.weather.dto.request.common.WeatherDto;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,10 +31,26 @@ public class BoardEntity {
         private String content;
         private String writeDatetime;
         private int temperature;
-        private String weatherInfo;
+        private String weatherMain;
+        private String weatherDescription;
         private int viewCount;
 
-        public BoardEntity(PostBoardRequestDto dto) {
+        public BoardEntity(PostBoardRequestDto2 dto, WeatherDto dto2, Integer userNumber) {
+                Date now = new Date();
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                String writeDatetime = simpleDateFormat.format(now);
+
+                this.userNumber = userNumber;
+                this.title = dto.getTitle();
+                this.content = dto.getContent();
+                this.temperature = dto2.getTemperature();
+                this.weatherDescription = dto2.getWeatherDescription();
+                this.weatherMain = dto2.getWeatherMain();
+                this.writeDatetime = writeDatetime;
+                this.viewCount = 0;
+        }
+
+        public BoardEntity(PostBoardRequestDto dto, WeatherDto dto2) {
                 Date now = new Date();
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 String writeDatetime = simpleDateFormat.format(now);
@@ -40,8 +58,9 @@ public class BoardEntity {
                 this.userNumber = dto.getUserNumber();
                 this.title = dto.getTitle();
                 this.content = dto.getContent();
-                this.temperature = dto.getTemperature();
-                this.weatherInfo = dto.getWeatherInfo();
+                this.temperature = dto2.getTemperature();
+                this.weatherDescription = dto2.getWeatherDescription();
+                this.weatherMain=dto2.getWeatherMain();
                 this.writeDatetime = writeDatetime;
                 this.viewCount = 0;
         }
