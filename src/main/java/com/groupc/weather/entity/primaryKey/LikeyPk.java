@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LikeyPk implements Serializable {
 
-    @Column(name = "boardNumber")
+    @Column(name = "board_number")
     private Integer boardNumber;
-    @Column(name = "userNumber")
+    @Column(name = "user_number")
     private Integer userNumber;
 
 public LikeyPk(LikeyPk likeyPk){

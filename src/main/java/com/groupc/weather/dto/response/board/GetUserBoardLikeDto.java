@@ -50,7 +50,7 @@ class BoardSummary{
     public BoardSummary(GetBoardListResult resultSet){
         this.boardNumber = resultSet.getBoardNumber();
         this.boardTitle = resultSet.getBoardTitle();
-        this.boardfirstImageUrl = imageUrlRepository.findByBoardNumber(boardNumber);
+        this.boardfirstImageUrl = ImageUrlRepository.findByBoardNumber(boardNumber);
 }
 }
 

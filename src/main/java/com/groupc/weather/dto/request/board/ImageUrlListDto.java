@@ -13,7 +13,7 @@ public class ImageUrlListDto {
     @NotNull
     private String imageUrl;
     
-    public ImageUrlListDto(ImageUrlListDto imageListResult){
-        this.imageUrl = imageListResult.getImageUrl();
-    }
+    // public ImageUrlListDto(ImageUrlListDto imageListResult){
+    //     this.imageUrl = imageListResult.getImageUrl();
+    // }
 }

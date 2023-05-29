@@ -20,7 +20,7 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Integer> {
     public BoardEntity findByBoardNumber(Integer boardNumber);
     public boolean existsByBoardNumber(Integer boardNumber);
 
-    public List<GetBoardListResult> findByUserNumber(Integer userNumber);
+    public List<BoardEntity> findByUserNumber(Integer userNumber);
 
     @Query(value =
     "SELECT " + 
@@ -32,9 +32,9 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Integer> {
     "C.user_nickname AS commentUserNickname, " +
     "C.user_profile_image_url AS commentUserProfileImageUrl, "+ 
     "FROM Board B, Comment C " +
-    "Where B.board_number = C.board_number" +
+    "Where B.board_number = C.board_number " +
     "GROUP BY B.board_number " +
-    "ORDER BY C.write_datetime DESC",
+    "ORDER BY C.write_datetime DESC; ",
     nativeQuery = true
 )
 public List<BoardCommentResultSet> getBoardCommentList();
@@ -56,33 +56,32 @@ public List<BoardCommentResultSet> getBoardCommentList();
 "FROM Board B, Comment C, Likey L, User U "  +
 "Where B.board_number= C.board_number, " +
 "AND B.user_number = U.user_number " +
-"AND B.board_number = L.board_number" +
-"GROUP BY B.board_number ",
+"AND B.board_number = L.board_number " +
+"GROUP BY B.board_number; ",
 nativeQuery = true
 )
 public List<BoardCommentLikeyCountResultSet> getBoardCommentLikeyList();
 
 
-// 2.게시물 조회
+// 5.게시물 조회
 @Query(value=
-"SELECT * FROM get_board; ",
-// "SELECT " +
-// "B.board_number AS boardNumber, " +
-// "B.title AS boardTitle, " + 
-// "B.content AS boardContent, " +
-// "I.image_url AS boardfirstImageUrl, " + 
-// "B.write_datetime AS boardDatetime, " +
-// "U.nickname AS boardWriterNickname, " +
-// "U.profile_image_url AS boardWriterProfileImageUrl, " +
-// "count(DISTINCT C.comment_number) AS commentCount, " +
-// "count(DISTINCT L.user_number) AS likeCount, " +
-// "FROM Board B, Comment C, Likey L, User U , Image_Url I " +
-// "Where B.board_number= I.board_number" +
-// "AND I.image_number = 1 " +
-// "AND B.user_number = U.user_number" +
-// "AND B.board_number = L.board_number" +
-// "GROUP BY B.board_number" +
-// "ORDER BY B.write_datetime DESC;" ,
+"SELECT "
++"B.board_number AS boardNumber, "
++"B.title AS boardTitle, "
++"+B.content AS boardContent, "
++"I.image_url AS boardfirstImageUrl, "
++"B.write_datetime AS boardDatetime, "
++"U.nickname AS boardWriterNickname, "
++"U.profile_image_url AS boardWriterProfileImageUrl, "
++"count(DISTINCT C.comment_number) AS commentCount, "
++"count(DISTINCT L.user_number) AS likeCount "
++"FROM Board B, Comment C, Likey L, User U , Image_Url I "
++"Where B.board_number= I.board_number "
++"AND I.image_number = 1 "
++"AND B.user_number = U.user_number "
++"AND B.board_number = L.board_number "
++"GROUP BY B.board_number "
++"ORDER BY B.write_datetime DESC; ",
 nativeQuery = true
 )
 public List<GetBoardListResult> getBoardList();
@@ -183,7 +182,7 @@ public String getBoardFirstImageUrl(@Param("board_number") int boardNumber);
 
 
 // 8.특정 게시물 삭제
-public Integer deleteBoardLike(Integer userNumber, Integer boardNumber);
+// public Integer deleteBoardLike(Integer userNumber, Integer boardNumber);
 
 
 // 9.특정 게시물 좋아요

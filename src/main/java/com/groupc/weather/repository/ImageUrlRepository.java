@@ -10,6 +10,10 @@ import com.groupc.weather.entity.ImageUrlEntity;
 
 public interface ImageUrlRepository extends JpaRepository<ImageUrlEntity, Integer> {
     
-    public List<ImageUrlEntity> findByBoardNumber(int boardNumber);
+    public static List<ImageUrlEntity> findByBoardNumber(int boardNumber) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'findByBoardNumber'");
+    }
+    public ImageUrlEntity findByImageNumber(int imageNumber);
     public ImageUrlEntity findByBoardNumberAndImageNumber(int boardNumber, int imageNumber);
 }

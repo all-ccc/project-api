@@ -18,9 +18,11 @@ import com.groupc.weather.dto.response.board.GetBoardListResponseDto;
 import com.groupc.weather.dto.response.board.GetBoardResponseDto;
 import com.groupc.weather.entity.primaryKey.LikeyPk;
 import com.groupc.weather.dto.ResponseDto;
+import com.groupc.weather.dto.request.board.LikeRequestDto;
 import com.groupc.weather.dto.request.board.PatchBoardRequestDto;
-import com.groupc.weather.dto.request.board.PostBoardRequestDto;
+import com.groupc.weather.dto.request.board.PostBoardRequestDto2;
 import com.groupc.weather.service.BoardService;
+import com.groupc.weather.dto.response.board.GetBoardListResponsetop5Dto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,8 +35,9 @@ public class BoardController {
     // 1. 게시물 작성
     @PostMapping("post")
     public ResponseEntity<ResponseDto> postBoard(
-            @Valid @RequestBody PostBoardRequestDto requestBody){
-        ResponseEntity<ResponseDto> response = boardService.postBoard(requestBody);
+        @AuthenticationPrincipal String userEmail,
+            @Valid @RequestBody PostBoardRequestDto2 requestBody){
+        ResponseEntity<ResponseDto> response = boardService.postBoard(userEmail, requestBody);
         return response;
     }
 
@@ -56,8 +59,8 @@ public class BoardController {
 
     // 4. TOP5 게시물 목록 조회
     @GetMapping("/top5")
-    public ResponseEntity<? super GetBoardListResponseDto>getBoardtop5(){
-        ResponseEntity<? super GetBoardListResponseDto> response = boardService.getBoardTop5();
+    public ResponseEntity<? super GetBoardListResponsetop5Dto>getBoardtop5(){
+        ResponseEntity<? super GetBoardListResponsetop5Dto> response = boardService.getBoardTop5();
         return response;
     }
 
@@ -76,7 +79,7 @@ public class BoardController {
     }
 
     // 7. 특정 게시물 수정
-    @PatchMapping("")
+    @PatchMapping("/patch")
     public ResponseEntity<ResponseDto> patchBoard(
         @AuthenticationPrincipal String userEmail,
         @Valid @RequestBody PatchBoardRequestDto dto
@@ -99,9 +102,10 @@ public class BoardController {
     // 9. 특정 게시물 좋아요 등록
     @PostMapping("/like")
     public ResponseEntity<ResponseDto> likeBoard(
-        @Valid @RequestBody LikeyPk likeyPk
+        @AuthenticationPrincipal String email,
+        @Valid @RequestBody LikeRequestDto dto
     ){
-        ResponseEntity<ResponseDto> response = boardService.likeBoard(likeyPk);
+        ResponseEntity<ResponseDto> response = boardService.likeBoard(email, dto);
         return response;
     }
     

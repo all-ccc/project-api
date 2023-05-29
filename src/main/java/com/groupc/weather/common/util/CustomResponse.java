@@ -38,7 +38,7 @@ public class CustomResponse {
 
     public static ResponseEntity<ResponseDto> alreadyLikeBoard() {
 
-        ResponseDto errorBody = new ResponseDto("AL", "Alredy LikeBoard");
+        ResponseDto errorBody = new ResponseDto("AL", "Already LikeBoard");
         return ResponseEntity.status(HttpStatus.OK).body(errorBody);
     }
 

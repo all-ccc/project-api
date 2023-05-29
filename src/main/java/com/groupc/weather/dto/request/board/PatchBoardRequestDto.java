@@ -18,20 +18,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PatchBoardRequestDto {
-    @NotNull
-    private Integer userNumber;
+   
     @NotNull
     private Integer boardNumber;  
     @NotBlank
     private String boardTitle;
     @NotBlank
     private String boardContent;
-    @NotBlank
-    private List<String> boardImageUrl;
-    private List<String> boardHashtag;
+    // @NotBlank
+    // private List<String> boardImageUrl;
+    // private List<String> boardHashtag;
 
     // 수정할 거 
-    private List<ImageUrlListDto> imageUrlList;
+    private List<ImageUrlEntity> imageUrlList;    //ImageUrlDto 에서 변경했음,,,
     private List<HashtagDto> hashtagList;
 
     // 추가할 거
