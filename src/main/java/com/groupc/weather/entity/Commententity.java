@@ -67,7 +67,7 @@ public class CommentEntity {
 
         this.userNumber = managerEntity.getManagerNumber();
         this.boardNumber = dto.getBoardNumber();
-        this.userNickname = managerEntity.getManagerNickname();
+        this.userNickname = managerEntity.getNickname();
         this.userProfileImageUrl = managerEntity.getProfileImageUrl();
         this.content = dto.getCommentContent();
         this.writeDatetime = writeDatetime;

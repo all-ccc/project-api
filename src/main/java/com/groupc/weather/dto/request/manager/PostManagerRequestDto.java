@@ -10,17 +10,16 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class PostManagerRequestDto {
+   
     @NotNull
-    private Integer managerNumber;
+    private String nickname;
     @NotNull
-    private String managerNickname;
-    @NotNull
-    private String managerPassword;
+    private String password;
     @NotNull
     @Pattern(regexp = "^\\d{3}-\\d{3,4}-\\d{4}$")
-    private String managerPhoneNumber;
+    private String phoneNumber;
     @NotNull
     @Email
-    private String managerEmail;
-    private String managerProfileImageUrl;
+    private String email;
+    private String profileImageUrl;
 }

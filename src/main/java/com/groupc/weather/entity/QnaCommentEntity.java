@@ -9,11 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.groupc.weather.dto.request.common.ManagerDto;
-import com.groupc.weather.dto.request.common.UserDto;
+
 import com.groupc.weather.dto.request.qnaBoard.PatchQnaBoardRequestDto;
 import com.groupc.weather.dto.request.qnaBoard.PatchQnaCommentRequestDto;
-import com.groupc.weather.dto.request.qnaBoard.PostQnaCommentRequestDto;
 import com.groupc.weather.dto.request.qnaBoard.PostQnaCommentRequestDto2;
 
 import lombok.AllArgsConstructor;
@@ -68,7 +66,7 @@ public class QnaCommentEntity {
                 this.userNumber=null;
                 this.managerNumber=managerEntity.getManagerNumber();
                 this.userNickname=null;
-                this.managerNickname=managerEntity.getManagerNickname();
+                this.managerNickname=managerEntity.getNickname();
                 this.userProfileImageUrl=null;
                 this.managerProfileImageUrl=managerEntity.getProfileImageUrl();
                 }

@@ -54,7 +54,7 @@ public class WebSecurityConfig {
             .authorizeHttpRequests()
             .antMatchers("/api/v1/**", "/api/v2/auth/**").permitAll()
             //.antMatchers(HttpMethod.GET, "/api/v2/photoBoard/**").permitAll()
-            .antMatchers("/api/v2/photoBoard/view/**","/api/v2/manager/sign-in").permitAll()
+            .antMatchers("/api/v2/photoBoard/view/**","/api/v2/manager/sign-in","/api/v2/manager/sign-up").permitAll()
             .anyRequest().authenticated().and()
             .exceptionHandling().authenticationEntryPoint(new FailedAuthenticationEntiryPoint());
 

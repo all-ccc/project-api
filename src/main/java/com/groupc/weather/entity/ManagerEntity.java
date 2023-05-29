@@ -36,4 +36,16 @@ public class ManagerEntity {
         this.phoneNumber = userEntity.getPhoneNumber();
         this.profileImageUrl = userEntity.getProfileImageUrl();
     }
+
+    public ManagerEntity(PostManagerRequestDto dto) {
+
+        this.nickname = dto.getNickname();
+        this.email = dto.getEmail();
+        this.password = dto.getPassword();
+        this.phoneNumber = dto.getPhoneNumber();
+        this.profileImageUrl = dto.getProfileImageUrl();
+    }
+
+
+
 }

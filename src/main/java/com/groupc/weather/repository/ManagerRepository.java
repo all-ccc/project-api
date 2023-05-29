@@ -11,5 +11,8 @@ public interface ManagerRepository extends JpaRepository<ManagerEntity,Integer> 
     public ManagerEntity findByManagerNumber(Integer managerNumber);
 
     public ManagerEntity findByEmail(String email);
+    public boolean existsByNickname(String nickname);
+
+    public boolean existsByPhoneNumber(String phoneNumber);
 
 }
