@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.groupc.weather.common.model.AuthenticationObject;
 import com.groupc.weather.dto.ResponseDto;
-import com.groupc.weather.dto.request.manager.ConvertManagerDto;
+import com.groupc.weather.dto.request.manager.ActiveManagerDto;
 import com.groupc.weather.dto.request.manager.LoginManagerRequestDto;
 import com.groupc.weather.dto.request.manager.PostManagerRequestDto;
 import com.groupc.weather.dto.response.manager.LoginManagerResponseDto;
@@ -25,20 +25,14 @@ import lombok.RequiredArgsConstructor;
 public class ManagerController {
     private final ManagerService managerService;
 
-    @PostMapping("/converManager")                                   
-    public ResponseEntity<ResponseDto> convertManager(     
-    @AuthenticationPrincipal AuthenticationObject authenticationObject, @Valid @RequestBody ConvertManagerDto dto){
+    @PostMapping("/activeManager")                                   
+    public ResponseEntity<ResponseDto> activeManager(     
+    @AuthenticationPrincipal AuthenticationObject authenticationObject, @Valid @RequestBody ActiveManagerDto dto){
         
-        ResponseEntity<ResponseDto> response = managerService.convertManager(authenticationObject,dto);
+        ResponseEntity<ResponseDto> response = managerService.activeManager(authenticationObject,dto);
         return response;
     }
 
-    @PostMapping("/sign-in")
-    public ResponseEntity<? super LoginManagerResponseDto> LoginManager(
-            @Valid @RequestBody LoginManagerRequestDto requestBody) {
-        ResponseEntity<? super LoginManagerResponseDto> response = managerService.LoginManager(requestBody);
-        return response;
-    }
 
     @PostMapping("/sign-up")
     public ResponseEntity<ResponseDto> postManager(

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ConvertManagerDto {
-    Integer userNumber;
+public class ActiveManagerDto {
+    Integer managerNumber;
     
 }

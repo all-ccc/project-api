@@ -27,15 +27,7 @@ public class ManagerEntity {
     private String password;
     private String phoneNumber;
     private String profileImageUrl;
-
-    public ManagerEntity(UserEntity userEntity) {
-
-        this.nickname = userEntity.getNickname();
-        this.email = userEntity.getEmail();
-        this.password = userEntity.getPassword();
-        this.phoneNumber = userEntity.getPhoneNumber();
-        this.profileImageUrl = userEntity.getProfileImageUrl();
-    }
+    private boolean active;
 
     public ManagerEntity(PostManagerRequestDto dto) {
 
@@ -44,6 +36,7 @@ public class ManagerEntity {
         this.password = dto.getPassword();
         this.phoneNumber = dto.getPhoneNumber();
         this.profileImageUrl = dto.getProfileImageUrl();
+        this.active = false;
     }
 
 

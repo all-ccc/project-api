@@ -10,13 +10,11 @@ import org.springframework.stereotype.Service;
 import com.groupc.weather.common.model.AuthenticationObject;
 import com.groupc.weather.common.util.CustomResponse;
 import com.groupc.weather.dto.ResponseDto;
-import com.groupc.weather.dto.request.manager.ConvertManagerDto;
-import com.groupc.weather.dto.request.manager.LoginManagerRequestDto;
+import com.groupc.weather.dto.request.manager.ActiveManagerDto;
 import com.groupc.weather.dto.request.manager.PostManagerRequestDto;
-import com.groupc.weather.dto.response.manager.LoginManagerResponseDto;
 import com.groupc.weather.entity.ManagerEntity;
-import com.groupc.weather.entity.UserEntity;
 import com.groupc.weather.provider.JwtProvider;
+import com.groupc.weather.repository.LikeyRepository;
 import com.groupc.weather.repository.ManagerRepository;
 import com.groupc.weather.repository.UserRepository;
 import com.groupc.weather.service.ManagerService;
@@ -24,44 +22,40 @@ import com.groupc.weather.service.ManagerService;
 
 @Service
 public class ManagerServiceImplement implements ManagerService {
-    private UserRepository userRepository;
+
     private ManagerRepository managerRepository;
-    private JwtProvider jwtProvider;
+
     private PasswordEncoder passwordEncoder;
 
     @Autowired
     public ManagerServiceImplement(
-            UserRepository userRepository,ManagerRepository managerRepository,
+            UserRepository userRepository,ManagerRepository managerRepository,LikeyRepository likeyRepository,
             JwtProvider jwtProvider) {
         this.managerRepository = managerRepository;
-        this.userRepository = userRepository;
-        this.jwtProvider = jwtProvider;
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
     @Override
-    public ResponseEntity<ResponseDto> convertManager(AuthenticationObject authenticationObject,
-            ConvertManagerDto dto) {
+    public ResponseEntity<ResponseDto> activeManager(AuthenticationObject authenticationObject,
+            ActiveManagerDto dto) {
                 
             boolean isManager = authenticationObject.isManagerFlag();
-            Integer userNumber = dto.getUserNumber();
+            Integer managerNumber = dto.getManagerNumber();
         try {
             //권한이 있는지 확인
             if(!isManager) return CustomResponse.noPermissions();
             
-            //관리자로 만들고 싶은 유저가 존재 하는지 확인
-            boolean existedUserNumber = userRepository.existsByUserNumber(userNumber);
-            if(!existedUserNumber) return CustomResponse.notExistUserNumber();
+            //관리자 권한을 활성화 시키고 싶은 사람이 있는지 확인
+            boolean existedManagerNumber = managerRepository.existsByManagerNumber(managerNumber);
+            if(!existedManagerNumber) return CustomResponse.notExistManagerNumber();
 
             //존재할경우 기존에 있던 유저의 정보를 이용해서 매니저 entity를 생성하고
             //유저 테이블에서 삭제함
 
-            UserEntity userEntity=userRepository.findByUserNumber(userNumber);
-            ManagerEntity managerEntity= new ManagerEntity(userEntity);
-            userRepository.deleteById(userNumber);
+
+            ManagerEntity managerEntity= managerRepository.findByManagerNumber(managerNumber);
+            managerEntity.setActive(true);
             managerRepository.save(managerEntity);
-
-
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -72,38 +66,6 @@ public class ManagerServiceImplement implements ManagerService {
         return CustomResponse.success();
     }
 
-
-    // 관리자 로그인
-    @Override
-    public ResponseEntity<? super LoginManagerResponseDto> LoginManager(LoginManagerRequestDto dto) {
-
-        LoginManagerResponseDto body = null;
-
-        String email = dto.getManagerEmail();
-        String password = dto.getManagerPassword();
-
-        try {
-            // 로그인 실패 반환. ( 이메일 )
-            ManagerEntity managerEntity = managerRepository.findByEmail(email);
-            if (managerEntity == null)
-                return CustomResponse.signInFailedEmail();
-
-            // 로그인 실패 반환. ( 패스워드 )
-            String encordedPassword = managerEntity.getPassword();
-            boolean equaledPassword = passwordEncoder.matches(password, encordedPassword);
-            if (!equaledPassword)
-                return CustomResponse.signInFailedPassword();
-
-            String jwt = jwtProvider.create(email, true);
-            body = new LoginManagerResponseDto(jwt);
-
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return CustomResponse.databaseError();
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(body);
-    }
 
     @Override
     public ResponseEntity<ResponseDto> postManager(PostManagerRequestDto dto) { 
@@ -144,5 +106,7 @@ public class ManagerServiceImplement implements ManagerService {
 
         
     }
+
+
 
 }

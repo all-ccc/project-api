@@ -28,5 +28,8 @@ public interface LikeyRepository extends JpaRepository<LikeyEntity, LikeyPk> {
 
     @Transactional
     public void deleteById(LikeyPk likeyPk);
+    @Transactional
+    public void deleteAllByUserNumber(Integer userNumber);
+
     
 }

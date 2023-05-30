@@ -73,5 +73,3 @@ public class CommentEntity {
         this.writeDatetime = writeDatetime;
     }
 }
-
-
