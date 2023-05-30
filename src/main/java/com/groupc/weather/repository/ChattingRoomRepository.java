@@ -8,7 +8,7 @@ import com.groupc.weather.entity.primaryKey.ChattingRoomPk;
 
 @Repository
 public interface ChattingRoomRepository extends JpaRepository<ChattingRoomEntity, ChattingRoomPk> {
-    public boolean existsByRoomNumber(Integer roomId);
+    public boolean existsByRoomId(Integer roomId);
    
     
 }
