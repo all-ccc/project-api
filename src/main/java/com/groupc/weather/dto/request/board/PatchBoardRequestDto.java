@@ -41,3 +41,7 @@ public class PatchBoardRequestDto {
     private List<Integer> deleteImageNumber;
     private List<Integer> deleteHashtageNumber;
 }
+class HashtagList{
+    Integer hashtagNumber;
+    String hashtagContent;
+}

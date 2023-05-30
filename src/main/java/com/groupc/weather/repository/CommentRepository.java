@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.groupc.weather.entity.CommentEntity;
-import com.groupc.weather.entity.UserEntity;
 
 
 @Repository
@@ -22,5 +21,11 @@ public interface CommentRepository extends JpaRepository<CommentEntity, Integer>
     public List<CommentEntity> deleteByBoardNumber(Integer commentNumber);
 
     @Transactional
-    public CommentEntity deleteByCommentNumber(Integer commentNumber);
+    void deleteByCommentNumber(Integer commentNumber);
+
+    public CommentEntity findByCommentNumber(Integer commentNumber);
+
+    public boolean existsByCommentNumber(Integer commentNumber);
+   
+
 }

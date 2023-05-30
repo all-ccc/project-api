@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WeatherDto {
-    private int weatherId;
+    private String weatherMain;
     private String weatherDescription;
     private int temperature;
 }

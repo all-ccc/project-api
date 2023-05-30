@@ -26,15 +26,14 @@ public class BoardEntity {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Integer boardNumber;
-        private Integer userNumber;
+        private Integer userNumber; 
         private String title;
         private String content;
         private String writeDatetime;
-        private Integer temperature;
+        private int temperature;
+        private String weatherMain;
         private String weatherDescription;
-        private int weatherId;
         private int viewCount;
-
 
         public BoardEntity(PostBoardRequestDto2 dto, WeatherDto dto2, Integer userNumber) {
                 Date now = new Date();
@@ -46,7 +45,22 @@ public class BoardEntity {
                 this.content = dto.getContent();
                 this.temperature = dto2.getTemperature();
                 this.weatherDescription = dto2.getWeatherDescription();
-                this.weatherId = dto2.getWeatherId();
+                this.weatherMain = dto2.getWeatherMain();
+                this.writeDatetime = writeDatetime;
+                this.viewCount = 0;
+        }
+
+        public BoardEntity(PostBoardRequestDto2 dto, WeatherDto dto2) {
+                Date now = new Date();
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                String writeDatetime = simpleDateFormat.format(now);
+
+                this.userNumber = userNumber;
+                this.title = dto.getTitle();
+                this.content = dto.getContent();
+                this.temperature = dto2.getTemperature();
+                this.weatherDescription = dto2.getWeatherDescription();
+                this.weatherMain=dto2.getWeatherMain();
                 this.writeDatetime = writeDatetime;
                 this.viewCount = 0;
         }

@@ -38,15 +38,15 @@ public class JwtProvider {
 
         return jwt;
     }
-
     public AuthenticationObject validate(String jwt) {
         Claims claims = Jwts.parser()
                 .setSigningKey(SECRET_KEY)
                 .parseClaimsJws(jwt)
                 .getBody();
-
+        
         String email = claims.getSubject();
         boolean isManager = (Boolean) claims.get("key");
+
 
         AuthenticationObject authenticationObject = new AuthenticationObject(email, isManager);
         return authenticationObject;

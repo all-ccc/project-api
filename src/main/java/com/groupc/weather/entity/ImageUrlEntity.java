@@ -6,7 +6,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.groupc.weather.dto.request.board.ImageUrlListDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,7 +17,6 @@ import lombok.NoArgsConstructor;
 @Entity(name = "ImageUrl")
 @Table(name = "Image_Url")
 public class ImageUrlEntity {
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int imageNumber;

@@ -46,7 +46,7 @@ public List<BoardCommentResultSet> getBoardCommentList();
 "B.title AS boardTitle, " +
 "B.content AS boardContent, " +
 "B.write_datetime AS boardWriterDatetime, " +
-"B.weather_info AS weatherInfo, " +
+"B.weather_description AS weatherDescription, " +
 "B.temperature AS temperature, " +
 "B.view_count AS viewCount, " +
 "U.nickname AS writerNickname, " +

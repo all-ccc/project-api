@@ -5,7 +5,6 @@ import com.groupc.weather.entity.resultSet.GetBoardListResult;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

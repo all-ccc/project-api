@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "likey")
 @IdClass(LikeyPk.class)
 public class LikeyEntity {
+
     @Id
     private Integer boardNumber;     
     @Id

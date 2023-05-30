@@ -24,15 +24,16 @@ public class CustomResponse {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
-    public static ResponseEntity<ResponseDto> existUserEmail() {
 
-        ResponseDto errorBody = new ResponseDto("EU", "Existent User Email");
+    public static ResponseEntity<ResponseDto> existUserEmail() {
+        
+        ResponseDto errorBody = new ResponseDto("EU","Existent User Email");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
     public static ResponseEntity<ResponseDto> existUserNickname() {
 
-        ResponseDto errorBody = new ResponseDto("EM", "Existent User Nickname");
+        ResponseDto errorBody = new ResponseDto("EN", "Existent User Nickname");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
@@ -44,13 +45,13 @@ public class CustomResponse {
 
     public static ResponseEntity<ResponseDto> undifindeUsername() {
 
-        ResponseDto errorBody = new ResponseDto("EM", "Existent Undifinde Name");
+        ResponseDto errorBody = new ResponseDto("EN", "Existent Undifinde Name");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
     public static ResponseEntity<ResponseDto> undifindephonenumber() {
 
-        ResponseDto errorBody = new ResponseDto("EM", "Undifinde Phonenumber");
+        ResponseDto errorBody = new ResponseDto("EP", "Undifinde Phonenumber");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
@@ -72,11 +73,18 @@ public class CustomResponse {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
+    public static ResponseEntity<ResponseDto> notExistChattingRoomNumber() {
+
+        ResponseDto errorBody = new ResponseDto("NC", "Not-Existent Chatting Room Number");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    }
+
     public static ResponseEntity<ResponseDto> signInFailed() {
 
         ResponseDto errorBody = new ResponseDto("SF", "Sign In Failed");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
+
 
     public static ResponseEntity<ResponseDto> signInFailedEmail() {
 
@@ -98,7 +106,7 @@ public class CustomResponse {
 
     public static ResponseEntity<ResponseDto> notExistManagerNumber() {
 
-        ResponseDto errorBody = new ResponseDto("NU", "Not-Existent Manager Number");
+        ResponseDto errorBody = new ResponseDto("NM", "Not-Existent Manager Number");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
     }
 
@@ -108,12 +116,11 @@ public class CustomResponse {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody); //너가 누구인지 모른다
     }
 
-    public static ResponseEntity<ResponseDto>notLikeBoard() { 
+    public static ResponseEntity<ResponseDto> notLikeBoard() {
 
-        ResponseDto errorBody = new ResponseDto("NB", "Not-Like Board");        
+        ResponseDto errorBody = new ResponseDto("NB", "Not-Like Board");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
     }
-
     public static ResponseEntity<ResponseDto> signUpFailed() {
 
         ResponseDto errorBody = new ResponseDto("SF", "Sign Up Failed");
@@ -126,8 +133,11 @@ public class CustomResponse {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorBody); // 너가 누구인지는 알지만 권한이없음
     }
 
-    public static ResponseEntity<ResponseDto> alreadyLikey() {  
-        ResponseDto errorBody = new ResponseDto("AL","Already Likey");
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorBody);
-    } // 좋아요가 등록된 경우
+    public static ResponseEntity<ResponseDto> notExistCommentNumber() {
+
+        ResponseDto errorBody = new ResponseDto("NC", "Not-Existent Comment Number");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    }
+   
+
 }

@@ -1,7 +1,5 @@
 package com.groupc.weather.dto.response.board;
-
 import java.util.List;
-
 import com.groupc.weather.dto.ResponseDto;
 
 import lombok.Data;
@@ -19,3 +17,4 @@ import lombok.NoArgsConstructor;
             this.boardList = resultSet;
     }
 }
+

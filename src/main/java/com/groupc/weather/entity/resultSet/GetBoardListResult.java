@@ -1,7 +1,5 @@
 package com.groupc.weather.entity.resultSet;
 
-import java.util.List;
-
 public interface GetBoardListResult {
     public int getBoardNumber();
     public String getBoardTitle();
@@ -12,4 +10,6 @@ public interface GetBoardListResult {
     public String getBoardFirstImageUrl();
     public int getCommentCount();
     public int getLikeCount();
+
+
 }

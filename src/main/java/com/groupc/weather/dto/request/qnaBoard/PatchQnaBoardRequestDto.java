@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class PatchQnaBoardRequestDto {
-    @NotBlank
-    private int userNumber;
+    @NotNull
+    private Integer userNumber;
     @NotNull
     private Integer qnaBoardNumber;
     @NotBlank

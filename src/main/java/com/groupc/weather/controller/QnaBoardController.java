@@ -32,6 +32,7 @@ public class QnaBoardController {
     }
 
     //* 1. 게시물 등록 */
+    
     @PostMapping("")
     public ResponseEntity<ResponseDto> postQnaBoard(
         @Valid @RequestBody PostQnaBoardRequestDto requestBody

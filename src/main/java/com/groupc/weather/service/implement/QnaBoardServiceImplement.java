@@ -7,10 +7,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.groupc.weather.common.model.AuthenticationObject;
 import com.groupc.weather.common.util.CustomResponse;
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.qnaBoard.PatchQnaBoardRequestDto;
 import com.groupc.weather.dto.request.qnaBoard.PostQnaBoardRequestDto;
+import com.groupc.weather.dto.request.qnaBoard2.PatchQnaBoardRequestDto2;
+import com.groupc.weather.dto.request.qnaBoard2.PostQnaBoardRequestDto2;
 import com.groupc.weather.dto.response.qnaBoard.GetQnaBoardListResponseDto;
 import com.groupc.weather.dto.response.qnaBoard.GetQnaBoardResponseDto;
 import com.groupc.weather.entity.QnaBoardEntity;
@@ -45,7 +48,6 @@ public class QnaBoardServiceImplement implements QnaBoardService {
 
     @Override
     public ResponseEntity<ResponseDto> postQnaBoard(PostQnaBoardRequestDto dto) {
-        ResponseDto body = null;
         int userNumber = dto.getUserNumber();
 
         try {
@@ -59,6 +61,34 @@ public class QnaBoardServiceImplement implements QnaBoardService {
             // TODO: 인증 실패
 
             QnaBoardEntity qnaBoardEntity = new QnaBoardEntity(dto);
+            qnaBoardRepository.save(qnaBoardEntity);
+            
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return CustomResponse.success();
+    }
+
+    //! version2.완
+    @Override
+    public ResponseEntity<ResponseDto> postQnaBoard(AuthenticationObject authenticationObject,
+        PostQnaBoardRequestDto2 dto
+    ) {
+        String email = authenticationObject.getEmail();
+        boolean isManager = authenticationObject.isManagerFlag();
+
+        try {
+
+            // 작성 권한 없음 (유저나 관리자가 아님)
+            boolean isExistUserEmail = userRepository.existsByEmail(email);
+            Integer userNumber = userRepository.findByEmail(email).getUserNumber();
+            if (!isExistUserEmail && !isManager) return CustomResponse.noPermissions();
+
+            // TODO: 인증 실패
+
+            QnaBoardEntity qnaBoardEntity = new QnaBoardEntity(dto, userNumber);
             qnaBoardRepository.save(qnaBoardEntity);
             
         } catch (Exception exception) {
@@ -92,7 +122,47 @@ public class QnaBoardServiceImplement implements QnaBoardService {
             return CustomResponse.databaseError();
         }
 
+        
         return ResponseEntity.status(HttpStatus.OK).body(body);
+
+    }
+
+    //! version2.완
+    @Override
+    public ResponseEntity<? super GetQnaBoardResponseDto> getQnaBoard(AuthenticationObject authenticationObject,
+            Integer boardNumber
+    ) {
+        String email = authenticationObject.getEmail();
+        boolean isManager = authenticationObject.isManagerFlag();
+
+        GetQnaBoardResponseDto body = null;
+
+        try {
+            // 매개변수 검증 작업
+            if (boardNumber == null) return CustomResponse.validationError();
+
+            // 존재하지 않는 게시물 번호 반환
+            QnaBoardEntity qnaBoardEntity = qnaBoardRepository.findByBoardNumber(boardNumber);
+            if (qnaBoardEntity == null) return CustomResponse.notExistBoardNumber();
+            
+            // 권한 없음 (글 작성한 유저나 관리자가 아님)
+            Integer userNumber = userRepository.findByEmail(email).getUserNumber();
+            Integer writerNumber = qnaBoardEntity.getUserNumber();
+            boolean isMyQna = userNumber.equals(writerNumber);
+            if (!isMyQna && !isManager) return CustomResponse.noPermissions();
+
+            UserEntity userEntity = userRepository.findByUserNumber(userNumber);
+            List<QnaCommentEntity> qnaCommentEntities = qnaCommentRepository.findByQnaBoardNumber(boardNumber);
+
+            body = new GetQnaBoardResponseDto(qnaBoardEntity, userEntity, qnaCommentEntities);
+            
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+
 
     }
 
@@ -115,9 +185,8 @@ public class QnaBoardServiceImplement implements QnaBoardService {
 
     @Override
     public ResponseEntity<ResponseDto> patchQnaBoard(PatchQnaBoardRequestDto dto) {
-        ResponseDto body = null;
 
-        int userNumber = dto.getUserNumber();
+        Integer userNumber = dto.getUserNumber();
         Integer qnaBoardNumber = dto.getQnaBoardNumber();
         String title = dto.getTitle();
         String content = dto.getContent();
@@ -155,9 +224,44 @@ public class QnaBoardServiceImplement implements QnaBoardService {
 
     }
 
+    //! version2.완
+    @Override
+    public ResponseEntity<ResponseDto> patchQnaBoard(String userEmail, PatchQnaBoardRequestDto2 dto) {
+
+        Integer qnaBoardNumber = dto.getQnaBoardNumber();
+        String title = dto.getTitle();
+        String content = dto.getContent();
+        String imageUrl = dto.getImageUrl();
+
+        try {
+            // 존재하지 않는 게시물 번호 반환
+            QnaBoardEntity qnaBoardEntity =
+                qnaBoardRepository.findByBoardNumber(qnaBoardNumber);
+            if (qnaBoardEntity == null) return CustomResponse.notExistBoardNumber();
+            
+            // TODO: 인증 실패
+            
+            // 권한 없음 (해당 게시물을 작성한 회원이 아님)
+            Integer userNumber = userRepository.findByEmail(userEmail).getUserNumber();
+            boolean equalWriter = qnaBoardEntity.getUserNumber() == userNumber;
+            if (!equalWriter) return CustomResponse.noPermissions();
+
+            qnaBoardEntity.setTitle(title);
+            qnaBoardEntity.setContent(content);
+            qnaBoardEntity.setImageUrl(imageUrl);
+
+            qnaBoardRepository.save(qnaBoardEntity);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return CustomResponse.success();
+    }
+
     @Override
     public ResponseEntity<ResponseDto> deleteQnaBoard(Integer userNumber, Integer boardNumber) {
-        ResponseDto body = null;
 
         try {
             if (boardNumber == null) return CustomResponse.validationError();
@@ -191,12 +295,46 @@ public class QnaBoardServiceImplement implements QnaBoardService {
 
     }
 
+    //! version2.완
+    @Override
+    public ResponseEntity<ResponseDto> deleteQnaBoard(AuthenticationObject authenticationObject, Integer boardNumber) {
+
+        String email = authenticationObject.getEmail();
+        boolean isManager = authenticationObject.isManagerFlag();
+
+        try {
+            if (boardNumber == null) return CustomResponse.validationError();
+
+            // 존재하지 않는 게시물 번호 반환 
+            QnaBoardEntity qnaBoardEntity = qnaBoardRepository.findByBoardNumber(boardNumber);
+            if (qnaBoardEntity == null) return CustomResponse.notExistBoardNumber();
+
+            // TODO: 인증 실패
+
+            // 권한 없음(작성한 유저나 관리자가 아님)
+            Integer userNumber = userRepository.findByEmail(email).getUserNumber();
+            Integer writerNumber = qnaBoardEntity.getUserNumber();
+            boolean isMyQna = userNumber.equals(writerNumber);
+            if (!isMyQna && !isManager) return CustomResponse.noPermissions();
+
+            qnaBoardRepository.deleteByBoardNumber(boardNumber);
+            qnaCommentRepository.deleteByQnaBoardNumber(boardNumber);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return CustomResponse.success();
+    }
+
+
     @Override
     public ResponseEntity<? super GetQnaBoardListResponseDto> getSearchQnaBoardList(String searchWord) {
         GetQnaBoardListResponseDto body = null;
 
         try {
-            if (searchWord.isBlank()) return CustomResponse.validationError(); // 이렇게 처리하면 되는지
+            //if (searchWord.isBlank()) return CustomResponse.validationError(); // 이렇게 처리하면 되는지
             
             List<QnaBoardListResultSet> resultSet = qnaBoardRepository.getQnaBoardSearchList(searchWord);
             body = new GetQnaBoardListResponseDto(resultSet);

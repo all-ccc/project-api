@@ -9,7 +9,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.groupc.weather.dto.request.common.OpenWeatherDto;
 import com.groupc.weather.dto.request.common.WeatherDto;
-
 @Service
 public class WeatherService {
     private String BASE_URL = "http://api.openweathermap.org/data/2.5/weather";
@@ -23,7 +22,6 @@ public class WeatherService {
         WeatherDto dto = null;
         try{
             StringBuilder urlBuilder = new StringBuilder(BASE_URL);
-
             urlBuilder.append("?" + URLEncoder.encode("q", "UTF-8") + "=" + location);
             urlBuilder.append("&" + URLEncoder.encode("appid", "UTF-8") + "=" + openWeatherKey);
             urlBuilder.append("&" + URLEncoder.encode("lang", "UTF-8") + "=kr");
@@ -34,9 +32,9 @@ public class WeatherService {
 
             JSONObject jsonObject = new JSONObject(response);
 
-            int id_value = jsonObject.getJSONArray("weather")
+            String main_value = jsonObject.getJSONArray("weather")
                     .getJSONObject(0)
-                    .getInt("id");
+                    .getString("main");
 
             String description_value = jsonObject.getJSONArray("weather")
                     .getJSONObject(0)
@@ -47,7 +45,7 @@ public class WeatherService {
 
             dto = new WeatherDto();
 
-            dto.setWeatherId(id_value);
+            dto.setWeatherMain(main_value);
             dto.setWeatherDescription(description_value);
             dto.setTemperature((int) Math.round(temp_value)); // double -> int
         }
@@ -57,4 +55,6 @@ public class WeatherService {
 
         return dto;
     }
+
+    
 }

@@ -1,6 +1,5 @@
 package com.groupc.weather.dto.response.board;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.groupc.weather.dto.ResponseDto;
@@ -9,6 +8,9 @@ import com.groupc.weather.entity.CommentEntity;
 import com.groupc.weather.entity.HashtagEntity;
 import com.groupc.weather.entity.ImageUrlEntity;
 import com.groupc.weather.entity.BoardEntity;
+import com.groupc.weather.entity.CommentEntity;
+import com.groupc.weather.entity.HashtagEntity;
+import com.groupc.weather.entity.ImageUrlEntity;
 import com.groupc.weather.entity.LikeyEntity;
 import com.groupc.weather.entity.UserEntity;
 import com.groupc.weather.entity.primaryKey.HashPk;

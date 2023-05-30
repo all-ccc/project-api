@@ -9,9 +9,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.groupc.weather.dto.request.common.ManagerDto;
-import com.groupc.weather.dto.request.common.UserDto;
-import com.groupc.weather.dto.request.qnaBoard.PostQnaCommentRequestDto;
+
+import com.groupc.weather.dto.request.qnaBoard.PatchQnaBoardRequestDto;
+import com.groupc.weather.dto.request.qnaBoard.PatchQnaCommentRequestDto;
+import com.groupc.weather.dto.request.qnaBoard.PostQnaCommentRequestDto2;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -38,7 +39,7 @@ public class QnaCommentEntity {
         private String managerProfileImageUrl;
 
 
-        public QnaCommentEntity(PostQnaCommentRequestDto dto,UserDto userDto){
+        public QnaCommentEntity(PostQnaCommentRequestDto2 dto,UserEntity userEntity){
         Date now = new Date(); // 시간 데이터 타입 변수 설정
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");//시간 데이터 타입 형태 설정
         String writeDatetime = simpleDateFormat.format(now);//형태안에 데이터타입 변수 넣음
@@ -46,15 +47,15 @@ public class QnaCommentEntity {
         this.qnaBoardNumber=dto.getQnaBoardNumber();
         this.content=dto.getQnaCommentContent();
         this.writeDatetime=writeDatetime;
-        this.userNumber=dto.getWriterNumber();
+        this.userNumber=userEntity.getUserNumber();
         this.managerNumber=null;
-        this.userNickname=userDto.getUserNickname();
+        this.userNickname=userEntity.getNickname();
         this.managerNickname=null;
-        this.userProfileImageUrl=userDto.getUserProfileImageUrl();
+        this.userProfileImageUrl=userEntity.getProfileImageUrl();
         this.managerProfileImageUrl=null;
         }
 
-        public QnaCommentEntity(PostQnaCommentRequestDto dto,ManagerDto managerDto){
+        public QnaCommentEntity(PostQnaCommentRequestDto2 dto,ManagerEntity managerEntity){
                 Date now = new Date(); // 시간 데이터 타입 변수 설정
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");//시간 데이터 타입 형태 설정
                 String writeDatetime = simpleDateFormat.format(now);//형태안에 데이터타입 변수 넣음
@@ -63,11 +64,12 @@ public class QnaCommentEntity {
                 this.content=dto.getQnaCommentContent();
                 this.writeDatetime=writeDatetime;
                 this.userNumber=null;
-                this.managerNumber=dto.getWriterNumber();
+                this.managerNumber=managerEntity.getManagerNumber();
                 this.userNickname=null;
-                this.managerNickname=managerDto.getManagerNickname();
+                this.managerNickname=managerEntity.getNickname();
                 this.userProfileImageUrl=null;
-                this.managerProfileImageUrl=managerDto.getManagerProfileImageUrl();
+                this.managerProfileImageUrl=managerEntity.getProfileImageUrl();
                 }
-        
+
+     
 }
