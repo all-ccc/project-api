@@ -22,6 +22,7 @@ public class PostBoardRequestDto2 {
         @NotNull
         private List<String> imageUrlList;
         private List<String> hashtagList;
+        @NotNull
         private String location;
     
     

@@ -21,17 +21,15 @@ public class JwtProvider {
     @Value("${jwt.secret-key}")
     private String SECRET_KEY;
 
-    public String create(String email, Object isManager) {
+    public String create(String email,Object isManager) {
 
         Date expireDate = Date.from(Instant.now().plus(1, ChronoUnit.HOURS));
 
         Map<String, Object> managerMap = new HashMap<>();
-        managerMap.put("isManager", isManager);
+        managerMap.put("key", isManager);
 
-        Claims claims = Jwts.claims(managerMap)
-                        .setSubject(email)
-                        .setIssuedAt(expireDate)
-                        .setExpiration(expireDate);
+        Claims claims = Jwts.claims(managerMap).setSubject(email).setIssuedAt(expireDate)
+        .setExpiration(expireDate);
 
         String jwt = Jwts.builder()
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
@@ -40,13 +38,13 @@ public class JwtProvider {
 
         return jwt;
     }
-
+    
     public AuthenticationObject validate(String jwt) {
         Claims claims = Jwts.parser()
                 .setSigningKey(SECRET_KEY)
                 .parseClaimsJws(jwt)
                 .getBody();
-
+        
         String email = claims.getSubject();
         boolean isManager = (Boolean) claims.get("isManager");
 

@@ -180,7 +180,9 @@ public class BoardServiceImplement2 implements BoardService2 {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
+
         return ResponseEntity.status(HttpStatus.OK).body(body);
+       // return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     // 게시물 최신순 조회
@@ -242,6 +244,7 @@ public class BoardServiceImplement2 implements BoardService2 {
             return CustomResponse.databaseError();
         }
         return ResponseEntity.status(HttpStatus.OK).body(body);
+   
     }
     // return에 coustom.success , ResposeEntity 쓸수도잇음.
     // ResponseEntity는 , OK 코드랑 메세지에다가 + 원하는거 보여줌. // 이거는 따로 만들면 Custom으로 쓸수잇는데
@@ -253,8 +256,13 @@ public class BoardServiceImplement2 implements BoardService2 {
     public ResponseEntity<? super GetBoardListResponseDto> getBoardMyList(String userEmail) {
         GetBoardListResponseDto body =  null;
         Integer userNumber = userRepository.findByEmail(userEmail).getUserNumber();
+        boolean isExistUserEmail = userRepository.existsByEmail(userEmail);
 
         try {
+            if (!isExistUserEmail) {
+  
+                return CustomResponse.notExistUserNumber();
+            } 
 
             List<GetBoardListResult> resultSet = boardRepository.getMyBoardList(userNumber);
             List<BoardListResultDto> boardListResultDtos = new ArrayList<>();
@@ -279,6 +287,7 @@ public class BoardServiceImplement2 implements BoardService2 {
             return CustomResponse.databaseError();
         }
         return ResponseEntity.status(HttpStatus.OK).body(body);
+        //return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     // 게시물 수정
@@ -287,7 +296,7 @@ public class BoardServiceImplement2 implements BoardService2 {
         Integer userNumber = dto.getBoardWriteUserNumber();
         Integer boardNumber = dto.getBoardNumber();
         String boardTitle = dto.getBoardTitle();
-        List<ImageUrlList> modifyImageUrlLists = dto.getImageUrlList();
+        List<imageUrlList> modifyImageUrlLists = dto.getImageUrlList();
         List<String> modifyHashTags = dto.getBoardHashtag();
 
         List<ImageUrlEntity> imageUrlEntities = new ArrayList<>();
@@ -297,9 +306,9 @@ public class BoardServiceImplement2 implements BoardService2 {
         //
         try {
             UserEntity userEntity = userRepository.findByUserNumber(userNumber); // 작성자유저넘버 불러오기
-            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumbers); // 게시물번호 불러오기
+            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber); // 게시물번호 불러오기
 // 매게변수
-            if (userNumbers == null || boardNumbers == null) {
+            if (boardNumber == null || boardNumber == null) {
                 return CustomResponse.validationError();
             }
             // 유저 번호 존재여부
@@ -318,13 +327,13 @@ public class BoardServiceImplement2 implements BoardService2 {
             if (!isMatchedUserNumber)
                 return CustomResponse.noPermissions();
             for (String imageList : modifyImageUrlLists) {
-                ImageUrlEntity imageUrlEntity = new ImageUrlEntity(imageList, boardNumbers);
+                ImageUrlEntity imageUrlEntity = new ImageUrlEntity(imageList, boardNumber);
                 imageUrlEntities.add(imageUrlEntity);
             }
-           for(String hashTagList : modifyHashTags){
+        for(String hashTagList : modifyHashTags){
                 HashtagEntity hashtagEntity = new HashtagEntity(hashTagList);
                 hashtagEntities.add(hashtagEntity);
-           }
+        }
 
             hashtagRepository.saveAll(hashtagEntities);
             imageUrlRepository.saveAll(imageUrlEntities);
@@ -467,9 +476,11 @@ public class BoardServiceImplement2 implements BoardService2 {
     @Override
     public ResponseEntity<? super GetBoardListResponseDto> getLikeBoardList(Integer userNumber) {
         GetBoardListResponseDto body = null;
+        boolean isExistUsernumber = userRepository.existsByUserNumber(userNumber);
 
         try {
-
+            
+            if (!isExistUsernumber) return CustomResponse.notExistUserNumber();
             List<GetBoardListResult> resultSet = boardRepository.getLikeBoardList(userNumber);
             List<BoardListResultDto> boardListResultDtos = new ArrayList<>();
             for(GetBoardListResult result:resultSet){
@@ -492,6 +503,7 @@ public class BoardServiceImplement2 implements BoardService2 {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
+ 
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
@@ -804,6 +816,7 @@ public class BoardServiceImplement2 implements BoardService2 {
                 BoardListResultDto boardListResultDto = new BoardListResultDto(result, hashListEntities);
                 boardListResultDtos.add(boardListResultDto);
             }
+            
 
             body = new GetBoardListResponseDto(boardListResultDtos);
         } catch (Exception exception) {
@@ -1046,7 +1059,6 @@ public class BoardServiceImplement2 implements BoardService2 {
                 BoardListResultDto boardListResultDto = new BoardListResultDto(result, hashListEntities);
                 boardListResultDtos.add(boardListResultDto);
             }
-
             Integer userNumber = userRepository.findByEmail(email).getUserNumber();
             SearchLogEntity searchLogEntity = new SearchLogEntity(hashtag, userNumber);
             searchLogRepository.save(searchLogEntity);
@@ -1057,6 +1069,7 @@ public class BoardServiceImplement2 implements BoardService2 {
             return CustomResponse.databaseError();
         }
         return ResponseEntity.status(HttpStatus.OK).body(body);
+
     }
 
 

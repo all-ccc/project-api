@@ -39,15 +39,12 @@ public class BoardController2 {
     private final BoardServiceImplement2 boardServiceImplement;
     
     // 1. 게시물 작성
-    @PostMapping("post2")
+    @PostMapping("post")
     public ResponseEntity<ResponseDto> postBoard(
-        @AuthenticationPrincipal Claims claims,
+        @AuthenticationPrincipal AuthenticationObject authenticationObject,
         @Valid @RequestBody PostBoardRequestDto2 requestBody
     ){
-        String email=claims.getSubject();
-        boolean isManager = (Boolean) claims.get("isManager");
-
-        ResponseEntity<ResponseDto> response = boardService.postBoard(email,isManager,requestBody);
+        ResponseEntity<ResponseDto> response = boardService.postBoard(authenticationObject,requestBody);
         return response;
     }
     // @PostMapping("post")
@@ -90,7 +87,7 @@ public class BoardController2 {
     }
 
     // 6. 첫화면 일반 게시물 목록
-    @GetMapping("/firstImage")
+    @GetMapping("/firstView")
     public ResponseEntity<? super GetBoardFirstViewDto> getBoardFirstView(){
         ResponseEntity<? super GetBoardFirstViewDto> response = boardService.getBoardFirstView();
         return response;
@@ -153,7 +150,10 @@ public class BoardController2 {
     // 12-1-1. 특정 게시물 검색(비회원)
     @GetMapping("/search/{searchWord}")
     public ResponseEntity<? super GetBoardListResponseDto> searchListByWord(
-        @PathVariable("searchWord") String searchWord
+        @PathVariable("searchWord") String searchWord,
+        @PathVariable("weatherMain") String weatherMain,
+        @PathVariable("minTemperature") Integer minTemperature, 
+        @PathVariable("maxTemperature") Integer maxTemperature
     ) {
         ResponseEntity<? super GetBoardListResponseDto> response =
             boardServiceImplement.getSearchListByWord(searchWord);

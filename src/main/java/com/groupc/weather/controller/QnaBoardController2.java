@@ -32,6 +32,7 @@ public class QnaBoardController2 {
     private final QnaBoardService qnaBoardService;
 
     //* 1. 게시물 등록 */
+    //! isManager 필요하다면 이거 사용 
     @PostMapping("")
     public ResponseEntity<ResponseDto> postBoard(
         @AuthenticationPrincipal AuthenticationObject authenticationObject,
