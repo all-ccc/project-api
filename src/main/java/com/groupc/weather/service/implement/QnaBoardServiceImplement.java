@@ -58,8 +58,6 @@ public class QnaBoardServiceImplement implements QnaBoardService {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
             }
 
-            // TODO: 인증 실패
-
             QnaBoardEntity qnaBoardEntity = new QnaBoardEntity(dto);
             qnaBoardRepository.save(qnaBoardEntity);
             
@@ -71,7 +69,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
         return CustomResponse.success();
     }
 
-    //! version2.완
+    // version2
     @Override
     public ResponseEntity<ResponseDto> postQnaBoard(AuthenticationObject authenticationObject,
         PostQnaBoardRequestDto2 dto
@@ -85,8 +83,6 @@ public class QnaBoardServiceImplement implements QnaBoardService {
             boolean isExistUserEmail = userRepository.existsByEmail(email);
             Integer userNumber = userRepository.findByEmail(email).getUserNumber();
             if (!isExistUserEmail && !isManager) return CustomResponse.noPermissions();
-
-            // TODO: 인증 실패
 
             QnaBoardEntity qnaBoardEntity = new QnaBoardEntity(dto, userNumber);
             qnaBoardRepository.save(qnaBoardEntity);
@@ -127,7 +123,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
 
     }
 
-    //! version2.완
+    // version2
     @Override
     public ResponseEntity<? super GetQnaBoardResponseDto> getQnaBoard(AuthenticationObject authenticationObject,
             Integer boardNumber
@@ -203,8 +199,6 @@ public class QnaBoardServiceImplement implements QnaBoardService {
                 userRepository.existsByUserNumber(userNumber);
             if (!existedUserNumber) return CustomResponse.notExistUserNumber();
             
-            // TODO: 인증 실패 -> 권한 없음이랑 뭐가 다름 
-            
             // 권한 없음
             boolean equalWriter = qnaBoardEntity.getUserNumber() == userNumber;
             if (!equalWriter) return CustomResponse.noPermissions();
@@ -224,9 +218,11 @@ public class QnaBoardServiceImplement implements QnaBoardService {
 
     }
 
-    //! version2.완
+    // version2
     @Override
-    public ResponseEntity<ResponseDto> patchQnaBoard(String userEmail, PatchQnaBoardRequestDto2 dto) {
+    public ResponseEntity<ResponseDto> patchQnaBoard(AuthenticationObject authenticationObject, PatchQnaBoardRequestDto2 dto) {
+
+        String email = authenticationObject.getEmail();
 
         Integer qnaBoardNumber = dto.getQnaBoardNumber();
         String title = dto.getTitle();
@@ -239,10 +235,8 @@ public class QnaBoardServiceImplement implements QnaBoardService {
                 qnaBoardRepository.findByBoardNumber(qnaBoardNumber);
             if (qnaBoardEntity == null) return CustomResponse.notExistBoardNumber();
             
-            // TODO: 인증 실패
-            
             // 권한 없음 (해당 게시물을 작성한 회원이 아님)
-            Integer userNumber = userRepository.findByEmail(userEmail).getUserNumber();
+            Integer userNumber = userRepository.findByEmail(email).getUserNumber();
             boolean equalWriter = qnaBoardEntity.getUserNumber() == userNumber;
             if (!equalWriter) return CustomResponse.noPermissions();
 
@@ -276,8 +270,6 @@ public class QnaBoardServiceImplement implements QnaBoardService {
                 managerRepository.existsByManagerNumber(userNumber);
             if (!existedUserNumber) return CustomResponse.notExistUserNumber();
 
-            // TODO: 인증 실패
-
             // 권한 없음(작성한 유저나 관리자가 아님)
             boolean equalWriter = qnaBoardEntity.getUserNumber() == userNumber;
             boolean isManager = managerRepository.existsByManagerNumber(userNumber);
@@ -295,7 +287,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
 
     }
 
-    //! version2.완
+    // version2
     @Override
     public ResponseEntity<ResponseDto> deleteQnaBoard(AuthenticationObject authenticationObject, Integer boardNumber) {
 
@@ -308,8 +300,6 @@ public class QnaBoardServiceImplement implements QnaBoardService {
             // 존재하지 않는 게시물 번호 반환 
             QnaBoardEntity qnaBoardEntity = qnaBoardRepository.findByBoardNumber(boardNumber);
             if (qnaBoardEntity == null) return CustomResponse.notExistBoardNumber();
-
-            // TODO: 인증 실패
 
             // 권한 없음(작성한 유저나 관리자가 아님)
             Integer userNumber = userRepository.findByEmail(email).getUserNumber();
@@ -334,7 +324,7 @@ public class QnaBoardServiceImplement implements QnaBoardService {
         GetQnaBoardListResponseDto body = null;
 
         try {
-            //if (searchWord.isBlank()) return CustomResponse.validationError(); // 이렇게 처리하면 되는지
+            if (searchWord.isBlank()) return CustomResponse.validationError();
             
             List<QnaBoardListResultSet> resultSet = qnaBoardRepository.getQnaBoardSearchList(searchWord);
             body = new GetQnaBoardListResponseDto(resultSet);

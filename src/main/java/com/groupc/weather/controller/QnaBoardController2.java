@@ -1,7 +1,6 @@
 package com.groupc.weather.controller;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Email;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,7 +21,6 @@ import com.groupc.weather.dto.response.qnaBoard.GetQnaBoardListResponseDto;
 import com.groupc.weather.dto.response.qnaBoard.GetQnaBoardResponseDto;
 import com.groupc.weather.service.QnaBoardService;
 
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -66,11 +64,11 @@ public class QnaBoardController2 {
     //* 4. 특정 게시물 수정(본인만) */
     @PatchMapping("")
     public ResponseEntity<ResponseDto> patchQnaBoard(
-        @AuthenticationPrincipal String userEmail,
+        @AuthenticationPrincipal AuthenticationObject authenticationObject,
         @Valid @RequestBody PatchQnaBoardRequestDto2 requestBody
     ) {
         ResponseEntity<ResponseDto> response =
-            qnaBoardService.patchQnaBoard(userEmail, requestBody);
+            qnaBoardService.patchQnaBoard(authenticationObject, requestBody);
         return response;
     }
 

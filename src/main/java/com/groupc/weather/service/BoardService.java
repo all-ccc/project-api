@@ -1,12 +1,11 @@
 package com.groupc.weather.service;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
+
 
 import com.groupc.weather.dto.response.board.GetBoardListResponseDto;
 import com.groupc.weather.dto.response.board.GetBoardListResponsetop5Dto;
 import com.groupc.weather.dto.response.board.GetBoardResponseDto;
-import com.groupc.weather.entity.primaryKey.LikeyPk;
 import com.groupc.weather.dto.response.board.GetBoardFirstViewDto;
 import com.groupc.weather.common.model.AuthenticationObject;
 import com.groupc.weather.dto.ResponseDto;
