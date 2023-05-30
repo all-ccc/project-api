@@ -22,7 +22,6 @@ import com.groupc.weather.dto.response.qnaBoard.GetQnaBoardListResponseDto;
 import com.groupc.weather.dto.response.qnaBoard.GetQnaBoardResponseDto;
 import com.groupc.weather.service.QnaBoardService;
 
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -33,7 +32,7 @@ public class QnaBoardController2 {
     private final QnaBoardService qnaBoardService;
 
     //* 1. 게시물 등록 */
-    //! isManager 필요하다면 이거 사용 
+    @PostMapping("")
     public ResponseEntity<ResponseDto> postBoard(
         @AuthenticationPrincipal AuthenticationObject authenticationObject,
         @Valid @RequestBody PostQnaBoardRequestDto2 requestBody
@@ -65,11 +64,11 @@ public class QnaBoardController2 {
     //* 4. 특정 게시물 수정(본인만) */
     @PatchMapping("")
     public ResponseEntity<ResponseDto> patchQnaBoard(
-        @AuthenticationPrincipal String userEmail,
+        @AuthenticationPrincipal AuthenticationObject authenticationObject,
         @Valid @RequestBody PatchQnaBoardRequestDto2 requestBody
     ) {
         ResponseEntity<ResponseDto> response =
-            qnaBoardService.patchQnaBoard(userEmail, requestBody);
+            qnaBoardService.patchQnaBoard(authenticationObject, requestBody);
         return response;
     }
 

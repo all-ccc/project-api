@@ -25,6 +25,7 @@ import com.groupc.weather.dto.request.common.WeatherDto;
 import com.groupc.weather.dto.response.board.GetBoardListResponseDto;
 import com.groupc.weather.dto.response.board.GetBoardListResponsetop5Dto;
 import com.groupc.weather.dto.response.board.GetBoardResponseDto;
+import com.groupc.weather.dto.response.board.GetSearchListByWordResponseDto;
 import com.groupc.weather.dto.response.board.LikeyListDto;
 import com.groupc.weather.entity.BoardEntity;
 import com.groupc.weather.entity.CommentEntity;
@@ -32,6 +33,7 @@ import com.groupc.weather.entity.HashtagEntity;
 import com.groupc.weather.entity.HashtagHasBoardEntity;
 import com.groupc.weather.entity.ImageUrlEntity;
 import com.groupc.weather.entity.LikeyEntity;
+import com.groupc.weather.entity.SearchLogEntity;
 import com.groupc.weather.entity.UserEntity;
 import com.groupc.weather.entity.primaryKey.LikeyPk;
 import com.groupc.weather.entity.resultSet.GetBoardListResult;
@@ -41,6 +43,7 @@ import com.groupc.weather.repository.HashtagHasBoardRepository;
 import com.groupc.weather.repository.HashtagRepository;
 import com.groupc.weather.repository.ImageUrlRepository;
 import com.groupc.weather.repository.LikeyRepository;
+import com.groupc.weather.repository.SearchLogRepository;
 import com.groupc.weather.repository.UserRepository;
 import com.groupc.weather.service.BoardService2;
 import com.groupc.weather.service.WeatherService;
@@ -58,6 +61,7 @@ public class BoardServiceImplement2 implements BoardService2 {
     private final ImageUrlRepository imageUrlRepository;
     private final HashtagRepository hashtagRepository;
     private final HashtagHasBoardRepository hashtagHasBoardRepository;
+    private final SearchLogRepository searchLogRepository;
     private final WeatherService weatherService;
 
     
@@ -492,13 +496,13 @@ public class BoardServiceImplement2 implements BoardService2 {
     }
 
    
-    // 특정 검색어 게시물 리스트 검색
+    // 특정 검색어 게시물 리스트 검색 - 비회원 
     @Override
     public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWord(String searchWord) {
         GetBoardListResponseDto body = null;
 
-
         try {
+            if (searchWord.isBlank()) return CustomResponse.validationError();
 
             List<GetBoardListResult> resultSet = boardRepository.getSearchListByWord(searchWord);
             List<BoardListResultDto> boardListResultDtos = new ArrayList<>();
@@ -507,11 +511,13 @@ public class BoardServiceImplement2 implements BoardService2 {
                 
                 List<HashtagHasBoardEntity> hashtagHasBoardEntities = hashtagHasBoardRepository.findByBoardNumber(boardNumber);
                 List<HashtagEntity> hashListEntities = new ArrayList<>();
+
                 for(HashtagHasBoardEntity hashtagHasBoardEntity : hashtagHasBoardEntities){
                     int hashtagNumber = hashtagHasBoardEntity.getHashtagNumber();
                     HashtagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
                     hashListEntities.add(hashtagEntity);
-                    }
+                }
+
                 BoardListResultDto boardListResultDto = new BoardListResultDto(result, hashListEntities);
                 boardListResultDtos.add(boardListResultDto);
             }
@@ -524,11 +530,50 @@ public class BoardServiceImplement2 implements BoardService2 {
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
-    // 특정 검색어 게시물 리스트 검색 (검색어 + 날씨)
+    // 특정 검색어 게시물 리스트 검색 - 회원
+    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWord(AuthenticationObject authenticationObject, String searchWord) {
+        GetBoardListResponseDto body = null;
+        String email = authenticationObject.getEmail();
+
+        try {
+            if (searchWord.isBlank()) return CustomResponse.validationError();
+
+            List<GetBoardListResult> resultSet = boardRepository.getSearchListByWord(searchWord);
+            List<BoardListResultDto> boardListResultDtos = new ArrayList<>();
+            for(GetBoardListResult result:resultSet){
+                int boardNumber = result.getBoardNumber();
+                
+                List<HashtagHasBoardEntity> hashtagHasBoardEntities = hashtagHasBoardRepository.findByBoardNumber(boardNumber);
+                List<HashtagEntity> hashListEntities = new ArrayList<>();
+
+                for(HashtagHasBoardEntity hashtagHasBoardEntity : hashtagHasBoardEntities){
+                    int hashtagNumber = hashtagHasBoardEntity.getHashtagNumber();
+                    HashtagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
+                    hashListEntities.add(hashtagEntity);
+                }
+
+                BoardListResultDto boardListResultDto = new BoardListResultDto(result, hashListEntities);
+                boardListResultDtos.add(boardListResultDto);
+            }
+
+            Integer userNumber = userRepository.findByEmail(email).getUserNumber();
+            SearchLogEntity searchLogEntity = new SearchLogEntity(searchWord, userNumber);
+            searchLogRepository.save(searchLogEntity);
+
+            body = new GetBoardListResponseDto(boardListResultDtos);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+    // 특정 검색어 게시물 리스트 검색 (검색어 + 날씨) - 비회원
     public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWord(String searchWord, String weather) {
         GetBoardListResponseDto body = null;
 
         try {
+            if (searchWord.isBlank()) return CustomResponse.validationError();
 
             List<GetBoardListResult> resultSet = boardRepository.getSearchListByWordAndWeather(searchWord, weather);
             List<BoardListResultDto> boardListResultDtos = new ArrayList<>();
@@ -554,12 +599,53 @@ public class BoardServiceImplement2 implements BoardService2 {
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
+    // 특정 검색어 게시물 리스트 검색 (검색어 + 날씨) - 회원
+    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWord(AuthenticationObject authenticationObject,
+            String searchWord, String weather
+    ) {
+        GetBoardListResponseDto body = null;
+        String email = authenticationObject.getEmail();
 
-    // 특정 검색어 게시물 리스트 검색 (검색어 + 기온)
-    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWord(String searchWord, Integer minTemperature, Integer maxTemperature) {
+        try {
+            if (searchWord.isBlank()) return CustomResponse.validationError();
+
+            List<GetBoardListResult> resultSet = boardRepository.getSearchListByWordAndWeather(searchWord, weather);
+            List<BoardListResultDto> boardListResultDtos = new ArrayList<>();
+            for(GetBoardListResult result:resultSet){
+                int boardNumber = result.getBoardNumber();
+                
+                List<HashtagHasBoardEntity> hashtagHasBoardEntities = hashtagHasBoardRepository.findByBoardNumber(boardNumber);
+                List<HashtagEntity> hashListEntities = new ArrayList<>();
+                for(HashtagHasBoardEntity hashtagHasBoardEntity : hashtagHasBoardEntities){
+                    int hashtagNumber = hashtagHasBoardEntity.getHashtagNumber();
+                    HashtagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
+                    hashListEntities.add(hashtagEntity);
+                    }
+                BoardListResultDto boardListResultDto = new BoardListResultDto(result, hashListEntities);
+                boardListResultDtos.add(boardListResultDto);
+            }
+            
+            Integer userNumber = userRepository.findByEmail(email).getUserNumber();
+            SearchLogEntity searchLogEntity = new SearchLogEntity(searchWord, userNumber);
+            searchLogRepository.save(searchLogEntity);
+            
+            body = new GetBoardListResponseDto(boardListResultDtos);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+
+    // 특정 검색어 게시물 리스트 검색 (검색어 + 기온) - 비회원
+    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWord(String searchWord,
+            Integer minTemperature, Integer maxTemperature
+    ) {
         GetBoardListResponseDto body = null;
 
         try {
+            if (searchWord.isBlank()) return CustomResponse.validationError();
 
             List<GetBoardListResult> resultSet = boardRepository.getSearchListByWordAndTemperatures(searchWord, minTemperature, maxTemperature);
             List<BoardListResultDto> boardListResultDtos = new ArrayList<>();
@@ -585,12 +671,52 @@ public class BoardServiceImplement2 implements BoardService2 {
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
-    // 특정 검색어 게시물 리스트 검색 (검색어 + 날씨 + 기온)
+    // 특정 검색어 게시물 리스트 검색 (검색어 + 기온) - 회원
+    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWord(AuthenticationObject authenticationObject,
+        String searchWord, Integer minTemperature, Integer maxTemperature
+    ) {
+        GetBoardListResponseDto body = null;
+        String email = authenticationObject.getEmail();
+
+        try {
+            if (searchWord.isBlank()) return CustomResponse.validationError();
+
+            List<GetBoardListResult> resultSet = boardRepository.getSearchListByWordAndTemperatures(searchWord, minTemperature, maxTemperature);
+            List<BoardListResultDto> boardListResultDtos = new ArrayList<>();
+            for(GetBoardListResult result:resultSet){
+                int boardNumber = result.getBoardNumber();
+                
+                List<HashtagHasBoardEntity> hashtagHasBoardEntities = hashtagHasBoardRepository.findByBoardNumber(boardNumber);
+                List<HashtagEntity> hashListEntities = new ArrayList<>();
+                for(HashtagHasBoardEntity hashtagHasBoardEntity : hashtagHasBoardEntities){
+                    int hashtagNumber = hashtagHasBoardEntity.getHashtagNumber();
+                    HashtagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
+                    hashListEntities.add(hashtagEntity);
+                    }
+                BoardListResultDto boardListResultDto = new BoardListResultDto(result, hashListEntities);
+                boardListResultDtos.add(boardListResultDto);
+            }
+
+            Integer userNumber = userRepository.findByEmail(email).getUserNumber();
+            SearchLogEntity searchLogEntity = new SearchLogEntity(searchWord, userNumber);
+            searchLogRepository.save(searchLogEntity);
+            
+            body = new GetBoardListResponseDto(boardListResultDtos);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+    // 특정 검색어 게시물 리스트 검색 (검색어 + 날씨 + 기온) - 비회원
     public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWord(String searchWord, String weather,
-            Integer minTemperature, Integer maxTemperature) {
+        Integer minTemperature, Integer maxTemperature
+    ) {
         GetBoardListResponseDto body = null;
 
         try {
+            if (searchWord.isBlank()) return CustomResponse.validationError();
 
             List<GetBoardListResult> resultSet = boardRepository.getSearchListByWordAndAll(searchWord, weather, minTemperature, maxTemperature);
             List<BoardListResultDto> boardListResultDtos = new ArrayList<>();
@@ -616,12 +742,52 @@ public class BoardServiceImplement2 implements BoardService2 {
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
+    // 특정 검색어 게시물 리스트 검색 (검색어 + 날씨 + 기온) - 회원
+    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWord(AuthenticationObject authenticationObject, 
+        String searchWord, String weather, Integer minTemperature, Integer maxTemperature
+    ) {
+        GetBoardListResponseDto body = null;
+        String email = authenticationObject.getEmail();
+
+        try {
+            if (searchWord.isBlank()) return CustomResponse.validationError();
+
+            List<GetBoardListResult> resultSet = boardRepository.getSearchListByWordAndAll(searchWord, weather, minTemperature, maxTemperature);
+            List<BoardListResultDto> boardListResultDtos = new ArrayList<>();
+            for(GetBoardListResult result:resultSet){
+                int boardNumber = result.getBoardNumber();
+                
+                List<HashtagHasBoardEntity> hashtagHasBoardEntities = hashtagHasBoardRepository.findByBoardNumber(boardNumber);
+                List<HashtagEntity> hashListEntities = new ArrayList<>();
+                for(HashtagHasBoardEntity hashtagHasBoardEntity : hashtagHasBoardEntities){
+                    int hashtagNumber = hashtagHasBoardEntity.getHashtagNumber();
+                    HashtagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
+                    hashListEntities.add(hashtagEntity);
+                    }
+                BoardListResultDto boardListResultDto = new BoardListResultDto(result, hashListEntities);
+                boardListResultDtos.add(boardListResultDto);
+            }
+            
+            Integer userNumber = userRepository.findByEmail(email).getUserNumber();
+            SearchLogEntity searchLogEntity = new SearchLogEntity(searchWord, userNumber);
+            searchLogRepository.save(searchLogEntity);
+
+            body = new GetBoardListResponseDto(boardListResultDtos);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
     
-    // 특정 해시태그로 게시물 리스트 검색
+    // 특정 해시태그로 게시물 리스트 검색 - 비회원
     @Override
     public ResponseEntity<? super GetBoardListResponseDto> getSearchListByHashtag(String hashtag) {
         GetBoardListResponseDto body = null;
+
         try {
+            if (hashtag.isBlank()) return CustomResponse.validationError();
 
             List<GetBoardListResult> resultSet = boardRepository.getSearchHashtagByWord(hashtag);
             List<BoardListResultDto> boardListResultDtos = new ArrayList<>();
@@ -647,10 +813,51 @@ public class BoardServiceImplement2 implements BoardService2 {
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
-    // 특정 해시태그로 게시물 리스트 검색(해시태그 + 날씨)
-    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByHashtag(String hashtag, String weather) {
+    // 특정 해시태그로 게시물 리스트 검색 - 회원
+    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByHashtag(
+        AuthenticationObject authenticationObject, String hashtag
+    ) {
         GetBoardListResponseDto body = null;
+        String email = authenticationObject.getEmail();
+
         try {
+            if (hashtag.isBlank()) return CustomResponse.validationError();
+
+            List<GetBoardListResult> resultSet = boardRepository.getSearchHashtagByWord(hashtag);
+            List<BoardListResultDto> boardListResultDtos = new ArrayList<>();
+            for(GetBoardListResult result:resultSet){
+                int boardNumber = result.getBoardNumber();
+                List<HashtagHasBoardEntity> hashtagHasBoardEntities = hashtagHasBoardRepository.findByBoardNumber(boardNumber);
+
+                List<HashtagEntity> hashListEntities = new ArrayList<>();
+                for(HashtagHasBoardEntity hashtagHasBoardEntity : hashtagHasBoardEntities){
+                    int hashtagNumber = hashtagHasBoardEntity.getHashtagNumber();
+                    HashtagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
+                    hashListEntities.add(hashtagEntity);
+                    }
+                BoardListResultDto boardListResultDto = new BoardListResultDto(result, hashListEntities);
+                boardListResultDtos.add(boardListResultDto);
+            }
+            
+            Integer userNumber = userRepository.findByEmail(email).getUserNumber();
+            SearchLogEntity searchLogEntity = new SearchLogEntity(hashtag, userNumber);
+            searchLogRepository.save(searchLogEntity);
+
+            body = new GetBoardListResponseDto(boardListResultDtos);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+    // 특정 해시태그로 게시물 리스트 검색(해시태그 + 날씨) - 비회원
+    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByHashtag(String hashtag, String weather
+        ) {
+        GetBoardListResponseDto body = null;
+
+        try {
+            if (hashtag.isBlank()) return CustomResponse.validationError();
 
             List<GetBoardListResult> resultSet = boardRepository.getSearchHashtagByWordAndWeather(hashtag, weather);
             List<BoardListResultDto> boardListResultDtos = new ArrayList<>();
@@ -676,10 +883,50 @@ public class BoardServiceImplement2 implements BoardService2 {
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
-    // 특정 해시태그로 게시물 리스트 검색(해시태그 + 기온)
+    // 특정 해시태그로 게시물 리스트 검색(해시태그 + 날씨) - 회원
+    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByHashtag(AuthenticationObject authenticationObject,
+        String hashtag, String weather
+    ) {
+        GetBoardListResponseDto body = null;
+        String email = authenticationObject.getEmail();
+
+        try {
+            if (hashtag.isBlank()) return CustomResponse.validationError();
+
+            List<GetBoardListResult> resultSet = boardRepository.getSearchHashtagByWordAndWeather(hashtag, weather);
+            List<BoardListResultDto> boardListResultDtos = new ArrayList<>();
+            for(GetBoardListResult result:resultSet){
+                int boardNumber = result.getBoardNumber();
+                List<HashtagHasBoardEntity> hashtagHasBoardEntities = hashtagHasBoardRepository.findByBoardNumber(boardNumber);
+
+                List<HashtagEntity> hashListEntities = new ArrayList<>();
+                for(HashtagHasBoardEntity hashtagHasBoardEntity : hashtagHasBoardEntities){
+                    int hashtagNumber = hashtagHasBoardEntity.getHashtagNumber();
+                    HashtagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
+                    hashListEntities.add(hashtagEntity);
+                    }
+                BoardListResultDto boardListResultDto = new BoardListResultDto(result, hashListEntities);
+                boardListResultDtos.add(boardListResultDto);
+            }
+
+            Integer userNumber = userRepository.findByEmail(email).getUserNumber();
+            SearchLogEntity searchLogEntity = new SearchLogEntity(hashtag, userNumber);
+            searchLogRepository.save(searchLogEntity);
+
+            body = new GetBoardListResponseDto(boardListResultDtos);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+    // 특정 해시태그로 게시물 리스트 검색(해시태그 + 기온) - 비회원
     public ResponseEntity<? super GetBoardListResponseDto> getSearchListByHashtag(String hashtag, Integer minTemperature, Integer maxTemperature) {
         GetBoardListResponseDto body = null;
+
         try {
+            if (hashtag.isBlank()) return CustomResponse.validationError();
 
             List<GetBoardListResult> resultSet = boardRepository.getSearchHashtagByWordAndTemperatures(hashtag, minTemperature, maxTemperature);
             List<BoardListResultDto> boardListResultDtos = new ArrayList<>();
@@ -705,10 +952,50 @@ public class BoardServiceImplement2 implements BoardService2 {
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
-    // 특정 해시태그로 게시물 리스트 검색(해시태그 + 날씨 + 기온)
+    // 특정 해시태그로 게시물 리스트 검색(해시태그 + 기온) - 회원
+    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByHashtag(AuthenticationObject authenticationObject, 
+        String hashtag, Integer minTemperature, Integer maxTemperature
+    ) {
+        GetBoardListResponseDto body = null;
+        String email = authenticationObject.getEmail();
+
+        try {
+            if (hashtag.isBlank()) return CustomResponse.validationError();
+
+            List<GetBoardListResult> resultSet = boardRepository.getSearchHashtagByWordAndTemperatures(hashtag, minTemperature, maxTemperature);
+            List<BoardListResultDto> boardListResultDtos = new ArrayList<>();
+            for(GetBoardListResult result:resultSet){
+                int boardNumber = result.getBoardNumber();
+                List<HashtagHasBoardEntity> hashtagHasBoardEntities = hashtagHasBoardRepository.findByBoardNumber(boardNumber);
+
+                List<HashtagEntity> hashListEntities = new ArrayList<>();
+                for(HashtagHasBoardEntity hashtagHasBoardEntity : hashtagHasBoardEntities){
+                    int hashtagNumber = hashtagHasBoardEntity.getHashtagNumber();
+                    HashtagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
+                    hashListEntities.add(hashtagEntity);
+                    }
+                BoardListResultDto boardListResultDto = new BoardListResultDto(result, hashListEntities);
+                boardListResultDtos.add(boardListResultDto);
+            }
+
+            Integer userNumber = userRepository.findByEmail(email).getUserNumber();
+            SearchLogEntity searchLogEntity = new SearchLogEntity(hashtag, userNumber);
+            searchLogRepository.save(searchLogEntity);
+
+            body = new GetBoardListResponseDto(boardListResultDtos);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+    // 특정 해시태그로 게시물 리스트 검색(해시태그 + 날씨 + 기온) - 비회원
     public ResponseEntity<? super GetBoardListResponseDto> getSearchListByHashtag(String hashtag, String weather, Integer minTemperature, Integer maxTemperature) {
         GetBoardListResponseDto body = null;
+        
         try {
+            if (hashtag.isBlank()) return CustomResponse.validationError();
 
             List<GetBoardListResult> resultSet = boardRepository.getSearchHashtagByWordAndAll(hashtag, weather, minTemperature, maxTemperature);
             List<BoardListResultDto> boardListResultDtos = new ArrayList<>();
@@ -725,6 +1012,44 @@ public class BoardServiceImplement2 implements BoardService2 {
                 BoardListResultDto boardListResultDto = new BoardListResultDto(result, hashListEntities);
                 boardListResultDtos.add(boardListResultDto);
             }
+
+            body = new GetBoardListResponseDto(boardListResultDtos);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+    // 특정 해시태그로 게시물 리스트 검색(해시태그 + 날씨 + 기온) - 회원
+    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByHashtag(AuthenticationObject authenticationObject,
+        String hashtag, String weather, Integer minTemperature, Integer maxTemperature
+    ) {
+        GetBoardListResponseDto body = null;
+        String email = authenticationObject.getEmail();
+
+        try {
+            if (hashtag.isBlank()) return CustomResponse.validationError();
+
+            List<GetBoardListResult> resultSet = boardRepository.getSearchHashtagByWordAndAll(hashtag, weather, minTemperature, maxTemperature);
+            List<BoardListResultDto> boardListResultDtos = new ArrayList<>();
+            for(GetBoardListResult result:resultSet){
+                int boardNumber = result.getBoardNumber();
+                List<HashtagHasBoardEntity> hashtagHasBoardEntities = hashtagHasBoardRepository.findByBoardNumber(boardNumber);
+
+                List<HashtagEntity> hashListEntities = new ArrayList<>();
+                for(HashtagHasBoardEntity hashtagHasBoardEntity : hashtagHasBoardEntities){
+                    int hashtagNumber = hashtagHasBoardEntity.getHashtagNumber();
+                    HashtagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
+                    hashListEntities.add(hashtagEntity);
+                    }
+                BoardListResultDto boardListResultDto = new BoardListResultDto(result, hashListEntities);
+                boardListResultDtos.add(boardListResultDto);
+            }
+
+            Integer userNumber = userRepository.findByEmail(email).getUserNumber();
+            SearchLogEntity searchLogEntity = new SearchLogEntity(hashtag, userNumber);
+            searchLogRepository.save(searchLogEntity);
 
             body = new GetBoardListResponseDto(boardListResultDtos);
         } catch (Exception exception) {

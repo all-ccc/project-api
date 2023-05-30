@@ -48,7 +48,7 @@ public class JwtProvider {
                 .getBody();
 
         String email = claims.getSubject();
-        boolean isManager = (Boolean) claims.get("key");
+        boolean isManager = (Boolean) claims.get("isManager");
 
         AuthenticationObject authenticationObject = new AuthenticationObject(email, isManager);
         return authenticationObject;

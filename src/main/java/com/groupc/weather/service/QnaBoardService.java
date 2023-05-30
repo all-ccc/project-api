@@ -22,7 +22,7 @@ public interface QnaBoardService {
     public ResponseEntity<? super GetQnaBoardListResponseDto> getSearchQnaBoardList(String searchWord);
 
     public ResponseEntity<ResponseDto> patchQnaBoard(PatchQnaBoardRequestDto dto);
-    public ResponseEntity<ResponseDto> patchQnaBoard(String userEmail, PatchQnaBoardRequestDto2 dto);
+    public ResponseEntity<ResponseDto> patchQnaBoard(AuthenticationObject authenticationObject, PatchQnaBoardRequestDto2 dto);
     
     public ResponseEntity<ResponseDto> deleteQnaBoard(Integer userNumber, Integer boardNumber);
     public ResponseEntity<ResponseDto> deleteQnaBoard(AuthenticationObject authenticationObject, Integer boardNumber);
