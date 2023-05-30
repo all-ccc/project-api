@@ -56,7 +56,7 @@ public class WebSecurityConfig {
             
             .antMatchers("/api/**", "/api/v2/board/top3").permitAll()
             .antMatchers(HttpMethod.GET, "/api/v2/board/*").permitAll()
-            .antMatchers(HttpMethod.POST, "/api/v1/user/sign-*").permitAll()
+            .antMatchers(HttpMethod.POST, "/api/v1/user/sign-*","/api/v1/board/*").permitAll()
             .anyRequest().authenticated().and()
             .exceptionHandling().authenticationEntryPoint(new FailedAuthenticationEntiryPoint());
 

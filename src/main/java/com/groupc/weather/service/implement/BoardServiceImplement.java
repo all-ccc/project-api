@@ -11,10 +11,10 @@ import com.groupc.weather.dto.response.board.BoardFirstViewDto;
 import com.groupc.weather.dto.response.board.BoardListResultDto;
 import com.groupc.weather.dto.response.board.BoardListResultTop5Dto;
 import com.groupc.weather.dto.response.board.GetBoardFirstViewDto;
+import com.groupc.weather.common.model.AuthenticationObject;
 import com.groupc.weather.common.util.CustomResponse;
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.board.HashtagDto;
-import com.groupc.weather.dto.request.board.ImageUrlListDto;
 import com.groupc.weather.dto.request.board.LikeRequestDto;
 import com.groupc.weather.dto.request.board.PatchBoardRequestDto;
 import com.groupc.weather.dto.request.board.PostBoardRequestDto2;
@@ -61,8 +61,9 @@ public class BoardServiceImplement<GetUserBoardLikeDto> implements BoardService 
 
     // 1.게시물 등록
     @Override
-    public ResponseEntity<ResponseDto> postBoard(String email, PostBoardRequestDto2 dto) {
-        UserEntity userEntity = userRepository.findByEmail(email);
+    public ResponseEntity<ResponseDto> postBoard(AuthenticationObject authenticationObject, PostBoardRequestDto2 dto) {
+        String userEmail = authenticationObject.getEmail();
+        UserEntity userEntity = userRepository.findByEmail(userEmail);
         Integer userNumber = userEntity.getUserNumber();
         try {
             // 존재하지 않는 유저 번호 지워도됨
@@ -176,9 +177,11 @@ public class BoardServiceImplement<GetUserBoardLikeDto> implements BoardService 
 
     // 3.본인 게시물 목록 조회
     @Override
-    public ResponseEntity<? super GetBoardListResponseDto> getBoardMyList(Integer userNumber) {
+    public ResponseEntity<? super GetBoardListResponseDto> getBoardMyList(AuthenticationObject authenticationObject) {
+        String email = authenticationObject.getEmail();
         GetBoardListResponseDto body = null;
-
+        UserEntity userEntity = userRepository.findByEmail(email);
+        Integer userNumber = userEntity.getUserNumber();
         try {
             List<GetBoardListResult> resultSet = boardRepository.getMyBoardList(userNumber);
             List<BoardListResultDto> boardListResultDtos = new ArrayList<>();
@@ -210,6 +213,7 @@ public class BoardServiceImplement<GetUserBoardLikeDto> implements BoardService 
     @Override
     public ResponseEntity<? super GetBoardListResponsetop5Dto> getBoardTop5() {
         GetBoardListResponsetop5Dto body = null;
+
         try {
 
             List<GetBoardListResult> resultSet = boardRepository.getBoardListTop5();
@@ -290,8 +294,8 @@ public class BoardServiceImplement<GetUserBoardLikeDto> implements BoardService 
 
     // 7.게시물 수정
     @Override
-    public ResponseEntity<ResponseDto> patchBoard(String userEmail, PatchBoardRequestDto dto) {
-        
+    public ResponseEntity<ResponseDto> patchBoard(AuthenticationObject authenticationObject, PatchBoardRequestDto dto) {
+        String userEmail = authenticationObject.getEmail();
         Integer boardNumbers = dto.getBoardNumber();
         String boardTitle = dto.getBoardTitle();
         List<ImageUrlEntity> modifyImageUrlLists = dto.getImageUrlList();
@@ -448,7 +452,8 @@ public class BoardServiceImplement<GetUserBoardLikeDto> implements BoardService 
 
     // 9.특정 게시물 좋아요 등록
     @Override
-    public ResponseEntity<ResponseDto> likeBoard(String email, LikeRequestDto dto) {
+    public ResponseEntity<ResponseDto> likeBoard(AuthenticationObject authenticationObject, LikeRequestDto dto) {
+        String email = authenticationObject.getEmail();
         UserEntity userEntity = userRepository.findByEmail(email);
         Integer userNumber = userEntity.getUserNumber();
         LikeyEntity findRepositoryInLikeyEntity = 
@@ -485,8 +490,11 @@ public class BoardServiceImplement<GetUserBoardLikeDto> implements BoardService 
 
     // 10.특정 게시물 좋아요 해제
     @Override
-    public ResponseEntity<ResponseDto> likeDeleteBoard(Integer userNumber, Integer boardNumber) {
-
+    public ResponseEntity<ResponseDto> likeDeleteBoard(AuthenticationObject authenticationObject, LikeRequestDto dto) {
+        Integer boardNumber = dto.getBoardNumber();
+        String email = authenticationObject.getEmail();
+        UserEntity userEntity = userRepository.findByEmail(email);
+        Integer userNumber = userEntity.getUserNumber();
         LikeyEntity likeyEntity = 
         likeyRepository.findByBoardNumberAndUserNumber(boardNumber, userNumber);
         try {
@@ -510,12 +518,23 @@ public class BoardServiceImplement<GetUserBoardLikeDto> implements BoardService 
 
     // 11.특정 유저 좋아요 게시물 조회
     @Override
-    public ResponseEntity<? super GetBoardListResponseDto> getLikeBoardList(Integer userNumber) {
+    public ResponseEntity<? super GetBoardListResponseDto> getLikeBoardList(
+        AuthenticationObject authenticationObject, Integer userNumber) {
+            String email = authenticationObject.getEmail();
+            // email 은 로그인한사람 , userNumber 조회하려는 특정유저의 유저넘버
         GetBoardListResponseDto body = null;
-
+        UserEntity confirmUserlogin = userRepository.findByEmail(email);
+         
         try {
+            //로그인한 상태인지 , 회원이 맞는지 확인
+            if(confirmUserlogin == null){
+                return CustomResponse.notExistUserNumber();
+                // 로그인여부 확인 반환시 존재하지않는 유저번호
+            }
+            // 조회하려는 유저번호가 있는지
             boolean existsByUserNumber = userRepository.existsByUserNumber(userNumber);
-            if(!existsByUserNumber) return CustomResponse.databaseError();
+            if(!existsByUserNumber) return CustomResponse.notExistUserNumber();
+                                        // 조회하려는 유저번호확인
             List<GetBoardListResult> resultSet = boardRepository.getLikeBoardList(userNumber);
             List<BoardListResultDto> boardListResultDtos = new ArrayList<>();
             for (GetBoardListResult result : resultSet) {
@@ -543,10 +562,11 @@ public class BoardServiceImplement<GetUserBoardLikeDto> implements BoardService 
 
     // 12.특정 게시물 검색
     @Override
-    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWord(String searchWord) {
+    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWord(
+        String searchWord, String weatherInfo, Integer temperature) {
         GetBoardListResponseDto body = null;
         try {
-
+            
             List<GetBoardListResult> resultSet = boardRepository.getSearchListByWord(searchWord);
             List<BoardListResultDto> boardListResultDtos = new ArrayList<>();
             for (GetBoardListResult result : resultSet) {

@@ -30,7 +30,7 @@ public class BoardEntity {
         private String title;
         private String content;
         private String writeDatetime;
-        private int temperature;
+        private Integer temperature;
         private String weatherDescription;
         private int weatherId;
         private int viewCount;

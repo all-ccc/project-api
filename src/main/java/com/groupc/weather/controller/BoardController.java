@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.groupc.weather.dto.response.board.GetBoardFirstViewDto;
 import com.groupc.weather.dto.response.board.GetBoardListResponseDto;
 import com.groupc.weather.dto.response.board.GetBoardResponseDto;
-import com.groupc.weather.entity.primaryKey.LikeyPk;
+import com.groupc.weather.common.model.AuthenticationObject;
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.board.LikeRequestDto;
 import com.groupc.weather.dto.request.board.PatchBoardRequestDto;
@@ -24,7 +24,9 @@ import com.groupc.weather.dto.request.board.PostBoardRequestDto2;
 import com.groupc.weather.service.BoardService;
 import com.groupc.weather.dto.response.board.GetBoardListResponsetop5Dto;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+
 
 @RestController
 @RequestMapping("/api/v1/photoBoard")
@@ -33,11 +35,11 @@ public class BoardController {
     private final BoardService boardService;
     
     // 1. 게시물 작성
-    @PostMapping("post")
+    @PostMapping("/post")
     public ResponseEntity<ResponseDto> postBoard(
-        @AuthenticationPrincipal String userEmail,
+        @AuthenticationPrincipal AuthenticationObject authenticationObject,
             @Valid @RequestBody PostBoardRequestDto2 requestBody){
-        ResponseEntity<ResponseDto> response = boardService.postBoard(userEmail, requestBody);
+        ResponseEntity<ResponseDto> response = boardService.postBoard(authenticationObject, requestBody);
         return response;
     }
 
@@ -50,10 +52,12 @@ public class BoardController {
     }
 
     // 3. 게시물 목록 조회(본인 작성)
-    @GetMapping("/myself/{userNumber}")
+    @GetMapping("/myself")
     public ResponseEntity<? super GetBoardListResponseDto> getBoardMyList(
-        @PathVariable("userNumber") Integer userNumber){
-        ResponseEntity<? super GetBoardListResponseDto> response = boardService.getBoardMyList(userNumber);
+        @AuthenticationPrincipal AuthenticationObject authenticationObject
+    ){
+        ResponseEntity<? super GetBoardListResponseDto> response = 
+        boardService.getBoardMyList(authenticationObject);
         return response;
     }
 
@@ -81,10 +85,10 @@ public class BoardController {
     // 7. 특정 게시물 수정
     @PatchMapping("/patch")
     public ResponseEntity<ResponseDto> patchBoard(
-        @AuthenticationPrincipal String userEmail,
+        @AuthenticationPrincipal AuthenticationObject authenticationObject,
         @Valid @RequestBody PatchBoardRequestDto dto
     ){
-        ResponseEntity<ResponseDto> response = boardService.patchBoard(userEmail, dto);
+        ResponseEntity<ResponseDto> response = boardService.patchBoard(authenticationObject, dto);
         return response;
     }
 
@@ -102,31 +106,32 @@ public class BoardController {
     // 9. 특정 게시물 좋아요 등록
     @PostMapping("/like")
     public ResponseEntity<ResponseDto> likeBoard(
-        @AuthenticationPrincipal String email,
+        @AuthenticationPrincipal AuthenticationObject authenticationObject,
         @Valid @RequestBody LikeRequestDto dto
     ){
-        ResponseEntity<ResponseDto> response = boardService.likeBoard(email, dto);
+        ResponseEntity<ResponseDto> response = boardService.likeBoard(authenticationObject, dto);
         return response;
     }
     
 
     // 10. 특정 게시물 좋아요 해제
-    @DeleteMapping("/likeDelete/{userNumber}/{boardNumber}")
+    @DeleteMapping("/likeDelete")
     public ResponseEntity<ResponseDto> likeDeleteBoard(
-        @PathVariable("userNumber") Integer userNumber,
-        @PathVariable("boardNumber") Integer boardNumber
+        @AuthenticationPrincipal AuthenticationObject authenticationObject,
+        @Valid @RequestBody LikeRequestDto dto
     ){
-        ResponseEntity<ResponseDto> response = boardService.likeDeleteBoard(userNumber, boardNumber);
+        ResponseEntity<ResponseDto> response = boardService.likeDeleteBoard(authenticationObject, dto);
         return response;
     }
 
 
     // 11. 특정 유저 좋아요 게시물 조회
-    @GetMapping("/Likelist/{userNumber}/") // like를 붙여야하나,,,?
+    @GetMapping("/Likelist/{userNumber}") // like를 붙여야하나,,,?
     public ResponseEntity<? super GetBoardListResponseDto> getLikeBoardList(
+        @AuthenticationPrincipal AuthenticationObject authenticationObject,
         @PathVariable("userNumber") Integer userNumber
     ) {
-        ResponseEntity<? super GetBoardListResponseDto> response = boardService.getLikeBoardList(userNumber);
+        ResponseEntity<? super GetBoardListResponseDto> response = boardService.getLikeBoardList(authenticationObject, userNumber);
         return response;
     }
 
@@ -134,17 +139,17 @@ public class BoardController {
     // 12. 특정 게시물 검색
     @GetMapping("/{searchWord}/{weatherInfo}/{temperature}") // 이렇게 쓰는 게 맞는 건지..
     public ResponseEntity<? super GetBoardListResponseDto> searchListByWord(
-        @PathVariable("searchWord") String searchWord
-        // @PathVariable("weatherInfo") String weatherInfo,
-        // @PathVariable("temperature") String temperature
+        @PathVariable("searchWord") String searchWord,
+        @PathVariable("weatherInfo") String weatherInfo,
+        @PathVariable("temperature") Integer temperature
     ) {
         ResponseEntity<? super GetBoardListResponseDto> response =
-            boardService.getSearchListByWord(searchWord);
+            boardService.getSearchListByWord(searchWord, weatherInfo, temperature);
         return response;
     }
     
     // 13. 특정 게시물 검색(해쉬태그)
-    @GetMapping("{searchWord}")
+    @GetMapping("/searchHashTag/{hashtag}")
     public ResponseEntity<? super GetBoardListResponseDto> hashtagSearch(
         @PathVariable("hashtag") String hashtag
     ){

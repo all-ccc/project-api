@@ -65,23 +65,31 @@ public List<BoardCommentLikeyCountResultSet> getBoardCommentLikeyList();
 
 // 5.게시물 조회
 @Query(value=
-"SELECT "
-+"B.board_number AS boardNumber, "
-+"B.title AS boardTitle, "
-+"+B.content AS boardContent, "
-+"I.image_url AS boardfirstImageUrl, "
-+"B.write_datetime AS boardDatetime, "
-+"U.nickname AS boardWriterNickname, "
-+"U.profile_image_url AS boardWriterProfileImageUrl, "
-+"count(DISTINCT C.comment_number) AS commentCount, "
-+"count(DISTINCT L.user_number) AS likeCount "
-+"FROM Board B, Comment C, Likey L, User U , Image_Url I "
-+"Where B.board_number= I.board_number "
-+"AND I.image_number = 1 "
-+"AND B.user_number = U.user_number "
-+"AND B.board_number = L.board_number "
-+"GROUP BY B.board_number "
-+"ORDER BY B.write_datetime DESC; ",
+"SELECT " +
+"B.board_number AS boardNumber, " +
+"B.title AS boardTitle, " +
+"B.content AS boardContent, " +
+"BF.image_url AS boardFirstImageUrl, " +
+"B.write_datetime AS boardWriteDatetime, " +
+"U.nickname AS boardWriterNickname, " +
+"U.profile_image_url AS boardWriterProfileImageUrl, " +
+"count(C.comment_number) AS commentCount, " +
+"count(L.user_number) AS likeCount " +
+"FROM Board B "+
+"LEFT JOIN (SELECT * FROM( " +
+"select image_number, image_url, board_number, " +
+"ROW_NUMBER() OVER (PARTITION BY board_number) " +
+"AS N FROM image_url) AS T " +
+"WHERE T.N=1) AS BF " +
+"ON B.board_number = BF.board_number " +
+"LEFT JOIN User U " +
+"ON B.user_number = U.user_number " +
+"LEFT JOIN Comment C " +
+"ON B.board_number = C.board_number " +
+"LEFT JOIN likey L " +
+"ON B.board_number = L.board_number " +
+"GROUP BY B.board_number, BF.image_url " +
+"ORDER BY B.write_datetime DESC;" ,
 nativeQuery = true
 )
 public List<GetBoardListResult> getBoardList();
