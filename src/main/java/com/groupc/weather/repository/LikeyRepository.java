@@ -23,9 +23,13 @@ public interface LikeyRepository extends JpaRepository<LikeyEntity, LikeyPk> {
         nativeQuery = true
     )
     public List<LikeyEntity> findByBoardNumberForLikeyList(@Param("boardNumber") int boardNumber);
+    public List<LikeyEntity> findByBoardNumber(Integer boardNumber);
 
 
     @Transactional
     public void deleteById(LikeyPk likeyPk);
+    @Transactional
+    public void deleteAllByUserNumber(Integer userNumber);
+
     
 }

@@ -73,6 +73,12 @@ public class CustomResponse {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
+    public static ResponseEntity<ResponseDto> notExistChattingRoomNumber() {
+
+        ResponseDto errorBody = new ResponseDto("NC", "Not-Existent Chatting Room Number");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    }
+
     public static ResponseEntity<ResponseDto> signInFailed() {
 
         ResponseDto errorBody = new ResponseDto("SF", "Sign In Failed");
@@ -126,4 +132,12 @@ public class CustomResponse {
         ResponseDto errorBody = new ResponseDto("NP", "No Permissions");
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorBody); // 너가 누구인지는 알지만 권한이없음
     }
+
+    public static ResponseEntity<ResponseDto> notExistCommentNumber() {
+
+        ResponseDto errorBody = new ResponseDto("NC", "Not-Existent Comment Number");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    }
+   
+
 }

@@ -1,6 +1,5 @@
 package com.groupc.weather.controller;
 
-
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -13,24 +12,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.groupc.weather.common.model.AuthenticationObject;
 import com.groupc.weather.dto.ResponseDto;
+import com.groupc.weather.dto.request.board.DeleteCommentRequestDto;
+import com.groupc.weather.dto.request.board.PatchCommentRequestDto;
 import com.groupc.weather.dto.request.board.PostCommentRequestDto;
-import com.groupc.weather.repository.ManagerRepository;
 import com.groupc.weather.service.CommentService;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("")
+@RequestMapping("/api/v1/comment")
 public class CommentController {
     
     private final CommentService commentService;
-    private final ManagerRepository managerRepository;
     
 
     //댓글 작성
-    @PostMapping("")                                   
+    @PostMapping("commentPost")                                   
     public ResponseEntity<ResponseDto> postComment(@Valid @RequestBody PostCommentRequestDto requestBody){
         
         ResponseEntity<ResponseDto> response = commentService.postComment(requestBody);
@@ -38,25 +38,25 @@ public class CommentController {
     }
 
     //댓글 수정
-    @PatchMapping()                 
+    @PatchMapping("commentPatch")
     public ResponseEntity<ResponseDto> patchComment( 
-        @Valid @RequestBody @AuthenticationPrincipal Integer userNumber, PostCommentRequestDto requestBody)
+        @Valid @RequestBody  PatchCommentRequestDto requestBody)
         {
         
-        ResponseEntity<ResponseDto> response = commentService.patchComment(userNumber, requestBody);
+        ResponseEntity<ResponseDto> response = commentService.patchComment(requestBody);
 
         return response;
     }
     
     //댓글 삭제
-    @DeleteMapping()
+    @DeleteMapping("{boardNumber}/{userNumber}/{commentNumber}")
     public ResponseEntity<ResponseDto> deleteComment(
-        @AuthenticationPrincipal Integer userNumber,
-        @AuthenticationPrincipal Integer managerNUmber, 
-        @PathVariable("commentNumber") PostCommentRequestDto commentNumber) 
+        @PathVariable("boardNumber") Integer boardNumber,
+        @PathVariable("userNumber") Integer userNumber,
+        @PathVariable("commentNumber") Integer commentNumber) 
         {
              
-            ResponseEntity<ResponseDto> response = commentService.deleteComment(userNumber, managerNUmber, commentNumber);
+            ResponseEntity<ResponseDto> response = commentService.deleteComment(boardNumber, userNumber, commentNumber);
 
              return response;
         }

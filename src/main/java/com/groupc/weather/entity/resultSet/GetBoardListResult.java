@@ -12,5 +12,6 @@ public interface GetBoardListResult {
     public String getBoardFirstImageUrl();
     public int getCommentCount();
     public int getLikeCount();
-    
+
+
 }

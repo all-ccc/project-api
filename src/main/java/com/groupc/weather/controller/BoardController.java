@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -23,6 +24,7 @@ import com.groupc.weather.entity.primaryKey.LikeyPk;
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.board.PatchBoardRequestDto;
 import com.groupc.weather.dto.request.board.PostBoardRequestDto;
+import com.groupc.weather.dto.request.board.PostBoardRequestDto2;
 import com.groupc.weather.service.BoardService;
 import com.groupc.weather.service.implement.BoardServiceImplement;
 
@@ -43,6 +45,8 @@ public class BoardController {
         return response;
     }
 
+
+    
     // 2. 특정게시물 조회
     @GetMapping("/view/{boardNumber}")
     public ResponseEntity<? super GetBoardResponseDto> getBoard(
@@ -90,7 +94,7 @@ public class BoardController {
     }
 
     // 8 . 특정 게시물 삭제
-    @DeleteMapping("/{userNumber}/{boardNumber}")
+    @DeleteMapping("/delete/{userNumber}/{boardNumber}")
     public ResponseEntity<ResponseDto> deleteBoard(
         @PathVariable("userNumber") Integer userNumber,
         @PathVariable("boardNumber") Integer boardNumber
@@ -127,7 +131,7 @@ public class BoardController {
 
     // 11. 특정 유저 좋아요 게시물 조회
 
-    @GetMapping("/Likelist/{userNumber}")
+    @GetMapping("/likeList/{userNumber}")
     public ResponseEntity<? super GetBoardListResponseDto> getLikeBoardList(@PathVariable("userNumber") Integer userNumber){
         ResponseEntity<? super GetBoardListResponseDto> response = boardService.getLikeBoardList(userNumber);
         return response;

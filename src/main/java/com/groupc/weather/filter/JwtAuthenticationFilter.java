@@ -20,6 +20,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.groupc.weather.common.model.AuthenticationObject;
 import com.groupc.weather.provider.JwtProvider;
 
+import io.jsonwebtoken.Claims;
+
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     
