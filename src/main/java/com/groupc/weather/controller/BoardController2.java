@@ -171,7 +171,7 @@ public class BoardController2 {
         return response;
     }
 
-    // 12-2-1. 특정 게시물 검색(비회원) (검색어 + 날씨)
+    // 12-2-1. 특정 게시물 검색(비회원) (검색어 + 날씨) 
     @GetMapping("/search/{searchWord}/{weather}")
     public ResponseEntity<? super GetBoardListResponseDto> searchListByWordAndWeather(
         @PathVariable("searchWord") String searchWord,
