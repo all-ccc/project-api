@@ -13,8 +13,9 @@ public class GetSearchListByHashtagResponseDto extends ResponseDto {
     
     @NotBlank
     private String hashtag;
+    private String weather;
+    private Integer minTemperature;
+    private Integer maxTemperature;
     private int userNumber;
-    // private Temperature temperature;
-    // private WeatherInfo weatherInfo;
 
 }

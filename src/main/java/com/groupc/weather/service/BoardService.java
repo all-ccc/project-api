@@ -22,9 +22,6 @@ public interface BoardService {
     public ResponseEntity<? super GetBoardFirstViewDto> getBoardFirstView();
 
     public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWord(String searchWord);
-    // public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWordAndWeather(String searchWord, String weather);
-    // public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWordAndTemperature(String searchWord, String temperature);
-    // public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWordAndAll(String searchWord, String weather, String temperature);
 
     public ResponseEntity<? super GetBoardListResponseDto> getSearchListByHashtag(String hashtag);
     public ResponseEntity<ResponseDto> likeBoard(LikeyPk likeyPk); 
