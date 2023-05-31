@@ -2,6 +2,7 @@ package com.groupc.weather.controller;
 
 import javax.validation.Valid;
 
+import org.springframework.boot.system.SystemProperties;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,11 +36,13 @@ public class ChattingController {
 
     // 채팅방 생성
     @PostMapping("/create")
-    public ResponseEntity<ResponseDto> createChattingRoom(@AuthenticationPrincipal AuthenticationObject authenticationObject) {
-        ResponseEntity<ResponseDto> response = chattingService.createChattingRoom(authenticationObject);
+    public ResponseEntity<ResponseDto> createChattingRoom(@AuthenticationPrincipal AuthenticationObject authenticationObject,@Valid @RequestBody CreateChattingUserNumberDto dto) {
+        ResponseEntity<ResponseDto> response = chattingService.createChattingRoom(authenticationObject,dto);
         return response;
     }
-    //특정 유저 채팅방에 들어가져야함.
+
+
+    //
 
     @PostMapping("/join")
     public ResponseEntity<ResponseDto> joinChattingRoom(@AuthenticationPrincipal AuthenticationObject authenticationObject,Integer roomId) {

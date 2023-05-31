@@ -1,18 +1,20 @@
 package com.groupc.weather.dto.request.chatting;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import javax.swing.MenuElement;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class ChatDto {
 
-
-    private Integer roomId;
-    private String sender;
-    private String message;
-    private String date;
+    public enum MessageType{
+        ENTER, TALK,EXIT
+    }
     
+    private MessageType type;
+    private String roomId;
+    private String message;
+
 }
