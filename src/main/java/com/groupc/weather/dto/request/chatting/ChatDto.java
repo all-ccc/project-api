@@ -14,6 +14,7 @@ public class ChatDto {
     }
     
     private MessageType type;
+    private Integer userNumber;
     private String roomId;
     private String message;
 

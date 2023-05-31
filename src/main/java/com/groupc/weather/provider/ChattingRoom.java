@@ -11,8 +11,10 @@ import org.springframework.web.socket.WebSocketSession;
 
 import com.groupc.weather.common.model.AuthenticationObject;
 import com.groupc.weather.dto.request.chatting.ChatDto;
+import com.groupc.weather.entity.ChattingMessageEntity;
 import com.groupc.weather.entity.ManagerEntity;
 import com.groupc.weather.entity.UserEntity;
+import com.groupc.weather.repository.ChattingMessageRepository;
 import com.groupc.weather.repository.ManagerRepository;
 import com.groupc.weather.repository.UserRepository;
 import com.groupc.weather.service.ChattingService;
@@ -21,69 +23,42 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class ChattingRoom {
-    private UserRepository userRepository;
-    private ManagerRepository managerRepository;
+    private final UserRepository userRepository;
+    private final ManagerRepository managerRepository;
+    private final ChattingMessageRepository chattingMessageRepository;
+
+    
     private String roomId;
     private Set<WebSocketSession> sessions = new HashSet<>();
 
 
-    @Builder
-    public ChattingRoom(String roomId) {
-        this.roomId = roomId;
-    }
+    public void handlerActions(WebSocketSession session, ChatDto dto , ChattingService chattingService) {
 
-    public void handlerActions(WebSocketSession session, ChatDto dto , ChattingService chattingService,@AuthenticationPrincipal AuthenticationObject authenticationObject) {
-        if(!authenticationObject.isManagerFlag()){
-        UserEntity userEntity = userRepository.findByEmail(authenticationObject.getEmail());
-        Integer userNumber = userEntity.getUserNumber();
+        UserEntity userEntity = userRepository.findByUserNumber(dto.getUserNumber());
         
 
         if (dto.getType().equals(ChatDto.MessageType.ENTER)) {
             sessions.add(session);
-            dto.setMessage(userNumber + "님이 입장했습니다.");
+            dto.setMessage(userEntity.getNickname() + "님이 입장했습니다.");
         } 
         if(dto.getType().equals(ChatDto.MessageType.EXIT)){
-            dto.setMessage(userNumber + "님이 나가셨습니다.");
+            dto.setMessage(userEntity.getNickname() + "님이 나가셨습니다.");
             sessions.remove(session);
         }
+        ChattingMessageEntity chattingMessageEntity = new ChattingMessageEntity(dto);
+        chattingMessageRepository.save(chattingMessageEntity);
 
         TextMessage textMessage = new TextMessage(dto.getMessage());
         sendMessage(textMessage.getPayload(), chattingService);
-        }
-
-            ManagerEntity managerEntity = managerRepository.findByEmail(authenticationObject.getEmail());
-            Integer userNumber = managerEntity.getManagerNumber();
-            
-    
-            if (dto.getType().equals(ChatDto.MessageType.ENTER)) {
-                sessions.add(session);
-                dto.setMessage(userNumber + "님이 입장했습니다.");
-            } 
-            if(dto.getType().equals(ChatDto.MessageType.EXIT)){
-                dto.setMessage(userNumber + "님이 나가셨습니다.");
-                sessions.remove(session);
-            }
-    
-            TextMessage textMessage = new TextMessage(dto.getMessage());
-            sendMessage(textMessage.getPayload(), chattingService);
-            
-    
-
-
-
-
-
-
 
     }
     
-
     private <T> void sendMessage(T message, ChattingService chattingService) {
         sessions.parallelStream()
                 .forEach(session -> chattingService.sendMessage(session, message));
