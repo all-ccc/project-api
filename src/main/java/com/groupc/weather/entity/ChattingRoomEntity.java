@@ -22,13 +22,8 @@ import lombok.NoArgsConstructor;
 public class ChattingRoomEntity {
     
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer roomId;
+    private String roomId;
     @Id
     private Integer userNumber;
-
-    public ChattingRoomEntity(Integer userNumber){
-        this.userNumber=userNumber;
-    }
     
 }

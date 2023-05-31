@@ -2,6 +2,7 @@ package com.groupc.weather.provider;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -10,7 +11,11 @@ import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groupc.weather.dto.request.chatting.ChatDto;
+import com.groupc.weather.entity.ChattingRoomEntity;
+import com.groupc.weather.repository.ChattingRoomRepository;
+import com.groupc.weather.service.ChattingService;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,52 +23,33 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-class SessionGroup{
-    private String room;
-    private WebSocketSession session;
-
-}
-
-
-
 @Component
 public class WebSocketProvider extends TextWebSocketHandler {
 
-    private List<SessionGroup> sessionList = new ArrayList<>();
+    private final ObjectMapper objectMapper;
+    private final ChattingService chattingService;
+    private final ChattingRoomRepository chattingRoomRepository;
+    private final ChattingRoom chattingRoom;
 
 
 
-    // * 연결 */
-    @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        
-        String room = session.getHandshakeHeaders().getFirst("room");
-        sessionList.add(new SessionGroup(room, session));
-        System.out.println(room + " / " + session.getId() + "Web Socket Connected!!");
-    }
 
     // * 메세지 송수신 */
     @Override
-    protected void handleTextMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
-        String room = session.getHandshakeHeaders().getFirst("room");
+    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+        String payload = message.getPayload();
+        ChatDto ChatDto = objectMapper.readValue(payload, ChatDto.class);
 
-        ChatDto chatMessage = mapper.readValue
-        for(SessionGroup sessionGroup: sessionList){
-            if(sessionGroup.getRoom().equals(room)){
-                sessionGroup.getSession().sendMessage(message);
-            }
-        }
-        
+        List<ChattingRoomEntity> chattingRoomEntitys = chattingRoomRepository.findByRoomId(ChatDto.getRoomId());
+
+        for(ChattingRoomEntity chattingRoomEntity : chattingRoomEntitys){
+            if(chattingRoomEntity.getUserNumber()==ChatDto.getUserNumber()){
+                chattingRoom.handlerActions(session, ChatDto, chattingService);
+                }            
+        }       
     }
 
-    // * 연결 해제 */
-    @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        System.out.println(session.getId() + "Web Socket Closed!!");
-        for(SessionGroup sessionGroup: sessionList){
-            if(sessionGroup.getSession().equals(session)){
-                sessionList.remove(sessionGroup);
-            }
-            }
-        }
-    }
+ 
+
+}
+

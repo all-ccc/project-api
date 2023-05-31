@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.groupc.weather.dto.request.board.PostCommentRequestDto;
 import com.groupc.weather.dto.request.board.PostCommentRequestDto2;
 
 import lombok.AllArgsConstructor;

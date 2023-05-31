@@ -10,7 +10,7 @@ import lombok.Data;
 public class ChattingRoomPk implements Serializable {
 
     @Column(name = "roomId")
-    private Integer roomId;
+    private String roomId;
 
     @Column(name = "userNumber")
     private Integer userNumber;

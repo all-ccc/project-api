@@ -5,10 +5,13 @@ import org.springframework.stereotype.Repository;
 
 import com.groupc.weather.entity.ChattingRoomEntity;
 import com.groupc.weather.entity.primaryKey.ChattingRoomPk;
+import java.util.List;
+
 
 @Repository
 public interface ChattingRoomRepository extends JpaRepository<ChattingRoomEntity, ChattingRoomPk> {
     public boolean existsByRoomId(Integer roomId);
+    public List<ChattingRoomEntity> findByRoomId(String roomId);
    
     
 }
