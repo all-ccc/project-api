@@ -38,29 +38,5 @@ public class ChattingRoom {
     private Set<WebSocketSession> sessions = new HashSet<>();
 
 
-    public void handlerActions(WebSocketSession session, ChatDto dto , ChattingService chattingService) {
-
-        UserEntity userEntity = userRepository.findByUserNumber(dto.getUserNumber());
-        
-
-        if (dto.getType().equals(ChatDto.MessageType.ENTER)) {
-            sessions.add(session);
-            dto.setMessage(userEntity.getNickname() + "님이 입장했습니다.");
-        } 
-        if(dto.getType().equals(ChatDto.MessageType.EXIT)){
-            dto.setMessage(userEntity.getNickname() + "님이 나가셨습니다.");
-            sessions.remove(session);
-        }
-        ChattingMessageEntity chattingMessageEntity = new ChattingMessageEntity(dto);
-        chattingMessageRepository.save(chattingMessageEntity);
-
-        TextMessage textMessage = new TextMessage(dto.getMessage());
-        sendMessage(textMessage.getPayload(), chattingService);
-
-    }
     
-    private <T> void sendMessage(T message, ChattingService chattingService) {
-        sessions.parallelStream()
-                .forEach(session -> chattingService.sendMessage(session, message));
-    }
 }

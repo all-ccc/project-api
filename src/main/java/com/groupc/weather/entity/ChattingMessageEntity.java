@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.web.socket.TextMessage;
+
 import com.groupc.weather.dto.request.chatting.ChatDto;
 
 import lombok.AllArgsConstructor;
@@ -31,16 +33,16 @@ public class ChattingMessageEntity {
     private String date;
     private boolean view;
     
-    public ChattingMessageEntity(ChatDto dto){
+    public ChattingMessageEntity(String roomId, TextMessage message,Integer userNumber){
         Date now = new Date();
         SimpleDateFormat simpleDateFormat = 
             new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String writeDatetime = simpleDateFormat.format(now);
         
         
-        this.userNumber = dto.getUserNumber();
-        this.roomId = dto.getRoomId();
-        this.message = dto.getMessage();
+        this.userNumber = userNumber;
+        this.roomId = roomId;
+        this.message = message.getPayload();
         this.date = writeDatetime;
         this.view = false;
 

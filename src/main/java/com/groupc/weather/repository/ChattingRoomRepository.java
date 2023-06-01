@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 public interface ChattingRoomRepository extends JpaRepository<ChattingRoomEntity, ChattingRoomPk> {
-    public boolean existsByRoomId(Integer roomId);
+    public boolean existsByRoomId(String roomId);
     public List<ChattingRoomEntity> findByRoomId(String roomId);
     public List<ChattingRoomEntity> findByUserNumber(Integer userNumber);
    
