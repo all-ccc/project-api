@@ -21,14 +21,12 @@ import com.groupc.weather.entity.primaryKey.LikeyPk;
 import com.groupc.weather.common.model.AuthenticationObject;
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.board.PatchBoardRequestDto;
-import com.groupc.weather.dto.request.board.PostBoardRequestDto;
 import com.groupc.weather.dto.request.board.PostBoardRequestDto2;
-import com.groupc.weather.service.BoardService;
+
 import com.groupc.weather.service.BoardService2;
-import com.groupc.weather.service.implement.BoardServiceImplement;
+
 import com.groupc.weather.service.implement.BoardServiceImplement2;
 
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -39,7 +37,7 @@ public class BoardController2 {
     private final BoardServiceImplement2 boardServiceImplement;
     
     // 1. 게시물 작성
-    @PostMapping("post")
+    @PostMapping("post")   
     public ResponseEntity<ResponseDto> postBoard(
         @AuthenticationPrincipal AuthenticationObject authenticationObject,
         @Valid @RequestBody PostBoardRequestDto2 requestBody
@@ -53,7 +51,6 @@ public class BoardController2 {
     //     ResponseEntity<ResponseDto> response = boardService.postBoard(requestBody);
     //     return response;
     // }
-
 
     
     // 2. 특정게시물 조회
@@ -72,27 +69,29 @@ public class BoardController2 {
         return response;
     }
 
-    // 4. TOP5 게시물 목록 조회
+    // 4-1. TOP5 게시물 목록 조회 - 회원
     @GetMapping("/top5")
     public ResponseEntity<? super GetBoardListResponsetop5Dto>getBoardtop5(){
         ResponseEntity<? super GetBoardListResponsetop5Dto> response = boardService.getBoardTop5();
         return response;
     }
+    
 
-    // 5. 일반게시물 목록 조회(최신순)
+    // 5-1. 일반게시물 목록 조회(최신순) - 회원
     @GetMapping("/list")
     public ResponseEntity<? super GetBoardListResponseDto> getBoard(){
         ResponseEntity<? super GetBoardListResponseDto> response = boardService.getBoardList();
         return response;
     }
 
-    // 6. 첫화면 일반 게시물 목록
+
+    // 6-1. 첫화면 일반 게시물 목록 - 회원
     @GetMapping("/firstView")
     public ResponseEntity<? super GetBoardFirstViewDto> getBoardFirstView(){
         ResponseEntity<? super GetBoardFirstViewDto> response = boardService.getBoardFirstView();
         return response;
-
     }
+
 
     // 7. 특정 게시물 수정
     @PatchMapping("")
@@ -112,8 +111,6 @@ public class BoardController2 {
         ResponseEntity<ResponseDto> response = boardService.deleteBoard(userNumber, boardNumber);
         return response;
     }
-
-
 
   //=====================================================================================================
 

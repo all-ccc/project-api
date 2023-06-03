@@ -54,7 +54,7 @@ public class CommentController2 {
     }
     
     //댓글 삭제
-    @DeleteMapping("/delete")
+    @DeleteMapping("delete")
     public ResponseEntity<ResponseDto> deleteComment(
         @AuthenticationPrincipal AuthenticationObject authenticationObject, @Valid @RequestBody DeleteCommentRequestDto2 requestBody) 
         {

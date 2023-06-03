@@ -346,6 +346,7 @@ public class BoardServiceImplement2 implements BoardService2 {
         }
         return CustomResponse.success();
     }
+    
     // 게시물 삭제
     @Override
     public ResponseEntity<ResponseDto> deleteBoard(Integer userNumber, Integer boardNumber) {

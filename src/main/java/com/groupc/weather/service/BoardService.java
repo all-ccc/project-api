@@ -33,7 +33,7 @@ public interface BoardService {
     
     public ResponseEntity<? super GetBoardListResponseDto> getLikeBoardList(AuthenticationObject authenticationObject,Integer userNumber);
     
-    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWord(String searchWord, String weatherInfo, Integer temperature);
+    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWord(String searchWord);
     public ResponseEntity<? super GetBoardListResponseDto> getSearchListByHashtag(String hashtag);
    
 }

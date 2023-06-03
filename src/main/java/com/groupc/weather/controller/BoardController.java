@@ -26,7 +26,6 @@ import com.groupc.weather.dto.request.board.PatchBoardRequestDto;
 import com.groupc.weather.dto.request.board.PostBoardRequestDto2;
 import com.groupc.weather.service.BoardService;
 import com.groupc.weather.service.implement.BoardServiceImplement;
-import com.groupc.weather.dto.response.board.GetBoardListResponsetop5Dto;
 
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -48,8 +47,6 @@ public class BoardController {
         return response;
     }
 
-
-    
     // 2. 특정게시물 조회
     @GetMapping("/view/{boardNumber}")
     public ResponseEntity<? super GetBoardResponseDto> getBoard(
@@ -121,8 +118,6 @@ public class BoardController {
     }
 
     
-    
-    
     // 10. 특정 게시물 좋아요 해제
     @DeleteMapping("/likeDelete")
     public ResponseEntity<ResponseDto> likeDeleteBoard(
@@ -144,42 +139,39 @@ public class BoardController {
             return response;
         }
         
-        // 12. 특정 게시물 검색
+        // 12-1. 특정 게시물 검색
         @GetMapping("/{searchWord}/{weatherInfo}/{temperature}") // 이렇게 쓰는 게 맞는 건지..
         public ResponseEntity<? super GetBoardListResponseDto> searchListByWord(
-            @PathVariable("searchWord") String searchWord,
-            @PathVariable("weatherInfo") String weatherInfo,
-            @PathVariable("temperature") Integer temperature
+            @PathVariable("searchWord") String searchWord
+            
             ) {
                 ResponseEntity<? super GetBoardListResponseDto> response =
-                boardService.getSearchListByWord(searchWord, weatherInfo, temperature);
+                boardService.getSearchListByWord(searchWord);
                 return response;
             }
             
-            // 12-2. 특정 게시물 검색 (검색어 + 날씨)
-            @GetMapping("search/{searchWord}/{weather}")
-            public ResponseEntity<? super GetBoardListResponseDto> searchListByWordAndWeather(
+        // 12-2. 특정 게시물 검색 (검색어 + 날씨)
+        @GetMapping("search/{searchWord}/{weather}")
+        public ResponseEntity<? super GetBoardListResponseDto> searchListByWordAndWeather(
                 @PathVariable("searchWord") String searchWord,
-                @PathVariable("weather") String weather
-            ) {
-                ResponseEntity<? super GetBoardListResponseDto> response =
-                    boardServiceImplement.getSearchListByWord(searchWord, weather);
-                return response;
-            }
+                @PathVariable("weather") String weather) {
+            ResponseEntity<? super GetBoardListResponseDto> response = 
+            boardServiceImplement.getSearchListByWord(searchWord, weather);
+            return response;
+        }
         
-            // 12-2. 특정 게시물 검색 (검색어 + 기온)
-            @GetMapping("search/{searchWord}/{minTemperature}/{maxTemperature}")
-            public ResponseEntity<? super GetBoardListResponseDto> searchListByWordAndTemperature(
+        // 12-3. 특정 게시물 검색 (검색어 + 기온)
+        @GetMapping("search/{searchWord}/{minTemperature}/{maxTemperature}")
+        public ResponseEntity<? super GetBoardListResponseDto> searchListByWordAndTemperature(
                 @PathVariable("searchWord") String searchWord,
                 @PathVariable("minTemperature") Integer minTemperature,
-                @PathVariable("maxTemperature") Integer maxTemperature
-            ) {
-                ResponseEntity<? super GetBoardListResponseDto> response =
-                    boardServiceImplement.getSearchListByWord(searchWord, minTemperature, maxTemperature);
-                return response;
-            }
+                @PathVariable("maxTemperature") Integer maxTemperature) {
+            ResponseEntity<? super GetBoardListResponseDto> response = 
+            boardServiceImplement.getSearchListByWord(searchWord, minTemperature, maxTemperature);
+            return response;
+        }
         
-            // 12-3. 특정 게시물 검색 (검색어 + 날씨 + 기온)
+            // 12-4. 특정 게시물 검색 (검색어 + 날씨 + 기온)
             @GetMapping("search/{searchWord}/{weather}/{minTemperature}/{maxTemperature}")
             public ResponseEntity<? super GetBoardListResponseDto> searchListByWordAndAll(
                 @PathVariable("searchWord") String searchWord,
@@ -192,7 +184,7 @@ public class BoardController {
                 return response;
             }
 
-    // 13. 특정 게시물 검색(해쉬태그)
+    // 13-1. 특정 게시물 검색(해쉬태그)
     @GetMapping("/searchHashTag/{hashtag}")
     public ResponseEntity<? super GetBoardListResponseDto> hashtagSearch(
         @PathVariable("hashtag") String hashtag
@@ -202,4 +194,39 @@ public class BoardController {
         return response;
     }
 
+    // 13-2. 특정 게시물 검색(해시태그 + 날씨)
+    @GetMapping("searchHash/{hashtag}/{weather}")
+    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByHashtagAndWeather(
+        @PathVariable("hashtag") String hashtag,
+        @PathVariable("weather") String weather
+    ) {
+        ResponseEntity<? super GetBoardListResponseDto> response =
+            boardServiceImplement.getSearchListByHashtag(hashtag, weather);
+        return response;
+    }
+
+    // 13-3. 특정 게시물 검색(해시태그 + 기온)
+    @GetMapping("searchHash/{hashtag}/{minTemperature}/{maxTemperature}")
+    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByHashtagAndTemperature(
+        @PathVariable("hashtag") String hashtag,
+        @PathVariable("minTemperature") Integer minTemperature,
+        @PathVariable("maxTemperature") Integer maxTemperature
+    ) {
+        ResponseEntity<? super GetBoardListResponseDto> response =
+            boardServiceImplement.getSearchListByHashtag(hashtag, minTemperature, maxTemperature);
+        return response;
+    }
+
+    // 13-4. 특정 게시물 검색(해시태그 + 날씨 + 기온)
+    @GetMapping("searchHash/{hashtag}/{weather}/{minTemperature}/{maxTemperature}")
+    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByHashtagAndAll(
+        @PathVariable("hashtag") String hashtag,
+        @PathVariable("weather") String weather,
+        @PathVariable("minTemperature") Integer minTemperature,
+        @PathVariable("maxTemperature") Integer maxTemperature
+    ) {
+        ResponseEntity<? super GetBoardListResponseDto> response =
+            boardServiceImplement.getSearchListByHashtag(hashtag, weather, minTemperature, maxTemperature);
+        return response;
+    }
 }

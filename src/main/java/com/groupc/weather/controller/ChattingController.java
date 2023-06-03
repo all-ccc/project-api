@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.groupc.weather.common.model.AuthenticationObject;
 import com.groupc.weather.dto.ResponseDto;
-import com.groupc.weather.dto.request.chatting.CreateChattingUserNumberDto;
+import com.groupc.weather.dto.request.chatting.ChattingUserNumberDto;
 import com.groupc.weather.dto.response.chatting.GetChattingListDto;
 import com.groupc.weather.service.ChattingService;
 
