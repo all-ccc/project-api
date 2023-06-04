@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/comment")
+@RequestMapping("/api/v2/comment")
 public class CommentController {
     
     private final CommentService commentService;

@@ -26,25 +26,16 @@ import com.groupc.weather.repository.QnaCommentRepository;
 import com.groupc.weather.repository.UserRepository;
 import com.groupc.weather.service.QnaBoardService;
 
-@Service
-public class QnaBoardServiceImplement implements QnaBoardService {
-    private UserRepository userRepository;
-    private ManagerRepository managerRepository;
-    private QnaBoardRepository qnaBoardRepository;
-    private QnaCommentRepository qnaCommentRepository;
+import lombok.RequiredArgsConstructor;
 
-    @Autowired
-    public QnaBoardServiceImplement(
-        UserRepository userRepository,
-        ManagerRepository managerRepository,
-        QnaBoardRepository qnaBoardRepository,
-        QnaCommentRepository qnaCommentRepository
-    ) {
-        this.userRepository = userRepository;
-        this.managerRepository = managerRepository;
-        this.qnaBoardRepository = qnaBoardRepository;
-        this.qnaCommentRepository = qnaCommentRepository;
-    }
+@Service
+@RequiredArgsConstructor
+public class QnaBoardServiceImplement implements QnaBoardService {
+    private final UserRepository userRepository;
+    private final ManagerRepository managerRepository;
+    private final QnaBoardRepository qnaBoardRepository;
+    private final QnaCommentRepository qnaCommentRepository;
+
 
     @Override
     public ResponseEntity<ResponseDto> postQnaBoard(PostQnaBoardRequestDto dto) {

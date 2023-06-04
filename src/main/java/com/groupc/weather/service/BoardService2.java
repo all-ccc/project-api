@@ -16,17 +16,18 @@ public interface BoardService2 {
     
     public ResponseEntity<? super GetBoardListResponseDto> getBoardMyList(String userEmail); //게시물 조회(본인 작성)
     public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber);
-    public ResponseEntity<? super GetBoardListResponseDto> getBoardList();
     public ResponseEntity<? super GetBoardListResponsetop5Dto> getBoardTop5();
+    public ResponseEntity<? super GetBoardListResponseDto> getBoardList();
     public ResponseEntity<? super GetBoardFirstViewDto> getBoardFirstView();
-    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWord(String searchWord);
-    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByHashtag(String hashtag);
     public ResponseEntity<ResponseDto> likeBoard(LikeyPk likeyPk); 
     public ResponseEntity<ResponseDto> likeDeleteBoard(Integer userNumber, Integer boardNumber); 
-
+    
     public ResponseEntity<? super GetBoardListResponseDto> getLikeBoardList(Integer userNumber);
-
+    
     public ResponseEntity<ResponseDto> patchBoard(String userEmail, PatchBoardRequestDto dto); 
     
     public ResponseEntity<ResponseDto> deleteBoard(Integer userNumber, Integer boardNumber);
+
+    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByWord(String searchWord);
+    public ResponseEntity<? super GetBoardListResponseDto> getSearchListByHashtag(String hashtag);
 }

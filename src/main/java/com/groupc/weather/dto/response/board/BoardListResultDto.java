@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BoardListResultDto {
-
     private int boardNumber;
     private String boardTitle;
     private String boardContent;
@@ -25,7 +24,7 @@ public class BoardListResultDto {
     private String boardFirstImageUrl;
     private List<HashtagEntity> hashtagList;
 
-     public BoardListResultDto(GetBoardListResult resultSet,List<HashtagEntity> hashtagList){
+     public BoardListResultDto(GetBoardListResult resultSet, List<HashtagEntity> hashtagList){
         this.boardNumber = resultSet.getBoardNumber();
         this.boardTitle = resultSet.getBoardTitle();
         this.boardContent = resultSet.getBoardContent();
@@ -36,8 +35,5 @@ public class BoardListResultDto {
         this.commentCount = resultSet.getCommentCount();
         this.boardFirstImageUrl = resultSet.getBoardFirstImageUrl();
         this.hashtagList=hashtagList;
-
-    
 }
-
 }

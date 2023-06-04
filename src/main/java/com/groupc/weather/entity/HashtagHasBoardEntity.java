@@ -1,15 +1,11 @@
 package com.groupc.weather.entity;
 
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
-
-import com.groupc.weather.dto.request.board.PostBoardRequestDto;
 import com.groupc.weather.entity.primaryKey.HashPk;
 
 import lombok.AllArgsConstructor;

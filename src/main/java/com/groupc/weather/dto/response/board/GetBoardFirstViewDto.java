@@ -1,13 +1,11 @@
 package com.groupc.weather.dto.response.board;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.entity.resultSet.GetBoardListResult;
 import com.groupc.weather.repository.BoardRepository;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +18,5 @@ public class GetBoardFirstViewDto extends ResponseDto {
     public GetBoardFirstViewDto(List<BoardFirstViewDto> resultSet){
         super("SU","Success");
         this.boardList = resultSet;
-    
-}
+    }
 }

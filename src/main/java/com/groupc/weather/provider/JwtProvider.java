@@ -38,9 +38,9 @@ public class JwtProvider {
 
         return jwt;
     }
-    
     public AuthenticationObject validate(String jwt) {
         AuthenticationObject authenticationObject = null;
+<<<<<<< HEAD
 
         try {
             Claims claims = Jwts.parser()
@@ -51,6 +51,18 @@ public class JwtProvider {
             String email = claims.getSubject();
             boolean isManager = (Boolean) claims.get("key");
 
+=======
+
+        try {
+            Claims claims = Jwts.parser()
+                .setSigningKey(SECRET_KEY)
+                .parseClaimsJws(jwt)
+                .getBody();
+    
+            String email = claims.getSubject();
+            boolean isManager = (Boolean) claims.get("key");
+
+>>>>>>> a6b0acabfa52438daf2ed9998b71e5806fc75a9e
             authenticationObject = new AuthenticationObject(email, isManager);
         } catch (Exception exception) {
             exception.printStackTrace();

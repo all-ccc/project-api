@@ -2,9 +2,7 @@ package com.groupc.weather.provider;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -35,8 +33,8 @@ class SessionGroup {
 }
 
 @Getter
-@RequiredArgsConstructor
 @Component
+@RequiredArgsConstructor
 public class WebSocketProvider extends TextWebSocketHandler {
 
     private final ObjectMapper objectMapper;
@@ -49,14 +47,16 @@ public class WebSocketProvider extends TextWebSocketHandler {
 
     private List<SessionGroup> sessionList = new ArrayList<>();
 
+    //* 연결 */
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         boolean isValid = validated(session);
         System.out.println(isValid);
         if (!isValid){
-        System.out.println("연결실패");
-        session.close();
-            return ;}
+            System.out.println("연결실패");
+            session.close();
+            return;
+        }
         String token = session.getHandshakeHeaders().getFirst("Authorization");    
         String roomId = session.getHandshakeHeaders().getFirst("roomId");
         AuthenticationObject authenticationObject = jwtProvider.validate(token);
@@ -66,8 +66,9 @@ public class WebSocketProvider extends TextWebSocketHandler {
         for(ChattingRoomEntity chattingRoomEntity : chattingRoomEntities){
             if(!chattingRoomEntity.getUserNumber().equals(userEntity.getUserNumber())){
                 userNumber=chattingRoomEntity.getUserNumber();
+            }
         }
-        }
+
         List<ChattingMessageEntity> chattingMessageEntities = chattingMessageRepository.findByNotViewList(roomId,userNumber);
             for(ChattingMessageEntity chattingMessageEntity : chattingMessageEntities){
                 chattingMessageEntity.setView(true);
@@ -108,6 +109,7 @@ public class WebSocketProvider extends TextWebSocketHandler {
 
     }
 
+    //* 연결 해제 */
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 
@@ -124,30 +126,34 @@ public class WebSocketProvider extends TextWebSocketHandler {
         }
         // todo: 존재하는 유저인지?
         boolean existedUser = userRepository.existsByEmail(authenticationObject.getEmail());
+        System.out.println("existedUser:" + existedUser);
         if(!existedUser){
             return false;
         }
       
+        // todo: 존재하는 방인지?
+        boolean existedRoomId = chattingRoomRepository.existsByRoomId(roomId);
+        System.out.println("existedRoomId:" + existedRoomId);
+        if(!existedRoomId){
+            return false;
+        }
+
         UserEntity userEntity = userRepository.findByEmail(authenticationObject.getEmail());
  
         List<ChattingRoomEntity> chattingRoomEntities = chattingRoomRepository.findByRoomId(roomId);
         boolean equalsUserNumber= false;
+        System.out.println("equalsUserNumber: " + equalsUserNumber);
         for(ChattingRoomEntity chattingRoomEntity : chattingRoomEntities){
             if(chattingRoomEntity.getUserNumber().equals(userEntity.getUserNumber())){
                 equalsUserNumber=true;
             }
             
-            
         }
         if(!equalsUserNumber) return false;
-        // todo: 존재하는 방인지?
-        boolean existedRoomId = chattingRoomRepository.existsByRoomId(roomId);
-        if(!existedRoomId){
-            return false;
-        }
 
 
         
+
         return true;
     }
 

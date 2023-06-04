@@ -12,12 +12,4 @@ public interface BoardCommentLikeyCountResultSet {
     public String getBoardWiterProfileImagerUrl();
     public int getCommentCount();
     public int getLikeCount();
-    
-
-    
-
-
-    
 }
-
-

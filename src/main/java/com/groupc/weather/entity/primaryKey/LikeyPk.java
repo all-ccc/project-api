@@ -11,18 +11,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LikeyPk implements Serializable {
-    @Column(name = "userNumber")
-    private Integer userNumber;
-    @Column(name = "boardNumber")
-    private Integer boardNumber;
-        
-    
-    
-    public LikeyPk(LikeyPk likeyPk){
-            this.userNumber=likeyPk.getUserNumber();
-            this.boardNumber=likeyPk.getBoardNumber();
 
-        }
-    
+    @Column(name = "board_number")
+    private Integer boardNumber;
+    @Column(name = "user_number")
+    private Integer userNumber;
+
+public LikeyPk(LikeyPk likeyPk){
+    this.userNumber = likeyPk.getUserNumber();
+    this.boardNumber = likeyPk.getBoardNumber();
+}
     
 }

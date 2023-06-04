@@ -3,6 +3,7 @@ package com.groupc.weather.entity;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,7 +12,6 @@ import javax.persistence.Table;
 
 import org.springframework.web.socket.TextMessage;
 
-import com.groupc.weather.dto.request.chatting.ChatDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,14 +31,14 @@ public class ChattingMessageEntity {
     private String roomId;
     private String message;
     private String date;
+    @Column(name = "view", columnDefinition = "TINYINT(1)")
     private boolean view;
-    
-    public ChattingMessageEntity(String roomId, TextMessage message,Integer userNumber){
+
+    public ChattingMessageEntity(String roomId, TextMessage message, Integer userNumber){
         Date now = new Date();
         SimpleDateFormat simpleDateFormat = 
             new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String writeDatetime = simpleDateFormat.format(now);
-        
         
         this.userNumber = userNumber;
         this.roomId = roomId;
@@ -46,7 +46,6 @@ public class ChattingMessageEntity {
         this.date = writeDatetime;
         this.view = false;
 
-
     }
-
+    
 }
