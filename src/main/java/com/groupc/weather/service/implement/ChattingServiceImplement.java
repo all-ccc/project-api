@@ -2,7 +2,6 @@ package com.groupc.weather.service.implement;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -17,14 +16,11 @@ import com.groupc.weather.common.util.CustomResponse;
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.chatting.ChattingUserNumberDto;
 import com.groupc.weather.dto.request.chatting.DeleteChattingRoomDto;
-import com.groupc.weather.dto.request.chatting.SendMessageDto;
 import com.groupc.weather.dto.response.chatting.GetChattingListResponseDto;
 import com.groupc.weather.dto.response.chatting.GetChattingMessageListResponseDto;
-import com.groupc.weather.entity.ChattingMessageEntity;
 import com.groupc.weather.entity.ChattingRoomEntity;
 import com.groupc.weather.entity.resultSet.ChattingListResultSet;
 import com.groupc.weather.entity.resultSet.ChattingMessageListResultSet;
-import com.groupc.weather.provider.ChattingRoom;
 import com.groupc.weather.repository.ChattingMessageRepository;
 import com.groupc.weather.repository.ChattingRoomRepository;
 import com.groupc.weather.repository.UserRepository;
@@ -42,7 +38,6 @@ public class ChattingServiceImplement implements ChattingService {
     private final ChattingRoomRepository chattingRoomRepository;
     private final ChattingMessageRepository chattingMessageRepository;
     private final ObjectMapper objectMapper;
-    private Map<String, ChattingRoom> chattingRooms;
 
     @Override
     public ResponseEntity<? super GetChattingListResponseDto> getChattingList(AuthenticationObject authenticationObject) {

@@ -53,8 +53,9 @@ public class WebSecurityConfig {
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .authorizeHttpRequests()
             .antMatchers("/api/v1/**", "/api/v2/auth/**").permitAll()
+            .antMatchers("/web-socket").permitAll()
             //.antMatchers(HttpMethod.GET, "/api/v2/photoBoard/**").permitAll()
-            .antMatchers("/api/v2/photoBoard/view/**","/api/v2/manager/sign-in","/api/v2/manager/sign-up").permitAll()
+            //.antMatchers("/api/v2/photoBoard/view/**","/api/v2/manager/sign-in","/api/v2/manager/sign-up").permitAll()
             .anyRequest().authenticated().and()
             .exceptionHandling().authenticationEntryPoint(new FailedAuthenticationEntiryPoint());
 

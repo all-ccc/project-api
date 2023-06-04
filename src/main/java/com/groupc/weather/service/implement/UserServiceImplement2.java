@@ -1,5 +1,4 @@
 package com.groupc.weather.service.implement;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,22 +40,23 @@ import com.groupc.weather.repository.CommentRepository;
 import com.groupc.weather.repository.FollowRepository;
 import com.groupc.weather.repository.ManagerRepository;
 import com.groupc.weather.repository.UserRepository;
-import com.groupc.weather.service.UserService;
+
+import com.groupc.weather.service.UserService2;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImplement implements UserService {
+public class UserServiceImplement2 implements UserService2 {
 
     private UserRepository userRepository;
+    private ManagerRepository managerRepository;
     private FollowRepository followRepository;
     private JwtProvider jwtProvider;
-    private ManagerRepository managerRepository;
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImplement(
+    public UserServiceImplement2(
             UserRepository userRepository,
             FollowRepository followRepository,
             ManagerRepository managerRepository,
@@ -64,6 +64,7 @@ public class UserServiceImplement implements UserService {
         this.userRepository = userRepository;
         this.jwtProvider = jwtProvider;
         this.followRepository = followRepository;
+        this.managerRepository = managerRepository;
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
@@ -158,6 +159,7 @@ public class UserServiceImplement implements UserService {
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
+
     // 유저 이메일 찾기
     @Override
     public ResponseEntity<? super FindByEmailResponseDto> FindByEmail(FindByEmailRequestDto dto) {

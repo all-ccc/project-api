@@ -1,10 +1,11 @@
-
 package com.groupc.weather.controller;
+
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -30,16 +31,18 @@ import com.groupc.weather.dto.response.user.FollowingUserResponseDto;
 import com.groupc.weather.dto.response.user.GetTop5FollowerResponseDto;
 import com.groupc.weather.dto.response.user.GetUserResponseDto;
 import com.groupc.weather.dto.response.user.LoginUserResponseDto;
+import com.groupc.weather.service.FollowService;
 import com.groupc.weather.service.UserService;
+import com.groupc.weather.service.UserService2;
 
 @RestController
-@RequestMapping("/api/v1/user")
-public class UserController {
+@RequestMapping("/api/v2/user")
+public class UserController2 {
 
-    private UserService userService;
+    private UserService2 userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController2(UserService2 userService) {
         this.userService = userService;
     }
 

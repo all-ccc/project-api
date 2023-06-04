@@ -2,7 +2,7 @@ package com.groupc.weather.dto.response.board;
 
 import java.util.List;
 
-import com.groupc.weather.entity.HashtagEntity;
+import com.groupc.weather.entity.HashTagEntity;
 import com.groupc.weather.entity.resultSet.GetBoardListResult;
 
 import lombok.AllArgsConstructor;
@@ -22,9 +22,9 @@ public class BoardListResultDto {
     private int likeCount;
     private int commentCount;
     private String boardFirstImageUrl;
-    private List<HashtagEntity> hashtagList;
+    private List<HashTagEntity> hashtagList;
 
-     public BoardListResultDto(GetBoardListResult resultSet, List<HashtagEntity> hashtagList){
+     public BoardListResultDto(GetBoardListResult resultSet, List<HashTagEntity> hashtagList){
         this.boardNumber = resultSet.getBoardNumber();
         this.boardTitle = resultSet.getBoardTitle();
         this.boardContent = resultSet.getBoardContent();

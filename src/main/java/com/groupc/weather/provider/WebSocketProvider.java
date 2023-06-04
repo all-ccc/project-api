@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @AllArgsConstructor
-class SessionGroup { // 여기서만 쓸 Class
+class SessionGroup {
     private String roomId;
     private WebSocketSession session;
 }
@@ -120,7 +120,6 @@ public class WebSocketProvider extends TextWebSocketHandler {
         String token = session.getHandshakeHeaders().getFirst("Authorization");
         String roomId = session.getHandshakeHeaders().getFirst("roomId");
         AuthenticationObject authenticationObject = jwtProvider.validate(token);
-        System.out.println(authenticationObject);
         if (authenticationObject == null) {
             session.close();
             return false;

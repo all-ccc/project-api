@@ -20,7 +20,7 @@ import com.groupc.weather.dto.response.user.GetTop5FollowerResponseDto;
 import com.groupc.weather.dto.response.user.GetUserResponseDto;
 import com.groupc.weather.dto.response.user.LoginUserResponseDto;
 
-public interface UserService {
+public interface UserService2 {
     public ResponseEntity<ResponseDto> postUser(PostUserRequestDto dto);
 
     public ResponseEntity<? super LoginUserResponseDto> LoginUser(LoginUserRequestDto dto);
