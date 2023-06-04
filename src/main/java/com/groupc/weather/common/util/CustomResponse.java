@@ -61,6 +61,13 @@ public class CustomResponse {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
+    
+    public static ResponseEntity<ResponseDto> undifindUserNumber() {
+
+        ResponseDto errorBody = new ResponseDto("EP", "Undifinde User Number");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    }
+
     public static ResponseEntity<ResponseDto> existUserPhoneNumber() {
 
         ResponseDto errorBody = new ResponseDto("EP", "Existent User PhoneNumber");

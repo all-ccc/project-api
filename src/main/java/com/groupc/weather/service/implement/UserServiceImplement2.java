@@ -1,5 +1,4 @@
 package com.groupc.weather.service.implement;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,6 +29,7 @@ import com.groupc.weather.dto.response.user.LoginUserResponseDto;
 import com.groupc.weather.entity.BoardEntity;
 import com.groupc.weather.entity.CommentEntity;
 import com.groupc.weather.entity.FollowingEntity;
+import com.groupc.weather.entity.ManagerEntity;
 import com.groupc.weather.entity.UserEntity;
 import com.groupc.weather.entity.resultSet.GetFollowerListResultSet;
 import com.groupc.weather.entity.resultSet.GetFollowingListResultSet;
@@ -38,28 +38,33 @@ import com.groupc.weather.provider.JwtProvider;
 import com.groupc.weather.repository.BoardRepository;
 import com.groupc.weather.repository.CommentRepository;
 import com.groupc.weather.repository.FollowRepository;
+import com.groupc.weather.repository.ManagerRepository;
 import com.groupc.weather.repository.UserRepository;
-import com.groupc.weather.service.UserService;
+
+import com.groupc.weather.service.UserService2;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImplement implements UserService {
+public class UserServiceImplement2 implements UserService2 {
 
     private UserRepository userRepository;
+    private ManagerRepository managerRepository;
     private FollowRepository followRepository;
     private JwtProvider jwtProvider;
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImplement(
+    public UserServiceImplement2(
             UserRepository userRepository,
             FollowRepository followRepository,
+            ManagerRepository managerRepository,
             JwtProvider jwtProvider) {
         this.userRepository = userRepository;
         this.jwtProvider = jwtProvider;
         this.followRepository = followRepository;
+        this.managerRepository = managerRepository;
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
@@ -115,21 +120,39 @@ public class UserServiceImplement implements UserService {
         String password = dto.getUserPassword();
 
         try {
+            // 일반적인 유저 로그인
             // 로그인 실패 반환. ( 이메일 )
             UserEntity userEntity = userRepository.findByEmail(email);
-            if (userEntity == null)
-                return CustomResponse.signInFailedEmail();
+            ManagerEntity managerEntity = managerRepository.findByEmail(email);
+            if (userEntity == null){         
+            //관리자 로그인
+            if(managerEntity == null) return CustomResponse.signInFailedEmail();
+            if(managerEntity.getEmail().equals(email)){
+                String encordedPassword = managerEntity.getPassword();
+                boolean equaledPassword = passwordEncoder.matches(password, encordedPassword);
+                if (!equaledPassword)
+                    return CustomResponse.signInFailedPassword();
+                if(!managerEntity.isActive())
+                    return CustomResponse.noPermissions();
+
+                String jwt = jwtProvider.create(email, true);
+                body = new LoginUserResponseDto(jwt);
+                    return ResponseEntity.status(HttpStatus.OK).body(body);
+                }
+            }
 
             // 로그인 실패 반환. ( 패스워드 )
-            String encordedPassword = userEntity.getPassword();
-            boolean equaledPassword = passwordEncoder.matches(password, encordedPassword);
-            if (!equaledPassword)
-                return CustomResponse.signInFailedPassword();
 
-            String jwt = jwtProvider.create(email);
-            body = new LoginUserResponseDto(jwt);
+                String encordedPassword = userEntity.getPassword();
+                boolean equaledPassword = passwordEncoder.matches(password, encordedPassword);
+                if (!equaledPassword)
+                    return CustomResponse.signInFailedPassword();
 
-        } catch (Exception exception) {
+                String jwt = jwtProvider.create(email, false);
+                body = new LoginUserResponseDto(jwt);
+
+
+        }catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }

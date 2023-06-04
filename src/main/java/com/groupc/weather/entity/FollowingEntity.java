@@ -5,6 +5,7 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
 
+import com.groupc.weather.dto.request.follow.FollowRequestDto;
 import com.groupc.weather.entity.primaryKey.FollowingPk;
 
 import lombok.AllArgsConstructor;
@@ -24,5 +25,10 @@ public class FollowingEntity {
     private int followerNumber;
     @Id
     private int followingNumber;
-
+    public FollowingEntity(FollowRequestDto dto) {
+        this.followerNumber = dto.getFollowerNumber();
+        this.followingNumber = dto.getFollowingNumber();
+    }
 }
+
+

@@ -1,4 +1,3 @@
-
 package com.groupc.weather.controller;
 
 
@@ -37,7 +36,7 @@ import com.groupc.weather.service.UserService;
 
 @RestController
 @RequestMapping("/api/v1/user")
-public class UserController {
+public class UserController2 {
 
     private UserService userService;
 
