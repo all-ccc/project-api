@@ -158,7 +158,7 @@ public class BoardController {
         return response;
     }
 
-    // 12-2. 특정 게시물 검색 (검색어 + 기온)
+    // 12-3. 특정 게시물 검색 (검색어 + 기온)
     @GetMapping("search/{searchWord}/{minTemperature}/{maxTemperature}")
     public ResponseEntity<? super GetBoardListResponseDto> searchListByWordAndTemperature(
         @PathVariable("searchWord") String searchWord,
@@ -170,7 +170,7 @@ public class BoardController {
         return response;
     }
 
-    // 12-3. 특정 게시물 검색 (검색어 + 날씨 + 기온)
+    // 12-4. 특정 게시물 검색 (검색어 + 날씨 + 기온)
     @GetMapping("search/{searchWord}/{weather}/{minTemperature}/{maxTemperature}")
     public ResponseEntity<? super GetBoardListResponseDto> searchListByWordAndAll(
         @PathVariable("searchWord") String searchWord,
