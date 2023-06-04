@@ -3,12 +3,11 @@ package com.groupc.weather.service.implement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.groupc.weather.common.model.AuthenticationObject;
 import com.groupc.weather.common.util.CustomResponse;
 import com.groupc.weather.dto.ResponseDto;
-import com.groupc.weather.dto.request.common.ManagerDto;
-import com.groupc.weather.dto.request.common.UserDto;
-import com.groupc.weather.dto.request.qnaBoard.PatchQnaCommentRequestDto;
-import com.groupc.weather.dto.request.qnaBoard.PostQnaCommentRequestDto;
+import com.groupc.weather.dto.request.qnaBoard.PatchQnaCommentRequestDto2;
+import com.groupc.weather.dto.request.qnaBoard.PostQnaCommentRequestDto2;
 import com.groupc.weather.entity.ManagerEntity;
 import com.groupc.weather.entity.QnaBoardEntity;
 import com.groupc.weather.entity.QnaCommentEntity;
@@ -34,58 +33,63 @@ public class QnaCommentServiceImplement implements QnaCommentService {
 
     //qna 게시물 댓글 생성
     @Override
-    public ResponseEntity<ResponseDto> postQnaComment(PostQnaCommentRequestDto dto) {
-        ResponseDto body = null;
-        // qna 댓글 작성자하고 싶은 사람 특정
-        int qnaCommentWriterNumber = dto.getWriterNumber();
+    public ResponseEntity<ResponseDto> postQnaComment(AuthenticationObject authenticationObject,PostQnaCommentRequestDto2 dto) {
+ 
         // qna 보드 특정
-        int qnaBoardNumber = dto.getQnaBoardNumber();
-        // qna 글 작성자 특정
-        int qnaBoardWriterNumber = qnaBoardRepository.findByBoardNumber(dto.getQnaBoardNumber()).getUserNumber();
+        Integer qnaBoardNumber = dto.getQnaBoardNumber();
 
-        try {
+        // qna 보드 작성자 특정
+        QnaBoardEntity qnaBoardEntity = qnaBoardRepository.findByBoardNumber(qnaBoardNumber);
+        Integer qnaBoardWriterNumber = qnaBoardEntity.getUserNumber();
+
+        try {          
             
-            boolean existedWriterManagerNumber = managerRepository.existsByManagerNumber(qnaBoardWriterNumber);
-            boolean existedWriterUserNumber = userRepositry.existsByUserNumber(qnaBoardWriterNumber);
             boolean existedQnaBoardNumber = qnaBoardRepository.existsByBoardNumber(qnaBoardNumber);
 
-            // TODO: Qna 존재 유무
+            // TODO: QnaBoard 존재 유무
             if (!existedQnaBoardNumber) {
                 return CustomResponse.notExistBoardNumber();
             }
-            // TODO: 사용자 존재 유무 및 사용자 판단.
-            if (!(existedWriterManagerNumber || existedWriterUserNumber)) {
-                return CustomResponse.notExistUserNumber();
-            }
-            // TODO: 관리자가 아닌데 작성자도 아닐 경우
-            if (!existedWriterManagerNumber) {
-                if (!(qnaBoardWriterNumber == qnaCommentWriterNumber)) {
-                    return CustomResponse.noPermissions();
-                }
-                // todo: 작성자가 맞을 경우
-                UserEntity userEntity = userRepositry.findByUserNumber(dto.getWriterNumber());
-                UserDto userDto = new UserDto();
-                userDto.setUserNickname(userEntity.getNickname());
-                userDto.setUserProfileImageUrl(userEntity.getProfileImageUrl());
+    
+        
+            
+            boolean isManager = authenticationObject.isManagerFlag();
 
-                QnaCommentEntity qnaCommentEntity = new QnaCommentEntity(dto, userDto);
+
+            // TODO: 일반 유저일 경우
+            if (!isManager) {
+            
+                boolean existedWriterUserNumber = userRepositry.existsByEmail(authenticationObject.getEmail());
+                if (!existedWriterUserNumber) return CustomResponse.notExistUserNumber();
+                
+                // qna 댓글 작성자하고 싶은 사람 특정
+                int qnaCommentWriterNumber = userRepositry.findByEmail(authenticationObject.getEmail()).getUserNumber();
+                
+                // qna 보드 작성자와 댓글 달고 싶은 유저가 동일하지않음
+                if(!(qnaBoardWriterNumber==qnaCommentWriterNumber)) return CustomResponse.noPermissions();
+                
+                // qna 보드 작성자와 댓글 달고 싶은 유저가 동일할때 댓글이 등록됨
+                UserEntity userEntity = userRepositry.findByUserNumber(qnaCommentWriterNumber);
+
+                QnaCommentEntity qnaCommentEntity = new QnaCommentEntity(dto, userEntity);
+              
                 qnaCommentRepository.save(qnaCommentEntity);
 
                 return CustomResponse.success();
+                
             }
 
             // TODO: 관리자일 경우
-            ManagerEntity managerEntity = managerRepository.findByManagerNumber(dto.getWriterNumber());
-            ManagerDto managerDto = new ManagerDto();
-            managerDto.setManagerNickname(managerEntity.getManagerNickname());
-            managerDto.setManagerProfileImageUrl(managerEntity.getProfileImageUrl());
-            QnaCommentEntity qnaCommentEntity = new QnaCommentEntity(dto, managerDto);
+            boolean existedManagerNumber = managerRepository.existsByEmail(authenticationObject.getEmail());
+            if (!existedManagerNumber) return CustomResponse.notExistUserNumber();
 
+            ManagerEntity managerEntity = managerRepository.findByEmail(authenticationObject.getEmail());
 
+            QnaCommentEntity qnaCommentEntity = new QnaCommentEntity(dto, managerEntity);
+            qnaBoardEntity.setReplyComplete(true);
+            qnaBoardRepository.save(qnaBoardEntity);
             qnaCommentRepository.save(qnaCommentEntity);
-
-            // TODO:
-
+        
         } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
@@ -95,54 +99,63 @@ public class QnaCommentServiceImplement implements QnaCommentService {
     }
 
 
+
     //qna 게시물 댓글 수정
     @Override
-    public ResponseEntity<ResponseDto> patchQnaComment(PatchQnaCommentRequestDto dto) {
-        ResponseDto body = null;
-        // qna 댓글 수정하고 싶은 사람 특정
-        int qnaCommentPatcherNumber = dto.getWriterNumber();
-        // qna 댓글 중 수정하고자 하는 댓글 특정
-        int qnaCommentNumber = dto.getQnaCommentNumber();
-        // qna 댓글 작성자 특정
-        int qnaCommentWriterNumber = qnaCommentRepository.findByQnaCommentNumber(dto.getQnaCommentNumber()).getUserNumber();
-        // qna 댓글 보드 특정
-        int qnaBoardNumber = dto.getQnaBoardNumber();
-        QnaBoardEntity qnaBoardEntity = qnaBoardRepository.findByBoardNumber(qnaBoardNumber);
+    public ResponseEntity<ResponseDto> patchQnaComment(AuthenticationObject authenticationObject, PatchQnaCommentRequestDto2 dto) {
+        
+        boolean isManager = authenticationObject.isManagerFlag();
+        Integer commentNumber = dto.getQnaCommentNumber();
+        String commentContent = dto.getQnaCommentContent();
 
     
         // 유저일때랑 관리자일때랑 나눠서 진행
         
         try {            
-            QnaCommentEntity qnaCommentEntity = qnaCommentRepository.findByQnaCommentNumber(dto.getQnaCommentNumber());
-            boolean existedQnaBoardNumber = qnaBoardRepository.existsByBoardNumber(qnaBoardNumber);
-            boolean existedQnaCommentNumber = qnaCommentRepository.existsByQnaCommentNumber(qnaCommentNumber);
-            boolean existedPatcherManagerNumber = managerRepository.existsByManagerNumber(qnaCommentPatcherNumber);
-            boolean existedPatcherUserNumber = userRepositry.existsByUserNumber(qnaCommentPatcherNumber);
-            //TODO : 유저 존재 유무 확인 + 관리자인지 유저인지 확인한후
-            if (!(existedPatcherManagerNumber || existedPatcherUserNumber)) {
-                return CustomResponse.notExistUserNumber();
-            }
+            //수정하려는 댓글이 존재하는지 확인
+            boolean existedQnaComment = qnaCommentRepository.existsByQnaCommentNumber(commentNumber);
+            if(!existedQnaComment) return CustomResponse.notExistQnaCommentNumber();
+            QnaCommentEntity qnaCommentEntity = qnaCommentRepository.findByQnaCommentNumber(commentNumber);
 
-            //TODO : 존재 하지 않는 게시물
-            if (!existedQnaBoardNumber) {
-                return CustomResponse.notExistBoardNumber();
-            }
-            //TODO : 존재 하지 않는 댓글
-            if (!existedQnaCommentNumber){
-                return CustomResponse.notExistQnaCommentNumber();
-            }
+            //유저일 경우
+            if (!isManager) {
+     
+                //댓글 수정자가 존재하는 유저인지 확인
+                boolean existedWriterUser = userRepositry.existsByEmail(authenticationObject.getEmail());
+                if (!existedWriterUser) return CustomResponse.notExistUserNumber();
+                Integer qnaCommentPatcherNumber = userRepositry.findByEmail(authenticationObject.getEmail()).getUserNumber();                
 
-            //TODO : 댓글 작성자와 수정자가 같을때
 
-            if(!(qnaCommentPatcherNumber == qnaCommentWriterNumber)){
-                    return CustomResponse.noPermissions(); }
+                //해당 댓글 작성자와 수정하려는 사람이 동일 인물인지 확인
+                Integer qnaCommentWriter = qnaCommentEntity.getUserNumber();
+                //동일하지 않다면 접근 권한 없음
+                if(!(qnaCommentPatcherNumber==qnaCommentWriter)) return CustomResponse.noPermissions();
+
+                //동일하다면 코멘트 내용이 수정됨
+                qnaCommentEntity.setContent(commentContent);
+                qnaCommentRepository.save(qnaCommentEntity);
+                return CustomResponse.success();
                 
-            qnaCommentEntity.setContent(dto.getQnaCommentContent());
-            //qnaBoardEntity.setReplyComplete(true);
-            //qnaBoardRepository.save(qnaBoardEntity);
-            qnaCommentRepository.save(qnaCommentEntity);
-                
-                   
+            }
+
+            //관리자일 경우
+
+
+             //댓글 수정자가 존재하는 관리자인지 확인
+             boolean existedWriterUser = managerRepository.existsByEmail(authenticationObject.getEmail());
+             if (!existedWriterUser) return CustomResponse.notExistUserNumber();
+             Integer qnaCommentPatcherNumber = managerRepository.findByEmail(authenticationObject.getEmail()).getManagerNumber();                
+
+
+             //해당 댓글 작성자와 수정하려는 사람이 동일 인물인지 확인
+             Integer qnaCommentWriter = qnaCommentEntity.getManagerNumber();
+             //동일하지 않다면 접근 권한 없음
+             if(!(qnaCommentPatcherNumber==qnaCommentWriter)) return CustomResponse.noPermissions();
+
+             //동일하다면 코멘트 내용이 수정됨
+             qnaCommentEntity.setContent(commentContent);
+             qnaCommentRepository.save(qnaCommentEntity);
+
         } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
@@ -157,34 +170,49 @@ public class QnaCommentServiceImplement implements QnaCommentService {
 
     // 댓글 삭제
     @Override
-    public ResponseEntity<ResponseDto> deleteQnaComment(Integer userNumber, Integer qnaCommentNumber) {
+    public ResponseEntity<ResponseDto> deleteQnaComment(AuthenticationObject authenticationObject, Integer qnaCommentNumber) {
+       
+        boolean isManager = authenticationObject.isManagerFlag();
+        
         try {
-            QnaCommentEntity qnaCommentEntity = qnaCommentRepository.findByQnaCommentNumber(qnaCommentNumber);
-            //TODO : 존재하는 코멘트 넘버인지
-            if (qnaCommentNumber == null) {
-                return CustomResponse.notExistQnaCommentNumber();
 
-            }
-            
-            //TODO : 존재하는 유저인지 확인
-            boolean existedDeleterUserNumber = userRepositry.existsByUserNumber(userNumber);
-            //TODO : 유저 존재 유무 확인 + 관리자인지 유저인지 확인한후
-            if (!(existedDeleterUserNumber)) {
-                return CustomResponse.notExistUserNumber();
-            }
-            //TODO : 삭제 권한이 있는지.
-            //유저일 경우
-            if(userNumber>=11){
-            boolean equalQnaCommentWriter = qnaCommentEntity.getUserNumber().equals(userNumber);
-                if (!equalQnaCommentWriter) {
-                    return CustomResponse.noPermissions();
-                }
+            //TODO : 존재하는 코멘트 넘버인지
+            boolean existedQnaCommentNumber = qnaCommentRepository.existsByQnaCommentNumber(qnaCommentNumber);
+            if (!existedQnaCommentNumber) return CustomResponse.notExistQnaCommentNumber();
+
+            QnaCommentEntity qnaCommentEntity = qnaCommentRepository.findByQnaCommentNumber(qnaCommentNumber);
+
+            //TODO : 유저랑 관리자로 나누어서 작업
+
+            // 유저일 경우
+            if(!isManager){
+                //댓글 삭제자가 존재하는 유저인지 확인
+                boolean existedWriterUser = userRepositry.existsByEmail(authenticationObject.getEmail());
+                if (!existedWriterUser) return CustomResponse.notExistUserNumber();
+                Integer qnaCommentPatcherNumber = userRepositry.findByEmail(authenticationObject.getEmail()).getUserNumber();                
+
+
+                //해당 댓글 작성자와 삭제하려는 사람이 동일 인물인지 확인
+                Integer qnaCommentWriter = qnaCommentEntity.getUserNumber();
+                //동일하지 않다면 접근 권한 없음
+                if(!(qnaCommentPatcherNumber==qnaCommentWriter)) return CustomResponse.noPermissions();
+
+                //동일하다면 코멘트 내용이 수정됨
                 qnaCommentRepository.deleteByQnaCommentNumber(qnaCommentNumber);
                 return CustomResponse.success();
+
             }
-            //관리자일 경우
+
+            // 관리자일경우
+
+            //댓글 삭제자가 존재하는 관리자인지 확인
+            boolean existedWriterUser = managerRepository.existsByEmail(authenticationObject.getEmail());
+            if (!existedWriterUser) return CustomResponse.notExistUserNumber();                
+
+
+            //관리자라면 바로 삭제 가능함
             qnaCommentRepository.deleteByQnaCommentNumber(qnaCommentNumber);
-        
+
         } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
@@ -193,11 +221,4 @@ public class QnaCommentServiceImplement implements QnaCommentService {
         return CustomResponse.success();
     }
 
-
- 
-
-
-
-
-    
 }

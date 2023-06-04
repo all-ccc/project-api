@@ -5,11 +5,11 @@ import java.util.List;
 import com.groupc.weather.dto.ResponseDto;
 
 import com.groupc.weather.entity.CommentEntity;
-import com.groupc.weather.entity.HashtagEntity;
+import com.groupc.weather.entity.HashTagEntity;
 import com.groupc.weather.entity.ImageUrlEntity;
 import com.groupc.weather.entity.BoardEntity;
 import com.groupc.weather.entity.CommentEntity;
-import com.groupc.weather.entity.HashtagEntity;
+import com.groupc.weather.entity.HashTagEntity;
 import com.groupc.weather.entity.ImageUrlEntity;
 import com.groupc.weather.entity.LikeyEntity;
 import com.groupc.weather.entity.UserEntity;
@@ -36,13 +36,13 @@ public class GetBoardResponseDto extends ResponseDto {
     private int likeCount;
     private List<CommentEntity> commentList;
     private List<ImageUrlEntity> boardImageUrlList;
-    private List<HashtagEntity> hashtagList;
+    private List<HashTagEntity> hashtagList;
     private List<LikeyListDto> likeListDto;
 
     // request 요청 하면 => dto => DB = > dto => response
     public GetBoardResponseDto(
             BoardEntity boardEntity, UserEntity userEntity,
-            List<LikeyListDto> likeyListDto, List<CommentEntity> commentEntities, List<HashtagEntity> hashListEntities,
+            List<LikeyListDto> likeyListDto, List<CommentEntity> commentEntities, List<HashTagEntity> hashListEntities,
             List<ImageUrlEntity> imageUrlEntities) {
         super("SU", "Success");
         this.boardNumber = boardEntity.getBoardNumber();

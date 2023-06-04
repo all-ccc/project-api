@@ -25,11 +25,10 @@ import com.groupc.weather.dto.response.board.GetBoardResponseDto;
 import com.groupc.weather.dto.response.board.LikeyListDto;
 import com.groupc.weather.entity.BoardEntity;
 import com.groupc.weather.entity.CommentEntity;
-import com.groupc.weather.entity.HashtagEntity;
+import com.groupc.weather.entity.HashTagEntity;
 import com.groupc.weather.entity.HashtagHasBoardEntity;
 import com.groupc.weather.entity.ImageUrlEntity;
 import com.groupc.weather.entity.LikeyEntity;
-import com.groupc.weather.entity.SearchLogEntity;
 import com.groupc.weather.entity.UserEntity;
 import com.groupc.weather.entity.primaryKey.HashPk;
 import com.groupc.weather.entity.primaryKey.LikeyPk;
@@ -40,7 +39,6 @@ import com.groupc.weather.repository.HashtagHasBoardRepository;
 import com.groupc.weather.repository.HashtagRepository;
 import com.groupc.weather.repository.ImageUrlRepository;
 import com.groupc.weather.repository.LikeyRepository;
-import com.groupc.weather.repository.SearchLogRepository;
 import com.groupc.weather.repository.UserRepository;
 import com.groupc.weather.service.BoardService;
 import com.groupc.weather.service.WeatherService;
@@ -49,7 +47,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class BoardServiceImplement<GetUserBoardLikeDto> implements BoardService {
+public class BoardServiceImplement implements BoardService {
 
    private final UserRepository userRepository;
     private final BoardRepository boardRepository;
@@ -82,7 +80,6 @@ public class BoardServiceImplement<GetUserBoardLikeDto> implements BoardService 
             boardRepository.save(boardEntity);
             int boardNumber = boardEntity.getBoardNumber();
             List<ImageUrlEntity> imageUrlLists = new ArrayList<>();
-            List<HashtagEntity> hashtagLists = new ArrayList<>();
 
             for (String imageListResult : dto.getImageUrlList()) {
                 ImageUrlEntity imageUrlEntity = new ImageUrlEntity(imageListResult, boardEntity.getBoardNumber());
@@ -91,15 +88,15 @@ public class BoardServiceImplement<GetUserBoardLikeDto> implements BoardService 
 
             imageUrlRepository.saveAll(imageUrlLists);
 
-            List<HashtagEntity> hashtagEntityList = new ArrayList<>();
+            List<HashTagEntity> hashtagEntityList = new ArrayList<>();
             for (String hashtag : dto.getHashtagList()) {
-                HashtagEntity hashtagEntity = new HashtagEntity(hashtag);
+                HashTagEntity hashtagEntity = new HashTagEntity(hashtag);
                 hashtagEntityList.add(hashtagEntity);
             }
             hashtagRepository.saveAll(hashtagEntityList);
 
             List<HashtagHasBoardEntity> hashtagHasBoardEntityList = new ArrayList<>();
-            for (HashtagEntity hashtagEntity : hashtagEntityList) {
+            for (HashTagEntity hashtagEntity : hashtagEntityList) {
                 int hashtagNumber = hashtagEntity.getHashtagNumber();
                 HashtagHasBoardEntity hashtagHasBoardEntity = new HashtagHasBoardEntity(hashtagNumber, boardNumber);
                 hashtagHasBoardEntityList.add(hashtagHasBoardEntity);
@@ -161,10 +158,10 @@ public class BoardServiceImplement<GetUserBoardLikeDto> implements BoardService 
             List<HashtagHasBoardEntity> hashtagHasBoardEntities = hashtagHasBoardRepository
                     .findByBoardNumber(boardNumber);
 
-            List<HashtagEntity> hashListEntities = new ArrayList<>();
+            List<HashTagEntity> hashListEntities = new ArrayList<>();
             for (HashtagHasBoardEntity hashtagHasBoardEntity : hashtagHasBoardEntities) {
                 int hashtagNumber = hashtagHasBoardEntity.getHashtagNumber();
-                HashtagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
+                HashTagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
                 hashListEntities.add(hashtagEntity);
             }
 
@@ -191,14 +188,13 @@ public class BoardServiceImplement<GetUserBoardLikeDto> implements BoardService 
             List<BoardListResultDto> boardListResultDtos = new ArrayList<>();
             for (GetBoardListResult result : resultSet) {
                 int boardNumber = result.getBoardNumber();
-                String boardFirstImageUrl = boardRepository.getBoardFirstImageUrl(boardNumber);
                 List<HashtagHasBoardEntity> hashtagHasBoardEntities = hashtagHasBoardRepository
                         .findByBoardNumber(boardNumber);
 
-                List<HashtagEntity> hashListEntities = new ArrayList<>();
+                List<HashTagEntity> hashListEntities = new ArrayList<>();
                 for (HashtagHasBoardEntity hashtagHasBoardEntity : hashtagHasBoardEntities) {
                     int hashtagNumber = hashtagHasBoardEntity.getHashtagNumber();
-                    HashtagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
+                    HashTagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
                     hashListEntities.add(hashtagEntity);
                 }
                 BoardListResultDto boardListResultDto = new BoardListResultDto(result, hashListEntities);
@@ -223,8 +219,6 @@ public class BoardServiceImplement<GetUserBoardLikeDto> implements BoardService 
             List<GetBoardListResult> resultSet = boardRepository.getBoardListTop5();
             List<BoardListResultTop5Dto> boardListResultTop5Dtos = new ArrayList<>();
             for (GetBoardListResult result : resultSet) {
-                Integer boardNumber = result.getBoardNumber();
-
                 BoardListResultTop5Dto boardListResultTop5Dto = new BoardListResultTop5Dto(result);
                 boardListResultTop5Dtos.add(boardListResultTop5Dto);
             }
@@ -253,14 +247,13 @@ public class BoardServiceImplement<GetUserBoardLikeDto> implements BoardService 
             List<BoardListResultDto> boardListResultDtos = new ArrayList<>();
             for (GetBoardListResult result : resultSet) {
                 int boardNumber = result.getBoardNumber();
-                String boardFirstImageUrl = boardRepository.getBoardFirstImageUrl(boardNumber);
                 List<HashtagHasBoardEntity> hashtagHasBoardEntities = hashtagHasBoardRepository
                         .findByBoardNumber(boardNumber);
 
-                List<HashtagEntity> hashListEntities = new ArrayList<>();
+                List<HashTagEntity> hashListEntities = new ArrayList<>();
                 for (HashtagHasBoardEntity hashtagHasBoardEntity : hashtagHasBoardEntities) {
                     int hashtagNumber = hashtagHasBoardEntity.getHashtagNumber();
-                    HashtagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
+                    HashTagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
                     hashListEntities.add(hashtagEntity);
                 }
 
@@ -285,7 +278,6 @@ public class BoardServiceImplement<GetUserBoardLikeDto> implements BoardService 
             List<GetBoardListResult> resultSet = boardRepository.getBoardFirstView();
             List<BoardFirstViewDto> boardFirstViewDtos = new ArrayList<>();
             for (GetBoardListResult result : resultSet) {
-                int boardNumber = result.getBoardNumber();
                 BoardFirstViewDto BoardFirstViewDto = new BoardFirstViewDto(result);
                 boardFirstViewDtos.add(BoardFirstViewDto);
             }
@@ -314,7 +306,7 @@ public class BoardServiceImplement<GetUserBoardLikeDto> implements BoardService 
         List<Integer> deleteHashtageList = dto.getDeleteHashtageNumber(); // 삭제할 해시태그
 
         List<ImageUrlEntity> imageUrlEntities = new ArrayList<>();
-        List<HashtagEntity> hashtagEntities = new ArrayList<>();
+        List<HashTagEntity> hashtagEntities = new ArrayList<>();
         // 로그인하면 토큰을 반환시켜주고 , 해당토큰을 헤더에 넣고 이걸 실행하면
         // 이메일이 받아와짐 왜냐면 컨트롤러에서 이메일을 받아오게 했기 때문에
 
@@ -345,7 +337,7 @@ public class BoardServiceImplement<GetUserBoardLikeDto> implements BoardService 
             }
             if (modifyHashTags != null) {
                 for (HashtagDto hashTagDto : modifyHashTags) {
-                    HashtagEntity hashtagEntity = new HashtagEntity(hashTagDto.getHashtagContent());
+                    HashTagEntity hashtagEntity = new HashTagEntity(hashTagDto.getHashtagContent());
                     hashtagEntities.add(hashtagEntity);
                 }
             }
@@ -358,7 +350,7 @@ public class BoardServiceImplement<GetUserBoardLikeDto> implements BoardService 
             }
             if (addHashtageContent != null) {
                 for (String hashtageContent : addHashtageContent) {
-                    HashtagEntity hashtagEntity = new HashtagEntity(hashtageContent);
+                    HashTagEntity hashtagEntity = new HashTagEntity(hashtageContent);
                     hashtagEntities.add(hashtagEntity);
                 }
             }
@@ -391,6 +383,7 @@ public class BoardServiceImplement<GetUserBoardLikeDto> implements BoardService 
             hashtagRepository.saveAll(hashtagEntities);
          
             boardEntity.setTitle(boardTitle);
+            boardEntity.setContent(boardContent);
             boardRepository.save(boardEntity);
 
         } catch (Exception exception) {
@@ -549,10 +542,10 @@ public class BoardServiceImplement<GetUserBoardLikeDto> implements BoardService 
 
                 List<HashtagHasBoardEntity> hashtagHasBoardEntities = hashtagHasBoardRepository
                         .findByBoardNumber(boardNumber);
-                List<HashtagEntity> hashListEntities = new ArrayList<>();
+                List<HashTagEntity> hashListEntities = new ArrayList<>();
                 for (HashtagHasBoardEntity hashtagHasBoardEntity : hashtagHasBoardEntities) {
                     int hashtagNumber = hashtagHasBoardEntity.getHashtagNumber();
-                    HashtagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
+                    HashTagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
                     hashListEntities.add(hashtagEntity);
                 }
                 BoardListResultDto boardListResultDto = new BoardListResultDto(result, hashListEntities);
@@ -579,10 +572,10 @@ public class BoardServiceImplement<GetUserBoardLikeDto> implements BoardService 
                 int boardNumber = result.getBoardNumber();
 
                 List<HashtagHasBoardEntity> hashtagHasBoardEntities = hashtagHasBoardRepository.findByBoardNumber(boardNumber);
-                List<HashtagEntity> hashListEntities = new ArrayList<>();
+                List<HashTagEntity> hashListEntities = new ArrayList<>();
                 for(HashtagHasBoardEntity hashtagHasBoardEntity : hashtagHasBoardEntities){
                     int hashtagNumber = hashtagHasBoardEntity.getHashtagNumber();
-                    HashtagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
+                    HashTagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
                     hashListEntities.add(hashtagEntity);
                     }
                 BoardListResultDto boardListResultDto = new BoardListResultDto(result, hashListEntities);
@@ -609,10 +602,10 @@ public class BoardServiceImplement<GetUserBoardLikeDto> implements BoardService 
                 int boardNumber = result.getBoardNumber();
 
                 List<HashtagHasBoardEntity> hashtagHasBoardEntities = hashtagHasBoardRepository.findByBoardNumber(boardNumber);
-                List<HashtagEntity> hashListEntities = new ArrayList<>();
+                List<HashTagEntity> hashListEntities = new ArrayList<>();
                 for(HashtagHasBoardEntity hashtagHasBoardEntity : hashtagHasBoardEntities){
                     int hashtagNumber = hashtagHasBoardEntity.getHashtagNumber();
-                    HashtagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
+                    HashTagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
                     hashListEntities.add(hashtagEntity);
                     }
                 BoardListResultDto boardListResultDto = new BoardListResultDto(result, hashListEntities);
@@ -639,10 +632,10 @@ public class BoardServiceImplement<GetUserBoardLikeDto> implements BoardService 
                 int boardNumber = result.getBoardNumber();
 
                 List<HashtagHasBoardEntity> hashtagHasBoardEntities = hashtagHasBoardRepository.findByBoardNumber(boardNumber);
-                List<HashtagEntity> hashListEntities = new ArrayList<>();
+                List<HashTagEntity> hashListEntities = new ArrayList<>();
                 for(HashtagHasBoardEntity hashtagHasBoardEntity : hashtagHasBoardEntities){
                     int hashtagNumber = hashtagHasBoardEntity.getHashtagNumber();
-                    HashtagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
+                    HashTagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
                     hashListEntities.add(hashtagEntity);
                     }
                 BoardListResultDto boardListResultDto = new BoardListResultDto(result, hashListEntities);
@@ -670,10 +663,10 @@ public class BoardServiceImplement<GetUserBoardLikeDto> implements BoardService 
                 int boardNumber = result.getBoardNumber();
 
                 List<HashtagHasBoardEntity> hashtagHasBoardEntities = hashtagHasBoardRepository.findByBoardNumber(boardNumber);
-                List<HashtagEntity> hashListEntities = new ArrayList<>();
+                List<HashTagEntity> hashListEntities = new ArrayList<>();
                 for(HashtagHasBoardEntity hashtagHasBoardEntity : hashtagHasBoardEntities){
                     int hashtagNumber = hashtagHasBoardEntity.getHashtagNumber();
-                    HashtagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
+                    HashTagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
                     hashListEntities.add(hashtagEntity);
                     }
                 BoardListResultDto boardListResultDto = new BoardListResultDto(result, hashListEntities);
@@ -702,10 +695,10 @@ public class BoardServiceImplement<GetUserBoardLikeDto> implements BoardService 
                 List<HashtagHasBoardEntity> hashtagHasBoardEntities = hashtagHasBoardRepository
                         .findByBoardNumber(boardNumber);
 
-                List<HashtagEntity> hashListEntities = new ArrayList<>();
+                List<HashTagEntity> hashListEntities = new ArrayList<>();
                 for (HashtagHasBoardEntity hashtagHasBoardEntity : hashtagHasBoardEntities) {
                     int hashtagNumber = hashtagHasBoardEntity.getHashtagNumber();
-                    HashtagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
+                    HashTagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
                     hashListEntities.add(hashtagEntity);
                 }
                 BoardListResultDto boardListResultDto = new BoardListResultDto(result, hashListEntities);
@@ -731,10 +724,10 @@ public class BoardServiceImplement<GetUserBoardLikeDto> implements BoardService 
                 int boardNumber = result.getBoardNumber();
                 List<HashtagHasBoardEntity> hashtagHasBoardEntities = hashtagHasBoardRepository.findByBoardNumber(boardNumber);
 
-                List<HashtagEntity> hashListEntities = new ArrayList<>();
+                List<HashTagEntity> hashListEntities = new ArrayList<>();
                 for(HashtagHasBoardEntity hashtagHasBoardEntity : hashtagHasBoardEntities){
                     int hashtagNumber = hashtagHasBoardEntity.getHashtagNumber();
-                    HashtagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
+                    HashTagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
                     hashListEntities.add(hashtagEntity);
                     }
                 BoardListResultDto boardListResultDto = new BoardListResultDto(result, hashListEntities);
@@ -760,10 +753,10 @@ public class BoardServiceImplement<GetUserBoardLikeDto> implements BoardService 
                 int boardNumber = result.getBoardNumber();
                 List<HashtagHasBoardEntity> hashtagHasBoardEntities = hashtagHasBoardRepository.findByBoardNumber(boardNumber);
 
-                List<HashtagEntity> hashListEntities = new ArrayList<>();
+                List<HashTagEntity> hashListEntities = new ArrayList<>();
                 for(HashtagHasBoardEntity hashtagHasBoardEntity : hashtagHasBoardEntities){
                     int hashtagNumber = hashtagHasBoardEntity.getHashtagNumber();
-                    HashtagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
+                    HashTagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
                     hashListEntities.add(hashtagEntity);
                     }
                 BoardListResultDto boardListResultDto = new BoardListResultDto(result, hashListEntities);
@@ -789,10 +782,10 @@ public class BoardServiceImplement<GetUserBoardLikeDto> implements BoardService 
                 int boardNumber = result.getBoardNumber();
                 List<HashtagHasBoardEntity> hashtagHasBoardEntities = hashtagHasBoardRepository.findByBoardNumber(boardNumber);
 
-                List<HashtagEntity> hashListEntities = new ArrayList<>();
+                List<HashTagEntity> hashListEntities = new ArrayList<>();
                 for(HashtagHasBoardEntity hashtagHasBoardEntity : hashtagHasBoardEntities){
                     int hashtagNumber = hashtagHasBoardEntity.getHashtagNumber();
-                    HashtagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
+                    HashTagEntity hashtagEntity = hashtagRepository.findByHashtagNumber(hashtagNumber);
                     hashListEntities.add(hashtagEntity);
                     }
                 BoardListResultDto boardListResultDto = new BoardListResultDto(result, hashListEntities);

@@ -33,15 +33,16 @@ import com.groupc.weather.dto.response.user.GetUserResponseDto;
 import com.groupc.weather.dto.response.user.LoginUserResponseDto;
 import com.groupc.weather.service.FollowService;
 import com.groupc.weather.service.UserService;
+import com.groupc.weather.service.UserService2;
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v2/user")
 public class UserController2 {
 
-    private UserService userService;
+    private UserService2 userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController2(UserService2 userService) {
         this.userService = userService;
     }
 
