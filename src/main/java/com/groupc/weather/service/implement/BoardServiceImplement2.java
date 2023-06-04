@@ -291,61 +291,61 @@ public class BoardServiceImplement2 implements BoardService2 {
     }
 
     // 게시물 수정
-//     @Override
-//     public ResponseEntity<ResponseDto> patchBoard(String userEmail, PatchBoardRequestDto dto) {
-//         Integer userNumber = dto.getBoardWriteUserNumber();
-//         Integer boardNumber = dto.getBoardNumber();
-//         String boardTitle = dto.getBoardTitle();
-//         List<imageUrlList> modifyImageUrlLists = dto.getImageUrlList();
-//         List<String> modifyHashTags = dto.getBoardHashtag();
+    @Override
+    public ResponseEntity<ResponseDto> patchBoard(String userEmail, PatchBoardRequestDto dto) {
+        Integer userNumber = dto.getBoardWriteUserNumber();
+        Integer boardNumber = dto.getBoardNumber();
+        String boardTitle = dto.getBoardTitle();
+        List<imageUrlList> modifyImageUrlLists = dto.getImageUrlList();
+        List<String> modifyHashTags = dto.getBoardHashtag();
 
-//         List<ImageUrlEntity> imageUrlEntities = new ArrayList<>();
-//         List<HashtagEntity> hashtagEntities = new ArrayList<>();
-//         // 로그인하면 토큰을 반환시켜주고 , 해당토큰을 헤더에 넣고 이걸 실행하면
-//         // 이메일이 받아와짐 왜냐면 컨트롤러에서 이메일을 받아오게 했기 때문에
-//         //
-//         try {
-//             UserEntity userEntity = userRepository.findByUserNumber(userNumber); // 작성자유저넘버 불러오기
-//             BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber); // 게시물번호 불러오기
-// // 매게변수
-//             if (boardNumber == null || boardNumber == null) {
-//                 return CustomResponse.validationError();
-//             }
-//             // 유저 번호 존재여부
-//             if (userEntity == null)
-//                 return CustomResponse.notExistUserNumber();
+        List<ImageUrlEntity> imageUrlEntities = new ArrayList<>();
+        List<HashtagEntity> hashtagEntities = new ArrayList<>();
+        // 로그인하면 토큰을 반환시켜주고 , 해당토큰을 헤더에 넣고 이걸 실행하면
+        // 이메일이 받아와짐 왜냐면 컨트롤러에서 이메일을 받아오게 했기 때문에
+        //
+        try {
+            UserEntity userEntity = userRepository.findByUserNumber(userNumber); // 작성자유저넘버 불러오기
+            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber); // 게시물번호 불러오기
+// 매게변수
+            if (boardNumber == null || boardNumber == null) {
+                return CustomResponse.validationError();
+            }
+            // 유저 번호 존재여부
+            if (userEntity == null)
+                return CustomResponse.notExistUserNumber();
 
-//             // 게시물 번호 존재여부
-//             if (boardEntity == null)
-//                 return CustomResponse.notExistBoardNumber();
+            // 게시물 번호 존재여부
+            if (boardEntity == null)
+                return CustomResponse.notExistBoardNumber();
 
-//             // 유저번호와 게시물 작성자 유저번호 일치 여부 (불일치시 권한 없음)
-//             UserEntity tryUserEntity = userRepository.findByEmail(userEmail); // 게시물의 수정을 시도하려는 사람의 정보
-//             Integer tryUserNumber = tryUserEntity.getUserNumber(); // 해당 정보에서 유저넘버를 가져옴
-//             boolean isMatchedUserNumber = tryUserNumber.equals(boardEntity.getUserNumber());
-//              // tryUserNumber = 수정시도하려는 유저넘버  / boardEntity.getUserNumber() = 게시물 작성자 넘버
-//             if (!isMatchedUserNumber)
-//                 return CustomResponse.noPermissions();
-//             for (String imageList : modifyImageUrlLists) {
-//                 ImageUrlEntity imageUrlEntity = new ImageUrlEntity(imageList, boardNumber);
-//                 imageUrlEntities.add(imageUrlEntity);
-//             }
-//         for(String hashTagList : modifyHashTags){
-//                 HashtagEntity hashtagEntity = new HashtagEntity(hashTagList);
-//                 hashtagEntities.add(hashtagEntity);
-//         }
+            // 유저번호와 게시물 작성자 유저번호 일치 여부 (불일치시 권한 없음)
+            UserEntity tryUserEntity = userRepository.findByEmail(userEmail); // 게시물의 수정을 시도하려는 사람의 정보
+            Integer tryUserNumber = tryUserEntity.getUserNumber(); // 해당 정보에서 유저넘버를 가져옴
+            boolean isMatchedUserNumber = tryUserNumber.equals(boardEntity.getUserNumber());
+             // tryUserNumber = 수정시도하려는 유저넘버  / boardEntity.getUserNumber() = 게시물 작성자 넘버
+            if (!isMatchedUserNumber)
+                return CustomResponse.noPermissions();
+            for (String imageList : modifyImageUrlLists) {
+                ImageUrlEntity imageUrlEntity = new ImageUrlEntity(imageList, boardNumber);
+                imageUrlEntities.add(imageUrlEntity);
+            }
+        for(String hashTagList : modifyHashTags){
+                HashtagEntity hashtagEntity = new HashtagEntity(hashTagList);
+                hashtagEntities.add(hashtagEntity);
+        }
 
-//             hashtagRepository.saveAll(hashtagEntities);
-//             imageUrlRepository.saveAll(imageUrlEntities);
-//             boardEntity.setTitle(boardTitle);
-//             boardRepository.save(boardEntity);
+            hashtagRepository.saveAll(hashtagEntities);
+            imageUrlRepository.saveAll(imageUrlEntities);
+            boardEntity.setTitle(boardTitle);
+            boardRepository.save(boardEntity);
 
-//         } catch (Exception exception) {
-//             exception.printStackTrace();
-//             return CustomResponse.databaseError();
-//         }
-//         return CustomResponse.success();
-//     }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return CustomResponse.success();
+    }
     
     // 게시물 삭제
     @Override
