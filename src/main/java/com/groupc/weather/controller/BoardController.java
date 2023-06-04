@@ -1,7 +1,5 @@
 package com.groupc.weather.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -27,7 +25,6 @@ import com.groupc.weather.dto.request.board.PostBoardRequestDto2;
 import com.groupc.weather.service.BoardService;
 import com.groupc.weather.service.implement.BoardServiceImplement;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 

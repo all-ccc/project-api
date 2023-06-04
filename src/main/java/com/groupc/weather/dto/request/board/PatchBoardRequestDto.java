@@ -18,16 +18,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PatchBoardRequestDto {
-   
+    @NotNull
+    private Integer boardWriteUserNumber;  //현재 v2에 필요..
+    @NotBlank
+    private List<String> boardHashtag; //현재 v2에 필요..
+
     @NotNull
     private Integer boardNumber;  
     @NotBlank
     private String boardTitle;
     @NotBlank
     private String boardContent;
-    // @NotBlank
-    // private List<String> boardImageUrl;
-    // private List<String> boardHashtag;
 
     // 수정할 거 
     private List<ImageUrlEntity> imageUrlList;    //ImageUrlDto 에서 변경했음,,,

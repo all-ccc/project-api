@@ -29,6 +29,7 @@ import com.groupc.weather.entity.HashtagEntity;
 import com.groupc.weather.entity.HashtagHasBoardEntity;
 import com.groupc.weather.entity.ImageUrlEntity;
 import com.groupc.weather.entity.LikeyEntity;
+import com.groupc.weather.entity.SearchLogEntity;
 import com.groupc.weather.entity.UserEntity;
 import com.groupc.weather.entity.primaryKey.HashPk;
 import com.groupc.weather.entity.primaryKey.LikeyPk;
@@ -39,6 +40,7 @@ import com.groupc.weather.repository.HashtagHasBoardRepository;
 import com.groupc.weather.repository.HashtagRepository;
 import com.groupc.weather.repository.ImageUrlRepository;
 import com.groupc.weather.repository.LikeyRepository;
+import com.groupc.weather.repository.SearchLogRepository;
 import com.groupc.weather.repository.UserRepository;
 import com.groupc.weather.service.BoardService;
 import com.groupc.weather.service.WeatherService;
@@ -58,6 +60,7 @@ public class BoardServiceImplement<GetUserBoardLikeDto> implements BoardService 
     private final HashtagRepository hashtagRepository;
     private final HashtagHasBoardRepository hashtagHasBoardRepository;
     private final WeatherService weatherService;
+    
 
     // 1.게시물 등록
     @Override

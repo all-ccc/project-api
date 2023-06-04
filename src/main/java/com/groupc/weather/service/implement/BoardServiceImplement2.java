@@ -19,7 +19,6 @@ import com.groupc.weather.common.model.AuthenticationObject;
 import com.groupc.weather.common.util.CustomResponse;
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.board.PatchBoardRequestDto;
-import com.groupc.weather.dto.request.board.PostBoardRequestDto;
 import com.groupc.weather.dto.request.board.PostBoardRequestDto2;
 import com.groupc.weather.dto.request.common.WeatherDto;
 import com.groupc.weather.dto.response.board.GetBoardListResponseDto;
@@ -296,7 +295,7 @@ public class BoardServiceImplement2 implements BoardService2 {
         Integer userNumber = dto.getBoardWriteUserNumber();
         Integer boardNumber = dto.getBoardNumber();
         String boardTitle = dto.getBoardTitle();
-        List<imageUrlList> modifyImageUrlLists = dto.getImageUrlList();
+        List<ImageUrlEntity> modifyImageUrlLists = dto.getImageUrlList();
         List<String> modifyHashTags = dto.getBoardHashtag();
 
         List<ImageUrlEntity> imageUrlEntities = new ArrayList<>();
@@ -326,7 +325,7 @@ public class BoardServiceImplement2 implements BoardService2 {
              // tryUserNumber = 수정시도하려는 유저넘버  / boardEntity.getUserNumber() = 게시물 작성자 넘버
             if (!isMatchedUserNumber)
                 return CustomResponse.noPermissions();
-            for (String imageList : modifyImageUrlLists) {
+            for (ImageUrlEntity imageList : modifyImageUrlLists) {
                 ImageUrlEntity imageUrlEntity = new ImageUrlEntity(imageList, boardNumber);
                 imageUrlEntities.add(imageUrlEntity);
             }
@@ -422,15 +421,11 @@ public class BoardServiceImplement2 implements BoardService2 {
             LikeyEntity likeyEntity = new LikeyEntity(likeyPk.getUserNumber(),likeyPk.getBoardNumber());
             likeyRepository.save(likeyEntity);
 
-
         }
         catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
-
-
-
 
 
         return CustomResponse.success();
@@ -439,7 +434,6 @@ public class BoardServiceImplement2 implements BoardService2 {
 
 
     // 특정 게시물 좋아요 해제
-
 
     @Override
     public ResponseEntity<ResponseDto> likeDeleteBoard(Integer userNumber, Integer boardNumber) {
@@ -464,10 +458,6 @@ public class BoardServiceImplement2 implements BoardService2 {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
-
-
-
-
 
         return CustomResponse.success();
     }

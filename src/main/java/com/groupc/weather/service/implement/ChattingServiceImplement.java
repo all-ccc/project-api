@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
@@ -16,9 +17,15 @@ import com.groupc.weather.common.util.CustomResponse;
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.chatting.ChattingUserNumberDto;
 import com.groupc.weather.dto.request.chatting.DeleteChattingRoomDto;
+import com.groupc.weather.dto.request.chatting.SendMessageDto;
+import com.groupc.weather.dto.response.chatting.GetChattingListResponseDto;
+import com.groupc.weather.dto.response.chatting.GetChattingMessageListResponseDto;
+import com.groupc.weather.entity.ChattingMessageEntity;
 import com.groupc.weather.entity.ChattingRoomEntity;
-
-
+import com.groupc.weather.entity.resultSet.ChattingListResultSet;
+import com.groupc.weather.entity.resultSet.ChattingMessageListResultSet;
+import com.groupc.weather.provider.ChattingRoom;
+import com.groupc.weather.repository.ChattingMessageRepository;
 import com.groupc.weather.repository.ChattingRoomRepository;
 import com.groupc.weather.repository.UserRepository;
 import com.groupc.weather.service.ChattingService;
@@ -33,19 +40,57 @@ public class ChattingServiceImplement implements ChattingService {
 
     private final UserRepository userRepository;
     private final ChattingRoomRepository chattingRoomRepository;
+    private final ChattingMessageRepository chattingMessageRepository;
     private final ObjectMapper objectMapper;
-
+    private Map<String, ChattingRoom> chattingRooms;
 
     @Override
-    public ResponseEntity<ResponseDto> getChattingList(AuthenticationObject authenticationObject) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getChattingList'");
+    public ResponseEntity<? super GetChattingListResponseDto> getChattingList(AuthenticationObject authenticationObject) {
+        GetChattingListResponseDto body = null;
+        String email = authenticationObject.getEmail();
+
+        try {
+            boolean isExistUserEmail = userRepository.existsByEmail(email);
+            if (!isExistUserEmail) return CustomResponse.noPermissions();
+
+            Integer userNumber = userRepository.findByEmail(email).getUserNumber();
+            
+            List<ChattingListResultSet> resultSet = chattingMessageRepository.getChattingList(userNumber);
+            body = new GetChattingListResponseDto(resultSet);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+    @Override
+    public ResponseEntity<? super GetChattingMessageListResponseDto> getChattingMessageList(
+        AuthenticationObject authenticationObject, String roomId
+    ) {
+        GetChattingMessageListResponseDto body = null;
+        String email = authenticationObject.getEmail();
+
+        try {
+            boolean isExistUserEmail = userRepository.existsByEmail(email);
+            if (!isExistUserEmail) return CustomResponse.noPermissions();
+
+            Integer userNumber = userRepository.findByEmail(email).getUserNumber();
+            
+            List<ChattingMessageListResultSet> resultSet = chattingMessageRepository.getChattingMessageList(userNumber, roomId);
+            body = new GetChattingMessageListResponseDto(resultSet);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     @Override
     public ResponseEntity<ResponseDto> createChattingRoom(AuthenticationObject authenticationObject,
-            ChattingUserNumberDto dto) {
-
+        ChattingUserNumberDto dto
+    ) {
         try {
             // 채팅을 신청한 쪽에서 먼저 방을 만들고
             Integer createUserNumber = userRepository.findByEmail(authenticationObject.getEmail()).getUserNumber();
@@ -63,11 +108,19 @@ public class ChattingServiceImplement implements ChattingService {
     }
 
     @Override
-    public ResponseEntity<ResponseDto> deleteChattingRoom(AuthenticationObject authenticationObject,
-        DeleteChattingRoomDto dto) {
-
+    public <T> void sendMessage(WebSocketSession session, T message) {
         try {
-    
+            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> deleteChattingRoom(AuthenticationObject authenticationObject,
+            DeleteChattingRoomDto dto) {
+        try {
+
             List<ChattingRoomEntity> chattingRoomEntitys = chattingRoomRepository.findByRoomId(dto.getRoomId());
             chattingRoomRepository.deleteAll(chattingRoomEntitys);
 
@@ -78,13 +131,9 @@ public class ChattingServiceImplement implements ChattingService {
         return CustomResponse.success();
     }
 
-    @Override
-    public <T> void sendMessage(WebSocketSession session, T message) {
-        try {
-            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
-        }
-    }
 
+
+
+    
+    
 }

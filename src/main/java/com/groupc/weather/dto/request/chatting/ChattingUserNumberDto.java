@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class ChattingUserNumberDto {
-    Integer userNumber;
+    private Integer userNumber;
 }

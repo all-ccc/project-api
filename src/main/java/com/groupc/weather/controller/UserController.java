@@ -93,7 +93,7 @@ public class UserController {
         return response;
     }
 
-
+    //로그아웃
     // @GetMapping(value = "/user")
     // public ResponseEntity<String> getUserInfo(@RequestParam(value = "jwt", required = true) String jwt) {
     //     String email = JwtProvider.validation(jwt); // JWT 검증 후, 인증된 email 가져오기
