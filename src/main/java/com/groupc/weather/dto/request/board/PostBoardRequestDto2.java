@@ -1,6 +1,5 @@
 package com.groupc.weather.dto.request.board;
 
-
 import java.util.List;
 
 import javax.validation.constraints.NotBlank;
@@ -11,19 +10,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class PostBoardRequestDto2 {
-
-        @NotBlank
-        private String title;
-        @NotBlank
-        private String content;
-        @NotNull
-        private List<String> imageUrlList;
-        private List<String> hashtagList;
-        @NotNull
-        private String location;
-    
-    
+    @NotBlank
+    private String title;
+    @NotBlank
+    private String content;
+    @NotNull
+    private List<String> imageUrlList;
+    private List<String> hashtagList;
+    private String location;
 }

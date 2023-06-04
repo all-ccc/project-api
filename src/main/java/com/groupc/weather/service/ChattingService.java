@@ -1,14 +1,12 @@
 package com.groupc.weather.service;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.groupc.weather.common.model.AuthenticationObject;
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.chatting.ChattingUserNumberDto;
 import com.groupc.weather.dto.request.chatting.DeleteChattingRoomDto;
-import com.groupc.weather.dto.request.chatting.SendMessageDto;
 import com.groupc.weather.dto.response.chatting.GetChattingListResponseDto;
 import com.groupc.weather.dto.response.chatting.GetChattingMessageListResponseDto;
 

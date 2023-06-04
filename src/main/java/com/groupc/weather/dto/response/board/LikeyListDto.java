@@ -13,12 +13,11 @@ import lombok.NoArgsConstructor;
 public class LikeyListDto extends LikeyEntity{
     private String userNickname;
     private String userProfileImageUrl;
-    
-    
+
+
     public LikeyListDto(LikeyEntity likeyEntity,UserEntity userEntity){
         super(likeyEntity.getUserNumber(), likeyEntity.getBoardNumber());
         this.userNickname=userEntity.getNickname();
         this.userProfileImageUrl=userEntity.getProfileImageUrl();
     }
-
 }

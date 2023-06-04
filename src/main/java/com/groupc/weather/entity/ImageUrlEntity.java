@@ -21,11 +21,17 @@ public class ImageUrlEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int imageNumber;
     private String imageUrl;
-    private int boardNumber;
+    private Integer boardNumber;
 
-    public ImageUrlEntity(String imageUrl, int boardNumber){
+    public ImageUrlEntity(String imageUrl, Integer boardNumber){
         this.imageUrl = imageUrl;
         this.boardNumber = boardNumber;
+    }
+    public ImageUrlEntity(int imageNumber, Integer boardNumber){
+        this.imageNumber = imageNumber;
+        this.boardNumber = boardNumber;
+    }
 
+    public ImageUrlEntity(ImageUrlEntity imageList, Integer boardNumbers) {
     }
 }

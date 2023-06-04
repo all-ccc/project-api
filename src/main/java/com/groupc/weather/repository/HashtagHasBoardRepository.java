@@ -15,4 +15,6 @@ public interface HashtagHasBoardRepository extends JpaRepository<HashtagHasBoard
 
    @Transactional
    void deleteById(HashPk hashPk);
+   @Transactional
+   void deleteByHashtagNumber(Integer hashtagNumber);
 }

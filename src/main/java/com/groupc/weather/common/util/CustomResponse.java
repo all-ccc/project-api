@@ -4,7 +4,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.groupc.weather.dto.ResponseDto;
-import com.groupc.weather.dto.response.user.FindByEmailResponseDto;
 
 public class CustomResponse {
 
@@ -39,8 +38,9 @@ public class CustomResponse {
     }
 
     public static ResponseEntity<ResponseDto> alreadyLikeBoard() {
-        ResponseDto body = new ResponseDto("AL", "Already LikeBoard");
-        return ResponseEntity.status(HttpStatus.OK).body(body);
+
+        ResponseDto errorBody = new ResponseDto("AL", "Already LikeBoard");
+        return ResponseEntity.status(HttpStatus.OK).body(errorBody);
     }
 
     public static ResponseEntity<ResponseDto> undifindeUsername() {

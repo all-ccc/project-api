@@ -20,11 +20,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.groupc.weather.common.model.AuthenticationObject;
 import com.groupc.weather.provider.JwtProvider;
 
-import io.jsonwebtoken.Claims;
-
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    
+
     private JwtProvider jwtProvider;
 
     @Autowired
@@ -35,7 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        
+
         try {
 
             String jwt = parseToken(request);

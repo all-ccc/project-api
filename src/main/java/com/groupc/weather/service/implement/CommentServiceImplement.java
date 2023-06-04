@@ -7,13 +7,11 @@ import com.groupc.weather.common.util.CustomResponse;
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.board.PatchCommentRequestDto;
 import com.groupc.weather.dto.request.board.PostCommentRequestDto;
-import com.groupc.weather.entity.BoardEntity;
 import com.groupc.weather.entity.CommentEntity;
 import com.groupc.weather.entity.ManagerEntity;
 import com.groupc.weather.entity.UserEntity;
 import com.groupc.weather.repository.BoardRepository;
 import com.groupc.weather.repository.CommentRepository;
-import com.groupc.weather.repository.ManagerRepository;
 import com.groupc.weather.repository.UserRepository;
 import com.groupc.weather.service.CommentService;
 
@@ -37,6 +35,8 @@ public class CommentServiceImplement implements CommentService{
         // 게시물의 번호 
         int boardNumber = dto.getBoardNumber();
 
+        CommentEntity commentEntity;
+
         try {
 
             boolean existedWriterUserNumber = userRepository.existsByUserNumber(writerUserNumber);
@@ -52,17 +52,15 @@ public class CommentServiceImplement implements CommentService{
             userEntity.setNickname(userEntity.getNickname());
             userEntity.setProfileImageUrl(userEntity.getProfileImageUrl());
 
-            CommentEntity commentEntity = new CommentEntity(dto, userEntity);
+            commentEntity = new CommentEntity(dto, userEntity);
             //db저장
             commentRepository.save(commentEntity);
-            // dto반환
-            return CustomResponse.success();
         
             ManagerEntity managerEntity = new ManagerEntity();
-            managerEntity.setManagerNickname(managerEntity.getManagerNickname());
+            managerEntity.setNickname(managerEntity.getNickname());
             managerEntity.setProfileImageUrl(managerEntity.getProfileImageUrl());
 
-            CommentEntity commentEntity2 = new CommentEntity(dto, managerEntity);
+            commentEntity = new CommentEntity(dto, managerEntity);
             //db저장
             commentRepository.save(commentEntity);
             // dto반환
@@ -105,7 +103,7 @@ public class CommentServiceImplement implements CommentService{
 
 
                 CommentEntity commentEntity = commentRepository.findByCommentNumber(commentNumber);
-                commentEntity.setCommentContent(dto.getCommentContent());
+                commentEntity.setContent(dto.getCommentContent());
                 commentRepository.save(commentEntity);
 
                 

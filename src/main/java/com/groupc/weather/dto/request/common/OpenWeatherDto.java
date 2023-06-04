@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 public class OpenWeatherDto {
-
     private Coord coord;
 
     private List<Weather> weather;

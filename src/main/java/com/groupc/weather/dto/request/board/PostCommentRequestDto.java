@@ -1,6 +1,7 @@
 package com.groupc.weather.dto.request.board;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,13 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PostCommentRequestDto { 
     
-    @NotBlank
-    private int commentNumber;
-    @NotBlank
+    @NotNull
     private Integer commentWriterNumber;
-    @NotBlank
-    private Integer managerNumber;
-    @NotBlank
+    @NotNull
     private Integer boardNumber;
     @NotBlank
     private String commentContent;

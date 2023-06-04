@@ -38,7 +38,6 @@ public class JwtProvider {
 
         return jwt;
     }
-    
     public AuthenticationObject validate(String jwt) {
         AuthenticationObject authenticationObject = null;
 

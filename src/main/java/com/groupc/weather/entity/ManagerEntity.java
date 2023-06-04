@@ -38,7 +38,4 @@ public class ManagerEntity {
         this.profileImageUrl = dto.getProfileImageUrl();
         this.active = false;
     }
-
-
-
 }

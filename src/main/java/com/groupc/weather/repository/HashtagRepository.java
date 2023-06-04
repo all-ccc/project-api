@@ -16,5 +16,7 @@ public interface HashtagRepository extends JpaRepository<HashtagEntity, Integer>
 
    @Transactional
    void deleteByHashtagNumber(Integer hashtagNumber);
+
+
    
 }

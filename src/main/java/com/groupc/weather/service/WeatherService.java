@@ -22,7 +22,6 @@ public class WeatherService {
         WeatherDto dto = null;
         try{
             StringBuilder urlBuilder = new StringBuilder(BASE_URL);
-            
             urlBuilder.append("?" + URLEncoder.encode("q", "UTF-8") + "=" + location);
             urlBuilder.append("&" + URLEncoder.encode("appid", "UTF-8") + "=" + openWeatherKey);
             urlBuilder.append("&" + URLEncoder.encode("lang", "UTF-8") + "=kr");

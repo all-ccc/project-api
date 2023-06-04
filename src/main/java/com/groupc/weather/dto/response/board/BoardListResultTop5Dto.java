@@ -14,9 +14,8 @@ public class BoardListResultTop5Dto {
     private String boardFirstImageUrl;
 
     public BoardListResultTop5Dto(GetBoardListResult result){
-        this.boardNumber=result.getBoardNumber();
-        this.boardTitle=result.getBoardTitle();
-        this.boardFirstImageUrl=result.getBoardFirstImageUrl();
+        this.boardNumber = result.getBoardNumber();
+        this.boardTitle = result.getBoardTitle();
+        this.boardFirstImageUrl = result.getBoardFirstImageUrl();
     }
-
 }
