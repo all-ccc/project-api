@@ -40,15 +40,22 @@ public class JwtProvider {
     }
     
     public AuthenticationObject validate(String jwt) {
-        Claims claims = Jwts.parser()
+        AuthenticationObject authenticationObject = null;
+
+        try {
+            Claims claims = Jwts.parser()
                 .setSigningKey(SECRET_KEY)
                 .parseClaimsJws(jwt)
                 .getBody();
-        
-        String email = claims.getSubject();
-        boolean isManager = (Boolean) claims.get("isManager");
+    
+            String email = claims.getSubject();
+            boolean isManager = (Boolean) claims.get("key");
 
-        AuthenticationObject authenticationObject = new AuthenticationObject(email, isManager);
+            authenticationObject = new AuthenticationObject(email, isManager);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return null;
+        }
         return authenticationObject;
     }
 }
