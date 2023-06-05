@@ -62,6 +62,7 @@ public class UserServiceImplement implements UserService {
             ManagerRepository managerRepository,
             JwtProvider jwtProvider) {
         this.userRepository = userRepository;
+        this.managerRepository = managerRepository;
         this.jwtProvider = jwtProvider;
         this.followRepository = followRepository;
         this.passwordEncoder = new BCryptPasswordEncoder();
