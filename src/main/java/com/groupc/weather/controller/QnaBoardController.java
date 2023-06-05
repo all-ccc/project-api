@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/v2/qnaBoard")
 @RequiredArgsConstructor
-public class QnaBoardController2 {
+public class QnaBoardController {
 
     private final QnaBoardService qnaBoardService;
 
