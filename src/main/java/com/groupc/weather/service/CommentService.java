@@ -1,7 +1,5 @@
 package com.groupc.weather.service;
 
-import javax.validation.Valid;
-
 import org.springframework.http.ResponseEntity;
 
 import com.groupc.weather.common.model.AuthenticationObject;

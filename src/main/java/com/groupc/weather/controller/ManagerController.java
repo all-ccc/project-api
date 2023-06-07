@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.groupc.weather.common.model.AuthenticationObject;
 import com.groupc.weather.dto.ResponseDto;
 import com.groupc.weather.dto.request.manager.ActiveManagerDto;
-import com.groupc.weather.dto.request.manager.LoginManagerRequestDto;
 import com.groupc.weather.dto.request.manager.PostManagerRequestDto;
-import com.groupc.weather.dto.response.manager.LoginManagerResponseDto;
 import com.groupc.weather.service.ManagerService;
 
 import lombok.RequiredArgsConstructor;
